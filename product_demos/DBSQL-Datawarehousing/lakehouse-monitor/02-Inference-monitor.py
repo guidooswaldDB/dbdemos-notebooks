@@ -8,7 +8,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install databricks-sdk==0.39.0
+# MAGIC %pip install databricks-sdk==0.40.0
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -115,7 +115,7 @@ try:
           label_col="ProductRating"
       ),
       baseline_table_name=BASELINE_PREDICTIONS,
-      assets_dir = os.getcwd(),
+      assets_dir = f"{os.getcwd()}/monitoring",
       output_schema_name=f"{catalog}.{dbName}"
   )
 

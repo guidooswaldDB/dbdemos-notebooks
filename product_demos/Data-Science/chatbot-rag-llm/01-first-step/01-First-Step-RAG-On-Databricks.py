@@ -22,7 +22,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install -U --quiet databricks-sdk==0.36.0 databricks-agents mlflow-skinny==2.18.0 mlflow==2.18.0 mlflow[gateway]==2.18.0 databricks-vectorsearch langchain==0.2.1 langchain_core==0.2.5 langchain_community==0.2.4
+# MAGIC %pip install -U --quiet databricks-sdk==0.40.0 databricks-langchain databricks-agents mlflow[databricks] databricks-vectorsearch==0.49 langchain==0.3.19 langchain_core==0.3.37 bs4==0.0.2 markdownify==0.14.1
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -179,7 +179,7 @@ chain_config = {
 # COMMAND ----------
 
 from databricks.vector_search.client import VectorSearchClient
-from langchain_community.vectorstores import DatabricksVectorSearch
+from databricks_langchain.vectorstores import DatabricksVectorSearch
 from langchain.schema.runnable import RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 
@@ -190,15 +190,10 @@ mlflow.langchain.autolog()
 model_config = mlflow.models.ModelConfig(development_config=chain_config)
 
 ## Turn the Vector Search index into a LangChain retriever
-vs_client = VectorSearchClient(disable_notice=True)
-vs_index = vs_client.get_index(
-    endpoint_name=model_config.get("vector_search_endpoint_name"),
-    index_name=model_config.get("vector_search_index"),
-)
 vector_search_as_retriever = DatabricksVectorSearch(
-    vs_index,
-    text_column="content",
-        columns=["id", "content", "url"],
+    endpoint=model_config.get("vector_search_endpoint_name"),
+    index_name=model_config.get("vector_search_index"),
+    columns=["id", "content", "url"],
 ).as_retriever(search_kwargs={"k": 3})
 
 # Method to format the docs returned by the retriever into the prompt (keep only the text from chunks)
@@ -232,7 +227,7 @@ display_txt_as_html(relevant_docs)
 # COMMAND ----------
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.chat_models import ChatDatabricks
+from databricks_langchain.chat_models import ChatDatabricks
 from operator import itemgetter
 
 prompt = ChatPromptTemplate.from_messages(
@@ -328,6 +323,7 @@ init_experiment_for_batch("chatbot-rag-llm-first-step", "simple")
 # COMMAND ----------
 
 # DBTITLE 1,Deploy the chain in Unity Catalog
+from mlflow.models.resources import DatabricksVectorSearchIndex, DatabricksServingEndpoint
 # Log the model to MLflow
 with mlflow.start_run(run_name="basic_rag_bot"):
   logged_chain_info = mlflow.langchain.log_model(
@@ -336,7 +332,12 @@ with mlflow.start_run(run_name="basic_rag_bot"):
           model_config=chain_config, # Chain configuration 
           artifact_path="chain", # Required by MLflow, the chain's code/config are saved in this directory
           input_example=input_example,
-          example_no_conversion=True,  # Required by MLflow to use the input_example as the chain's schema
+          example_no_conversion=True,  # Required by MLflow to use the input_example as the chain's schema,
+          # Specify resources for automatic authentication passthrough
+          resources=[
+            DatabricksVectorSearchIndex(index_name=model_config.get("vector_search_index")),
+            DatabricksServingEndpoint(endpoint_name=model_config.get("llm_model_serving_endpoint_name"))
+          ]
       )
 
 MODEL_NAME = "basic_rag_demo"
@@ -448,7 +449,7 @@ with mlflow.start_run(run_id=logged_chain_info.run_id):
 # MAGIC
 # MAGIC This example was a simple demo. In the next set of notebooks, we'll go into more details and review how to prepare and split your documents, while working with more production-grade chain.
 # MAGIC
-# MAGIC We will also see how to deploy your [first Lakehouse Application](../02-simple-app/03-Deploy-Frontend-Lakehouse-App) to deploy the Assistant to your end-users!
+# MAGIC We will also see how to deploy your [first Lakehouse Application]($../02-simple-app/03-Deploy-Frontend-Lakehouse-App) to deploy the Assistant to your end-users!
 # MAGIC
-# MAGIC Open the [../02-simple-app/01-Data-Preparation-and-Index](../02-simple-app/01-Data-Preparation-and-Index) Notebook!
+# MAGIC Open the [../02-simple-app/01-Data-Preparation-and-Index]($../02-simple-app/01-Data-Preparation-and-Index) Notebook!
 # MAGIC

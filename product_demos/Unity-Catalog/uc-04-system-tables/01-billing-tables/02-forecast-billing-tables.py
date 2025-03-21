@@ -59,6 +59,12 @@
 # COMMAND ----------
 
 # MAGIC %sql
+# MAGIC -- NOTE: make sure you run this notebook using a SQL Warehouse or Serverless endpoint (not a classic cluster).
+# MAGIC SELECT assert_true(current_version().dbsql_version is not null, 'YOU MUST USE A SQL WAREHOUSE TO RUN THE NEXT CELLS HAVING THE AI_FORECAST FUNCTION, not a classic cluster');
+
+# COMMAND ----------
+
+# MAGIC %sql
 # MAGIC select * from system.billing.usage u
 # MAGIC   inner join system.billing.list_prices lp on u.cloud = lp.cloud and
 # MAGIC     u.sku_name = lp.sku_name and
@@ -150,7 +156,7 @@
 # MAGIC FROM combined_data
 # MAGIC );
 # MAGIC
-# MAGIC SELECT * FROM data_to_predict ORDER BY sku, workspace_id, ds;
+# MAGIC SELECT * FROM data_to_predict ORDER BY sku, workspace_id, ds limit 1000 ;
 
 # COMMAND ----------
 
@@ -231,12 +237,12 @@
 # MAGIC     from forecast_data
 # MAGIC     ORDER BY sku, workspace_id, ds;
 # MAGIC
-# MAGIC SELECT * FROM main.dbdemos_billing_forecast.detailed_billing_forecast;
+# MAGIC SELECT * FROM main.dbdemos_billing_forecast.detailed_billing_forecast order by date desc limit 1000;
 
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from main.dbdemos_billing_forecast.billing_forecast
+# MAGIC select * from main.dbdemos_billing_forecast.billing_forecast order by ds desc limit 100
 
 # COMMAND ----------
 
@@ -463,7 +469,10 @@ fig.add_trace(go.Scatter(x=df['date'], y=df['cost_at_list_price_lower'], name='f
 
 # DBTITLE 1,Detailed view for each SKU
 import plotly.express as px
-df = spark.table('detailed_billing_forecast_manual').where("workspace_id='ALL'").groupBy('sku', 'date').agg(sum('list_cost').alias('list_cost')).orderBy('date').toPandas()
+from pyspark.sql.functions import date_sub
+
+one_year_ago = date_sub(current_date(), 365)
+df = spark.table('detailed_billing_forecast_manual').where("workspace_id='ALL'").where(col('date') >= one_year_ago).groupBy('sku', 'date').agg(sum('list_cost').alias('list_cost')).orderBy('date').toPandas()
 px.line(df, x="date", y="list_cost", color='sku')
 
 # COMMAND ----------

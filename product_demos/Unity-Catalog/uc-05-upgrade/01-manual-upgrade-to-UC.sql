@@ -26,7 +26,13 @@
 -- MAGIC New tables created with Unity Catalog will available at the account level, meaning that they're cross-workspace.
 -- MAGIC
 -- MAGIC <!-- Collect usage data (view). Remove it to disable collection. View README for more details.  -->
--- MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-engineering&notebook=00-Upgrade-database-to-UC&demo_name=uc-05-upgrade&event=VIEW">
+-- MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=governance&notebook=00-Upgrade-database-to-UC&demo_name=uc-05-upgrade&event=VIEW">
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ## Note on UCX
+-- MAGIC We strongly suggest you start your journey with UCX. UCX provides an automated approach to your UC upgrade! Open [00-automated-upgrade-with-UCX]($./00-automated-upgrade-with-UCX) for more details!
 
 -- COMMAND ----------
 

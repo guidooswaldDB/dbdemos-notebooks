@@ -3,7 +3,7 @@ databricks_resources:
   vector_search_endpoint_name: dbdemos_vs_endpoint
 input_example:
   messages:
-  - content: Sample user question
+  - content: What is Apache Spark?
     role: user
 llm_config:
   llm_parameters:
