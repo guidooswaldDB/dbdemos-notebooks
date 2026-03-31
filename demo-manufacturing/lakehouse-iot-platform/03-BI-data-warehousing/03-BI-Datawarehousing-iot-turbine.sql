@@ -5,7 +5,7 @@
 -- MAGIC
 -- MAGIC Traditional Data Warehouses can’t keep up with the variety of data and use cases. Business agility requires reliable, real-time data, with insight from ML models.
 -- MAGIC
--- MAGIC Working with the lakehouse unlock traditional BI analysis but also real time applications having a direct connection to your entire data, while remaining fully secured.
+-- MAGIC Working with the lakehouse unlocks traditional BI analysis but also real time applications having a direct connection to your entire data, while remaining fully secured.
 -- MAGIC
 -- MAGIC <br>
 -- MAGIC
@@ -13,7 +13,7 @@
 -- MAGIC
 -- MAGIC <div style="float: left; margin-top: 240px; font-size: 23px">
 -- MAGIC   Instant, elastic compute<br>
--- MAGIC   Lower TCO with Serveless<br>
+-- MAGIC   Lower TCO with Serverless<br>
 -- MAGIC   Zero management<br><br>
 -- MAGIC
 -- MAGIC   Governance layer - row level<br><br>
@@ -32,9 +32,9 @@
 -- MAGIC
 -- MAGIC <img style="float: right; margin-top: 10px" width="500px" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/refs/heads/main/images/manufacturing/lakehouse-iot-turbine/team_flow_alice.png" />
 -- MAGIC
--- MAGIC Our datasets are now properly ingested, secured, with a high quality and easily discoverable within our organization.
+-- MAGIC Our datasets are now properly ingested, secured, with high quality and easily discoverable within our organization.
 -- MAGIC
--- MAGIC Let's explore how Databricks SQL support your Data Analyst team with interactive BI and start analyzing our sensor informations.
+-- MAGIC Let's explore how Databricks SQL supports your data analyst team with interactive BI and start analyzing our sensor information.
 -- MAGIC
 -- MAGIC To start with Databricks SQL, open the SQL view on the top left menu.
 -- MAGIC
@@ -64,7 +64,7 @@
 -- MAGIC
 -- MAGIC ### Creating a SQL Warehouse
 -- MAGIC
--- MAGIC SQL Wharehouse are managed by databricks. [Creating a warehouse](/sql/warehouses) is a 1-click step: 
+-- MAGIC SQL Warehouses are managed by Databricks. [Creating a warehouse](/sql/warehouses) is a 1-click step: 
 
 -- COMMAND ----------
 
@@ -78,9 +78,9 @@
 -- MAGIC
 -- MAGIC By leveraging auto-completion and the schema browser, we can start running adhoc queries on top of our data.
 -- MAGIC
--- MAGIC While this is ideal for Data Analyst to start analysing our customer Churn, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
+-- MAGIC While this is ideal for Data Analyst to start analyzing our turbine data, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
 -- MAGIC
--- MAGIC Open the [Queries menu](/sql/queries) to start writting your first analysis.
+-- MAGIC Open the [Queries menu](/sql/queries) to start writing your first analysis.
 
 -- COMMAND ----------
 
@@ -121,13 +121,13 @@
 -- MAGIC
 -- MAGIC Comprehensive data modeling. Save your data based on your requirements: Data vault, Star schema, Inmon...
 -- MAGIC
--- MAGIC Databricks let you create your PK/FK, identity columns (auto-increment): `dbdemos.install('identity-pk-fk')`
+-- MAGIC Databricks lets you create your PK/FK, identity columns (auto-increment): `dbdemos.install('identity-pk-fk')`
 -- MAGIC
 -- MAGIC ### Data ingestion made easy with DBSQL & DBT
 -- MAGIC
 -- MAGIC Turnkey capabilities allow analysts and analytic engineers to easily ingest data from anything like cloud storage to enterprise applications such as Salesforce, Google Analytics, or Marketo using Fivetran. It’s just one click away. 
 -- MAGIC
--- MAGIC Then, simply manage dependencies and transform data in-place with built-in ETL capabilities on the Data Intelligence Platform (Delta Live Table), or using your favorite tools like dbt on Databricks SQL for best-in-class performance.
+-- MAGIC Then, simply manage dependencies and transform data in-place with built-in ETL capabilities on the Data Intelligence Platform (Spark Declarative Pipelines), or using your favorite tools like dbt on Databricks SQL for best-in-class performance.
 -- MAGIC
 -- MAGIC ### Query federation
 -- MAGIC
@@ -135,16 +135,16 @@
 -- MAGIC
 -- MAGIC ### Materialized view
 -- MAGIC
--- MAGIC Avoid expensive queries and materialize your tables. The engine will recompute only what's required when your data get updated. 
+-- MAGIC Avoid expensive queries and materialize your tables. The engine will recompute only what's required when your data get updated. The best way to do so is using Spark Declarative Pipelines as shown here: <a dbdemos-pipeline-id="sdp-sql" href="#joblist/pipelines/c8083360-9492-446d-9293-e648527c85eb" target="_blank">Spark Declarative Pipelines pipeline</a> or the [SQL notebook]($../01-Data-ingestion/01.1-SDP-SQL/01.1-SDP-Wind-Turbine-SQL)
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC
--- MAGIC # Taking our analysis one step further: Predicting Churn
+-- MAGIC # Taking our analysis one step further: Predicting Turbine Failures
 -- MAGIC
--- MAGIC Being able to run analysis on our past data already gives us a lot of insight. We can better understand which customers are churning evaluate the churn impact.
+-- MAGIC Being able to run analysis on our past data already gives us a lot of insight. We can better understand which turbines resulting in failures and needed maintenance.
 -- MAGIC
--- MAGIC However, knowing that we have churn isn't enough. We now need to take it to the next level and build a predictive model to determine our customers at risk of churn to be able to increase our revenue.
+-- MAGIC However, knowing that we had failures is not enough. We now need to take it to the next level and build a predictive model to determine our turbines at risk of failures to improve our operation and downtime of turbines.
 -- MAGIC
 -- MAGIC Let's see how this can be done with [Databricks Machine Learning notebook]($../04-Data-Science-ML/04.1-automl-iot-turbine-predictive-maintenance) | go [Go back to the introduction]($../00-IOT-wind-turbine-introduction-DI-platform)

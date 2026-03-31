@@ -6,6 +6,10 @@
 # MAGIC RAG and Instruction fine-tuning work together! If you have a relevant RAG use-case, you can start with RAG leveraging a foundational model, and then specialize your model if your corpus is specific to your business (ex: not part of the foundation model training) or need specific behavior (ex: answer to a specific task such as entity extraction)
 # MAGIC
 # MAGIC Start with RAG on a Foundation Model, evaluate how your model is working and where it can be improved, and build a Fine Tuned dataset accordingly!
+# MAGIC
+# MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
+# MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-science&org_id=1444828305810485&notebook=02.1-llm-rag-fine-tuning&demo_name=llm-fine-tuning&event=VIEW">
+# MAGIC
 
 # COMMAND ----------
 
@@ -149,7 +153,7 @@ display(spark.table('chat_completion_training_dataset'))
 # MAGIC
 # MAGIC #### 1.1) Instruction Fine Tune our Baseline Model
 # MAGIC
-# MAGIC In this demo, we'll be using the API on the table we just created to programatically fine tune our LLM.
+# MAGIC In this demo, we'll be using the API on the table we just created to programmatically fine tune our LLM.
 # MAGIC
 # MAGIC However, you can also create a new Fine Tuning experiment from the UI!
 
@@ -275,7 +279,7 @@ else:
 # MAGIC
 # MAGIC That's it! We're now ready to serve our Fine Tuned model and start asking questions!
 # MAGIC
-# MAGIC The reponses will now be improved and specialized from the Databricks documentation and our RAG chatbot formatted output!
+# MAGIC The responses will now be improved and specialized from the Databricks documentation and our RAG chatbot formatted output!
 
 # COMMAND ----------
 

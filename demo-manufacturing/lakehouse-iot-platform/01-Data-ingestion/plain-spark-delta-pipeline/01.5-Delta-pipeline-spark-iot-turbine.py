@@ -4,15 +4,15 @@
 # MAGIC
 # MAGIC <img style="float: right" width="300px" src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-2.png" />
 # MAGIC
-# MAGIC In this notebook, we'll show you an alternative to Delta Live Table: building an ingestion pipeline with the Spark API.
+# MAGIC In this notebook, we'll show you an alternative to Spark Declarative Pipelines: building an ingestion pipeline with the Spark API.
 # MAGIC
-# MAGIC As you'll see, this implementation is lower level than the Delta Live Table pipeline, and you'll have control over all the implementation details (handling checkpoints, data quality etc).
+# MAGIC As you'll see, this implementation is lower level than the Spark Declarative Pipelines pipeline, and you'll have control over all the implementation details (handling checkpoints, data quality etc).
 # MAGIC
 # MAGIC Lower level also means more power. Using Spark API, you'll have unlimited capabilities to ingest data in Batch or Streaming.
 # MAGIC
-# MAGIC If you're unsure what to use, start with Delta Live Table!
+# MAGIC If you're unsure what to use, start with Spark Declarative Pipelines!
 # MAGIC
-# MAGIC *Remember that Databricks workflow can be used to orchestrate a mix of Delta Live Table pipeline with standard Spark pipeline.*
+# MAGIC *Remember that Databricks workflow can be used to orchestrate a mix of Spark Declarative Pipelines pipeline with standard Spark pipeline.*
 # MAGIC
 # MAGIC ### Dataset:
 # MAGIC
@@ -31,7 +31,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install mlflow==2.20.2
+# MAGIC %pip install mlflow==2.22.0
 
 # COMMAND ----------
 
@@ -39,30 +39,10 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,Load the version from our mlflow run
-from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
-import os
-import mlflow
-# Use the Unity Catalog model registry
-mlflow.set_registry_uri("databricks-uc")
-# download model requirement from remote registry
-requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod").download_artifacts(artifact_path="requirements.txt") 
-
-# COMMAND ----------
-
-# MAGIC %pip install -r $requirements_path
-# MAGIC dbutils.library.restartPython()
-
-# COMMAND ----------
-
-# MAGIC %run ../../_resources/00-setup $reset_all_data=false
-
-# COMMAND ----------
-
 # MAGIC %md-sandbox
 # MAGIC ## Building a Spark Data pipeline with Delta Lake
 # MAGIC
-# MAGIC In this example, we'll implement a end 2 end pipeline consuming our IOT sources. We'll use the medaillon architecture but could build a star schema, data vault or any other modelisation.
+# MAGIC In this example, we'll implement an end-to-end pipeline consuming our IOT sources. We'll use the medallion architecture but could build a star schema, data vault or any other model.
 # MAGIC
 # MAGIC
 # MAGIC
@@ -72,7 +52,7 @@ requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_tu
 # MAGIC  * Running DELETE/UPDATE/MERGE over files
 # MAGIC  * Governance & schema evolution
 # MAGIC  * Performance ingesting millions of small files on cloud buckets
-# MAGIC  * Processing & analysing unstructured data (image, video...)
+# MAGIC  * Processing & analyzing unstructured data (image, video...)
 # MAGIC  * Switching between batch or streaming depending of your requirement...
 # MAGIC
 # MAGIC ## Solving these challenges with Delta Lake
@@ -176,9 +156,9 @@ def ingest_folder(folder, data_format, table):
                     .trigger(availableNow= True) #Remove for real time streaming
                     .table("spark_"+table)) #Table will be created if we haven't specified the schema first
   
-ingest_folder(f'{volume_folder}/historical_turbine_status', 'json', 'historical_turbine_status')
-ingest_folder(f'{volume_folder}/turbine', 'json', 'turbine')
-ingest_folder(f'{volume_folder}/incoming_data', 'parquet', 'sensor_bronze').awaitTermination()
+ingest_folder(f'{volume_folder}/historical_turbine_status', 'json', 'spark_historical_turbine_status')
+ingest_folder(f'{volume_folder}/turbine', 'json', 'spark_turbine')
+ingest_folder(f'{volume_folder}/incoming_data', 'parquet', 'spark_sensor_bronze').awaitTermination()
 
 # COMMAND ----------
 
@@ -211,7 +191,7 @@ df.plot(x="timestamp", y=["sensor_F", "sensor_E"], kind="line")
 # MAGIC
 # MAGIC We can chain these incremental transformation between tables, consuming only new data.
 # MAGIC
-# MAGIC This can be triggered in near realtime, or in batch fashion, for example as a job running every night to consume daily data.
+# MAGIC This can be triggered in near real-time, or in batch fashion, for example as a job running every night to consume daily data.
 
 # COMMAND ----------
 
@@ -241,7 +221,7 @@ display(spark.table("spark_sensor_hourly"))
 # MAGIC
 # MAGIC We can chain these incremental transformation between tables, consuming only new data.
 # MAGIC
-# MAGIC This can be triggered in near realtime, or in batch fashion, for example as a job running every night to consume daily data.
+# MAGIC This can be triggered in near real-time, or in batch fashion, for example as a job running every night to consume daily data.
 
 # COMMAND ----------
 
@@ -259,24 +239,24 @@ display(spark.table("spark_turbine_training_dataset"))
 
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 4/ Call the ML model and get realtime turbine metrics
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 4/ Call the ML model and get real-time turbine metrics
 # MAGIC
 # MAGIC <img width="700px" style="float:right" src="https://github.com/databricks-demos/dbdemos-resources/raw/main/images/manufacturing/lakehouse-iot-turbine/lakehouse-manuf-iot-turbine-spark-4.png"/>
 # MAGIC
 # MAGIC We can chain these incremental transformation between tables, consuming only new data.
 # MAGIC
-# MAGIC This can be triggered in near realtime, or in batch fashion, for example as a job running every night to consume daily data.
+# MAGIC This can be triggered in near real-time, or in batch fashion, for example as a job running every night to consume daily data.
 
 # COMMAND ----------
 
-# DBTITLE 1,Load the ML model
-#Note: ideally we should download and install the model libraries with the model requirements.txt and PIP. See 04.3-running-inference for an example
 import mlflow
 mlflow.set_registry_uri('databricks-uc')
-#                                                                                                                       Stage/version  
-#                                                                                                       Model name         |        
-#                                                                                                           |              |        
-predict_maintenance = mlflow.pyfunc.spark_udf(spark, f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod", "string") #, env_manager='virtualenv'
+#                                                                                                    Stage/version  
+#                                                                                       Model name         |        
+#                                                                                           |              |        
+predict_maintenance = mlflow.pyfunc.spark_udf(spark, f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod", "string", env_manager='virtualenv')
+#We can use the function in SQL
+spark.udf.register("predict_maintenance", predict_maintenance)
 columns = predict_maintenance.metadata.get_input_schema().input_names()
 
 # COMMAND ----------
@@ -350,7 +330,7 @@ spark.sql(f"DELETE FROM spark_sensor_bronze where turbine_id='{first_turbine}'")
 # MAGIC * Difficult pipeline operations (observability, error recovery)
 # MAGIC
 # MAGIC
-# MAGIC #### To solve these challenges, Databricks introduced **Delta Live Table**
+# MAGIC #### To solve these challenges, Databricks introduced **Spark Declarative Pipelines**
 # MAGIC A simple way to build and manage data pipelines for fresh, high quality data!
 
 # COMMAND ----------

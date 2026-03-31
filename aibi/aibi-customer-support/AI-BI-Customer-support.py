@@ -65,12 +65,12 @@
 # MAGIC Databricks makes this super simple with LakeFlow Connect, a **point-and-click data ingestion solution** supporting:
 # MAGIC
 # MAGIC - Databases -- including SQL Servers and more.
-# MAGIC - Entreprise application such as Salesforce, Workday, Google Analytics or ServiceNow.
+# MAGIC - Enterprise applications such as Salesforce, Workday, Google Analytics, or ServiceNow.
 # MAGIC
 # MAGIC If you want to know more about LakeFlow Connect and how to incrementally synchronize your external table to Databricks, you can open the [Lakeflow Connect Product Tour](https://www.databricks.com/resources/demos/tours/platform/discover-databricks-lakeflow-connect-demo).
 # MAGIC
 # MAGIC
-# MAGIC In this demo, we pre-loaded the data for you! For more details on how to simplify data transformation, [open the Delta Live Table Product Tour](https://www.databricks.com/resources/demos/tours/data-engineering/delta-live-tables).
+# MAGIC In this demo, we pre-loaded the data for you! For more details on how to simplify data transformation, [open the Spark Declarative Pipelines Product Tour](https://www.databricks.com/resources/demos/tours/data-engineering/delta-live-tables).
 # MAGIC
 
 # COMMAND ----------
@@ -81,12 +81,12 @@
 # MAGIC
 # MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/refs/heads/main/images/aibi/dbx_aibi_uc.png" style="float: right; margin: 10px" width="500px">
 # MAGIC
-# MAGIC Once your data is ingested and ready-to-go, **Databricks Unity Catalog** provides all the key features to support your business' data governane requirements, _including but not limited to_:
+# MAGIC Once your data is ingested and ready to go, **Databricks Unity Catalog** provides all the key features to support your business's data governance requirements, _including but not limited to_:
 # MAGIC
 # MAGIC - **Fine Grained Access control on your data**: Control who can access which row or column based on your own organization
 # MAGIC - **Full lineage, from data ingestion to ML models**: Analyze all downstream impact for any legal / privacy requirements
 # MAGIC - **Audit and traceability**: Analyze who did what, when
-# MAGIC - **Support for all data assets**: Including files, table, dashboards, ML/AI models, jobs, and more! _Simplify governance, support all your teams in one place._
+# MAGIC - **Support for all data assets**: Including files, tables, dashboards, ML/AI models, jobs, and more! _Simplify governance, support all your teams in one place._
 # MAGIC
 # MAGIC Explore the data and table ingested in [Unity Catalog](/explore/data) and make sure that it looks appropriate for your organization's needs.
 # MAGIC
@@ -101,11 +101,11 @@
 # MAGIC
 # MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/refs/heads/main/images/aibi/dbx_aibi_dashboard_product.gif" style="float: right; margin: 10px" width="500px">
 # MAGIC
-# MAGIC Your Marketing Campaign data is now available for your Data Analyst to explore and track their main KPIs.
+# MAGIC Your Customer Support data is now available for your Data Analyst to explore and track their main KPIs.
 # MAGIC
 # MAGIC AI/BI Dashboards make it easy to create and iterate on visualizations with natural language through AI-assisted authoring. 
 # MAGIC
-# MAGIC Dashboards offers advanced data visualization capabilities including sleek charts, interactions such as cross-filtering, periodic snapshots via email, embedding and _much more_. 
+# MAGIC Dashboards offer advanced data visualization capabilities including sleek charts, interactions such as cross-filtering, periodic snapshots via email, embedding and _much more_. 
 # MAGIC
 # MAGIC And they live side-by-side with your data, delivering instant load and rapid interactive analysis — no matter the data or user scale.
 # MAGIC

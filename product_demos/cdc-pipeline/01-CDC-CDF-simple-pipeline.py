@@ -10,13 +10,13 @@
 # MAGIC
 # MAGIC In addition, Delta table can support CDC to capture internal changes and propagate the changes downstream.
 # MAGIC
-# MAGIC Note that this is a fairly advaned demo. Before going into this content, we recommend you get familiar with Delta Lake `dbdemos.install('delta-lake')`.
+# MAGIC Note that this is a fairly advanced demo. Before going into this content, we recommend you get familiar with Delta Lake `dbdemos.install('delta-lake')`.
 # MAGIC
-# MAGIC ## Simplifying CDC with Delta Live Table
+# MAGIC ## Simplifying CDC with Spark Declarative Pipelines
 # MAGIC
 # MAGIC As you'll see, implementing a CDC pipeline from scratch is slightly advanced. 
 # MAGIC
-# MAGIC To simplify these operation & implement a full CDC flow with SQL expression, we strongly advise to use Delta Live Table with `APPLY CHANGES`: `dbdemos.install('delta-live-table')` (including native SCDT2 support)
+# MAGIC To simplify these operations & implement a full CDC flow with SQL expressions, we strongly advise to use Spark Declarative Pipelines with `APPLY CHANGES`: `dbdemos.install('pipeline-bike')` (including native SCD T2 support)
 # MAGIC
 # MAGIC As you'll see, `APPLY CHANGES` handles the MERGE INTO + DEDUPLICATION complexity for you. 
 # MAGIC
@@ -68,7 +68,7 @@ display(cdc_raw_data.dropDuplicates(['operation']))
 
 # COMMAND ----------
 
-# DBTITLE 1,We need to keep the cdc information, however csv isn't a efficient storage. Let's put that in a Delta table instead:
+# DBTITLE 1,We need to keep the cdc information, however CSV isn't an efficient storage. Let's put that in a Delta table instead:
 bronzeDF = (spark.readStream
                 .format("cloudFiles")
                 .option("cloudFiles.format", "csv")
@@ -101,7 +101,7 @@ time.sleep(20)
 # MAGIC
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/raw/main/images/product/Delta-Lake-CDC-CDF/cdc-flow-2.png" alt='Make all your data ready for BI and ML' style='float: right' width='600'/>
 # MAGIC
-# MAGIC The silver `retail_client_silver` table will contains the most up to date view. It'll be a replicat of the original MYSQL table.
+# MAGIC The silver `retail_client_silver` table will contain the most up to date view. It'll be a replica of the original MYSQL table.
 # MAGIC
 # MAGIC Because we'll propagate the `MERGE` operations downstream to the `GOLD` layer, we need to enable Delta Lake CDF: `delta.enableChangeDataFeed = true`
 
@@ -223,7 +223,7 @@ time.sleep(20)
 # DBTITLE 1,Getting the last modifications with the Python API
 from delta.tables import *
 
-#Let's get the last table version to only see the last update mofications
+#Let's get the last table version to only see the last update modifications
 last_version = str(DeltaTable.forName(spark, "retail_client_silver").history(1).head()["version"])
 print(f"our Delta table last version is {last_version}, let's select the last changes to see our DELETE and UPDATE operations (last 2 versions):")
 
@@ -300,7 +300,7 @@ time.sleep(20)
 # MAGIC ### Support for data sharing and Datamesh organization
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/raw/main/images/product/Delta-Lake-CDC-CDF/delta-cdf-datamesh.png" style="float:right; margin-right: 50px" width="300px" />
 # MAGIC
-# MAGIC As we've seen during this demo, you can track all the changes (INSERT/UPDATE/DELETE) from any Detlta table using the CDC option.
+# MAGIC As we've seen during this demo, you can track all the changes (INSERT/UPDATE/DELETE) from any Delta table using the CDC option.
 # MAGIC
 # MAGIC It's then easy to subscribe the table modifications as an incremental process.
 # MAGIC

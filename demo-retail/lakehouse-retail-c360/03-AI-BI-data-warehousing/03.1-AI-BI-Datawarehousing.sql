@@ -3,18 +3,20 @@
 -- MAGIC
 -- MAGIC # AI / BI On Databricks: Your AI-powered Lakehouse is the best Warehouse
 -- MAGIC
+-- MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/cross_demo_assets/Lakehouse_Demo_Team_architecture_3.png?raw=true" style="float: right" width="500px">
+-- MAGIC
 -- MAGIC Traditional Data Warehouses can’t keep up with the variety of data and use cases. Business agility requires reliable, real-time data, with insight from ML models.
 -- MAGIC
--- MAGIC Working with the lakehouse unlock traditional BI analysis but also real time applications having a direct connection to your entire data, while remaining fully secured.
+-- MAGIC Working with the lakehouse unlocks traditional BI analysis but also real time applications having a direct connection to your entire data, while remaining fully secured.
 -- MAGIC
--- MAGIC With AI assistant infused in all the BI stack, Databricks makes it easy to analysts and business users to extract insight from their data.  
--- MAGIC <br>
+-- MAGIC With AI assistant infused in all the BI stack, Databricks makes it easy for analysts and business users to extract insight from their data.  
+-- MAGIC <br style="clear: both">
 -- MAGIC
 -- MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/raw/main/images/dbsql.png" width="700px" style="float: left" />
 -- MAGIC
 -- MAGIC <div style="float: left; margin-top: 240px; font-size: 23px">
 -- MAGIC   Instant, elastic compute<br>
--- MAGIC   Lower TCO with Serveless<br>
+-- MAGIC   Lower TCO with Serverless<br>
 -- MAGIC   Zero management<br><br>
 -- MAGIC
 -- MAGIC   Governance layer - row level<br><br>
@@ -38,11 +40,11 @@
 -- MAGIC
 -- MAGIC **Serverless warehouse** provide instant, elastic SQL compute — decoupled from storage — and will automatically scale to provide unlimited concurrency without disruption, for high concurrency use cases.
 -- MAGIC
--- MAGIC Make no compromise. Your best Datawarehouse is a Lakehouse.
+-- MAGIC Make no compromise. Your best Data Warehouse is a Lakehouse.
 -- MAGIC
 -- MAGIC ### Creating a SQL Warehouse
 -- MAGIC
--- MAGIC SQL Wharehouse are managed by databricks. [Creating a warehouse](/sql/warehouses) is a 1-click step: 
+-- MAGIC SQL Warehouses are managed by Databricks. [Creating a warehouse](/sql/warehouses) is a 1-click step: 
 
 -- COMMAND ----------
 
@@ -56,9 +58,9 @@
 -- MAGIC
 -- MAGIC By leveraging auto-completion and the schema browser, we can start running adhoc queries on top of our data.
 -- MAGIC
--- MAGIC While this is ideal for Data Analyst to start analysing our customer Churn, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
+-- MAGIC While this is ideal for Data Analyst to start analyzing our customer Churn, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
 -- MAGIC
--- MAGIC Open the [Queries menu](/sql/queries) to start writting your first analysis.
+-- MAGIC Open the [Queries menu](/sql/queries) to start writing your first analysis.
 
 -- COMMAND ----------
 
@@ -84,7 +86,7 @@
 -- MAGIC
 -- MAGIC This will allow you to run direct queries on top of your table, with a unified security model and Unity Catalog (ex: through SSO). Now analysts can use their favorite tools to discover new business insights on the most complete and freshest data.
 -- MAGIC
--- MAGIC To start using your Warehouse with third party BI tool, click on "Partner Connect" on the bottom left and chose your provider.
+-- MAGIC To start using your Warehouse with third party BI tool, click on "Partner Connect" on the bottom left and choose your provider.
 
 -- COMMAND ----------
 
@@ -99,13 +101,13 @@
 -- MAGIC
 -- MAGIC Comprehensive data modeling. Save your data based on your requirements: Data vault, Star schema, Inmon...
 -- MAGIC
--- MAGIC Databricks let you create your PK/FK, identity columns (auto-increment): `dbdemos.install('identity-pk-fk')`
+-- MAGIC Databricks lets you create your PK/FK, identity columns (auto-increment): `dbdemos.install('identity-pk-fk')`
 -- MAGIC
 -- MAGIC ### Data ingestion made easy with DBSQL & DBT
 -- MAGIC
 -- MAGIC Turnkey capabilities allow analysts and analytic engineers to easily ingest data from anything like cloud storage to enterprise applications such as Salesforce, Google Analytics, or Marketo using Fivetran. It’s just one click away. 
 -- MAGIC
--- MAGIC Then, simply manage dependencies and transform data in-place with built-in ETL capabilities on the Lakehouse (Delta Live Table), or using your favorite tools like dbt on Databricks SQL for best-in-class performance.
+-- MAGIC Then, simply manage dependencies and transform data in-place with built-in ETL capabilities on the Lakehouse (Spark Declarative Pipelines), or using your favorite tools like dbt on Databricks SQL for best-in-class performance.
 -- MAGIC
 -- MAGIC ### Query federation
 -- MAGIC

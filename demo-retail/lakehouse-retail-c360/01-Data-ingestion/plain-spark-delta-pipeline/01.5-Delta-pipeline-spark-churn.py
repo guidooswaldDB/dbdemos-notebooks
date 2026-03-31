@@ -4,20 +4,20 @@
 # MAGIC
 # MAGIC <img style="float: right" width="300px" src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-2.png" />
 # MAGIC
-# MAGIC In this notebook, we'll show you an alternative to Delta Live Table: building an ingestion pipeline with the Spark API.
+# MAGIC In this notebook, we'll show you an alternative to Spark Declarative Pipelines: building an ingestion pipeline with the Spark API.
 # MAGIC
-# MAGIC As you'll see, this implementation is lower level than the Delta Live Table pipeline, and you'll have control over all the implementation details (handling checkpoints, data quality etc).
+# MAGIC As you'll see, this implementation is lower level than the Spark Declarative Pipelines pipeline, and you'll have control over all the implementation details (handling checkpoints, data quality etc).
 # MAGIC
 # MAGIC Lower level also means more power. Using Spark API, you'll have unlimited capabilities to ingest data in Batch or Streaming.
 # MAGIC
-# MAGIC If you're unsure what to use, start with Delta Live Table!
+# MAGIC If you're unsure what to use, start with Spark Declarative Pipelines!
 # MAGIC
-# MAGIC *Remember that Databricks workflow can be used to orchestrate a mix of Delta Live Table pipeline with standard Spark pipeline.*
+# MAGIC *Remember that Databricks workflow can be used to orchestrate a mix of Spark Declarative Pipelines pipeline with standard Spark pipeline.*
 # MAGIC
 # MAGIC As reminder, we have multiple data sources coming from different system:
 # MAGIC
-# MAGIC - Customer profile data *(name, age, adress etc)*
-# MAGIC - Orders history *(what our customer bough over time)*
+# MAGIC - Customer profile data *(name, age, address etc)*
+# MAGIC - Orders history *(what our customer bought over time)*
 # MAGIC - Events from our application *(when was the last time customers used the application, typically this could be a stream from a Kafka queue)*
 # MAGIC
 # MAGIC
@@ -28,27 +28,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install mlflow==2.19.0
-
-# COMMAND ----------
-
-# MAGIC %run ../../_resources/00-setup $reset_all_data=false
-
-# COMMAND ----------
-
-from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
-import os
-import mlflow
-# Use the Unity Catalog model registry
-mlflow.set_registry_uri("databricks-uc")
-# download model requirement from remote registry
-requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_customer_churn@prod").download_artifacts(artifact_path="requirements.txt") 
-
-# COMMAND ----------
-
-# DBTITLE 1,Pip install requirements
-# MAGIC %pip install -r $requirements_path
-# MAGIC dbutils.library.restartPython()
+# MAGIC %pip install mlflow==2.22.0
 
 # COMMAND ----------
 
@@ -59,7 +39,7 @@ requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_cu
 # MAGIC %md-sandbox
 # MAGIC ## Building a Spark Data pipeline with Delta Lake
 # MAGIC
-# MAGIC In this example, we'll implement a end 2 end pipeline consuming our customers information. We'll use the medaillon architecture but could build star schema, data vault or any other modelisation.
+# MAGIC In this example, we'll implement an end-to-end pipeline consuming our customers information. We'll use the medallion architecture but could build star schema, data vault or any other modelization.
 # MAGIC
 # MAGIC
 # MAGIC
@@ -69,7 +49,7 @@ requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_cu
 # MAGIC  * Running DELETE/UPDATE/MERGE over files
 # MAGIC  * Governance & schema evolution
 # MAGIC  * Performance ingesting millions of small files on cloud buckets
-# MAGIC  * Processing & analysing unstructured data (image, video...)
+# MAGIC  * Processing & analyzing unstructured data (image, video...)
 # MAGIC  * Switching between batch or streaming depending of your requirement...
 # MAGIC
 # MAGIC ## Solving these challenges with Delta Lake
@@ -83,7 +63,7 @@ requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_cu
 # MAGIC * **ACID transactions** (Multiple writers can simultaneously modify a data set)
 # MAGIC * **Full DML support** (UPDATE/DELETE/MERGE)
 # MAGIC * **BATCH and STREAMING** support
-# MAGIC * **Data quality** (expectatiosn, Schema Enforcement, Inference and Evolution)
+# MAGIC * **Data quality** (expectations, Schema Enforcement, Inference and Evolution)
 # MAGIC * **TIME TRAVEL** (Look back on how data looked like in the past)
 # MAGIC * **Performance boost** with ZOrder, data skipping and Caching, solves small files issue 
 # MAGIC </div>
@@ -97,7 +77,7 @@ requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_cu
 # MAGIC
 # MAGIC This information will then be used to build our DBSQL dashboard to track customer behavior and churn.
 # MAGIC
-# MAGIC Let'simplement the following flow: 
+# MAGIC Let's implement the following flow: 
 # MAGIC  
 # MAGIC <div><img width="1100px" src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-de-delta.png"/></div>
 # MAGIC
@@ -195,13 +175,13 @@ ingest_folder(f'{volume_folder}/users', 'json',  'spark_churn_users_bronze').awa
 
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 2/ Silver data: anonimized table, date cleaned
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 2/ Silver data: anonymized table, date cleaned
 # MAGIC
 # MAGIC <img width="700px" style="float:right" src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-de-delta-2.png"/>
 # MAGIC
 # MAGIC We can chain these incremental transformation between tables, consuming only new data.
 # MAGIC
-# MAGIC This can be triggered in near realtime, or in batch fashion, for example as a job running every night to consume daily data.
+# MAGIC This can be triggered in near real-time, or in batch fashion, for example as a job running every night to consume daily data.
 
 # COMMAND ----------
 
@@ -252,7 +232,7 @@ ingest_folder(f'{volume_folder}/users', 'json',  'spark_churn_users_bronze').awa
 # MAGIC
 # MAGIC We're now ready to create the features required for our Churn prediction.
 # MAGIC
-# MAGIC We need to enrich our user dataset with extra information which our model will use to help predicting churn, sucj as:
+# MAGIC We need to enrich our user dataset with extra information which our model will use to help predict churn, such as:
 # MAGIC
 # MAGIC * last command date
 # MAGIC * number of item bought
@@ -287,11 +267,11 @@ display(spark.table("spark_churn_features"))
 # MAGIC
 # MAGIC <img width="700px" style="float:right" src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-de-delta-5.png"/>
 # MAGIC
-# MAGIC Our Data scientist team has build a churn prediction model using Auto ML and saved it into Databricks Model registry. 
+# MAGIC Our Data Scientist team has built a churn prediction model using Auto ML and saved it into Databricks Model registry. 
 # MAGIC
-# MAGIC One of the key value of the Lakehouse is that we can easily load this model and predict our churn right into our pipeline. 
+# MAGIC One of the key values of the Lakehouse is that we can easily load this model and predict our churn right into our pipeline. 
 # MAGIC
-# MAGIC Note that we don't have to worry about the model framework (sklearn or other), MLFlow abstract that for us.
+# MAGIC Note that we don't have to worry about the model framework (sklearn or other), MLFlow abstracts that for us.
 
 # COMMAND ----------
 
@@ -303,13 +283,13 @@ mlflow.set_registry_uri('databricks-uc')
 #                                                                                            Alias/version
 #                                                                 Model name (UC)                   |   
 #                                                                     |                             |   
-predict_churn_udf = mlflow.pyfunc.spark_udf(spark, f"models:/{catalog}.{db}.dbdemos_customer_churn@prod")
+predict_churn_udf = mlflow.pyfunc.spark_udf(spark, f"models:/{catalog}.{db}.dbdemos_customer_churn@prod", result_type="long", env_manager='virtualenv')
 
 # COMMAND ----------
 
 # DBTITLE 1,Call our model and predict churn in our pipeline
 columns = predict_churn_udf.metadata.get_input_schema().input_names()
-predictions = spark.table('spark_churn_features').withColumn('churn_prediction', predict_churn_udf(*columns))
+predictions = spark.table('spark_churn_features').limit(10).withColumn('churn_prediction', predict_churn_udf(*columns))
 display(predictions)
 
 # COMMAND ----------
@@ -369,7 +349,7 @@ display(predictions)
 # MAGIC * Difficult pipeline operations (observability, error recovery)
 # MAGIC
 # MAGIC
-# MAGIC #### To solve these challenges, Databricks introduced **Delta Live Table**
+# MAGIC #### To solve these challenges, Databricks introduced **Spark Declarative Pipelines**
 # MAGIC A simple way to build and manage data pipelines for fresh, high quality data!
 
 # COMMAND ----------

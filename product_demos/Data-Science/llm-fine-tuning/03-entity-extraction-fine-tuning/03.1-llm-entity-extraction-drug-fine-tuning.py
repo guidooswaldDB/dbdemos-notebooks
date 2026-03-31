@@ -1,11 +1,14 @@
 # Databricks notebook source
 # MAGIC %md # Foundation Model fine-tuning: Named Entity Recognition
 # MAGIC
-# MAGIC In this demo, we will focus on Fine Tuning our model for Instruction Fine Tuning, specializing llama 3.2 3B to extract drug name from text. This process is call NER (Named Entity Recognition)
+# MAGIC In this demo, we will focus on Fine Tuning our model for Instruction Fine Tuning, specializing llama 3.2 3B to extract drug names from text. This process is called NER (Named Entity Recognition)
 # MAGIC
 # MAGIC Fine tuning an open-source model on a medical Named Entity Recognition task will make the model output
 # MAGIC 1. More accurate, and
 # MAGIC 2. More efficient, reducing model serving expenses
+# MAGIC
+# MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
+# MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-science&org_id=1444828305810485&notebook=03.1-llm-entity-extraction-drug-fine-tuning&demo_name=llm-fine-tuning&event=VIEW">
 
 # COMMAND ----------
 
@@ -123,11 +126,11 @@ display(df_test_small[["sentence", "baseline_predictions", "baseline_predictions
 
 # MAGIC %md ## Evaluating our baseline model
 # MAGIC
-# MAGIC We can see that our model is extracting a good number of entities, but it also sometimes add some random text after/before the inferences.
+# MAGIC We can see that our model is extracting a good number of entities, but it also sometimes adds some random text after/before the inferences.
 # MAGIC
 # MAGIC ### Precision & recall for entity extraction
 # MAGIC
-# MAGIC We'll benchmark our model by computing its accuracy and recall. Let's compute these value for each sentence in our test dataset.
+# MAGIC We'll benchmark our model by computing its accuracy and recall. Let's compute these values for each sentence in our test dataset.
 
 # COMMAND ----------
 
@@ -159,7 +162,7 @@ df_test_small[['baseline_precision', 'baseline_recall']].describe()
 # MAGIC %md
 # MAGIC *_NOTE: Results will vary from run to run_
 # MAGIC
-# MAGIC In the sample, we see that the baseline LLM generally having a Recall of 0.9652 which means that it successfully identifies about 96.52% of all actual drug names present in the text. This metric is crucial in healthcare and related fields where missing a drug name can lead to incomplete or incorrect information processing. 
+# MAGIC In the sample, we see that the baseline LLM generally has a Recall of 0.9652 which means that it successfully identifies about 96.52% of all actual drug names present in the text. This metric is crucial in healthcare and related fields where missing a drug name can lead to incomplete or incorrect information processing. 
 # MAGIC
 # MAGIC Precision of 0.9174 on avg means that the baseline LLM model identifies a token or a sequence of tokens as a drug name, about 91.74% of those identifications are correct.
 
@@ -383,7 +386,7 @@ df_test_small[['baseline_predictions_len', 'fine_tuned_predictions_len']].descri
 # MAGIC
 # MAGIC We covered how Databricks makes it easy to evaluate our performance improvement between the baseline and fine tuned model. 
 # MAGIC
-# MAGIC Fine Tuning can be applied to a wild range of use-cases. Using the Chat API simplifies fine tuning as the system will codify the prompt for us out of the box, use it whenever you can!
+# MAGIC Fine Tuning can be applied to a wide range of use-cases. Using the Chat API simplifies fine tuning as the system will codify the prompt for us out of the box, use it whenever you can!
 
 # COMMAND ----------
 

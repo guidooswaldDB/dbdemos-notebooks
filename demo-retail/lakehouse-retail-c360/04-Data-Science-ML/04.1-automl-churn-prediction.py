@@ -7,7 +7,7 @@
 # MAGIC
 # MAGIC Being able to ingest and query our C360 database is a first step, but this isn't enough to thrive in a very competitive market.
 # MAGIC
-# MAGIC Customers now expect real time personalization and new form of comunication. Modern data company achieve this with AI.
+# MAGIC Customers now expect real time personalization and new forms of communication. Modern data companies achieve this with AI.
 # MAGIC
 # MAGIC <style>
 # MAGIC .right_box{
@@ -51,11 +51,11 @@
 # MAGIC <h3 style="padding: 10px 0px 0px 5px">Marc, as a Data Scientist, needs a data + ML platform accelerating all the ML & DS steps:</h3>
 # MAGIC
 # MAGIC <div style="font-size: 19px; margin-left: 73px; clear: left">
-# MAGIC <div class="badge_b"><div class="badge">1</div> Build Data Pipeline supporting real time (with DLT)</div>
+# MAGIC <div class="badge_b"><div class="badge">1</div> Build Data Pipeline supporting real time (with SDP)</div>
 # MAGIC <div class="badge_b"><div class="badge">2</div> Data Exploration</div>
 # MAGIC <div class="badge_b"><div class="badge">3</div> Feature creation</div>
 # MAGIC <div class="badge_b"><div class="badge">4</div> Build & train model</div>
-# MAGIC <div class="badge_b"><div class="badge">5</div> Deploy Model (Batch or serverless realtime)</div>
+# MAGIC <div class="badge_b"><div class="badge">5</div> Deploy Model (Batch or serverless real-time)</div>
 # MAGIC <div class="badge_b"><div class="badge">6</div> Monitoring</div>
 # MAGIC </div>
 # MAGIC
@@ -66,7 +66,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
+# MAGIC %md-sandbox
 # MAGIC
 # MAGIC # Churn Prediction - Single click deployment with AutoML
 # MAGIC
@@ -74,7 +74,7 @@
 # MAGIC
 # MAGIC Our first step as Data Scientist is to analyze and build the features we'll use to train our model.
 # MAGIC
-# MAGIC The users table enriched with churn data has been saved within our Delta Live Table pipeline. All we have to do is read this information, analyze it and start an Auto-ML run.
+# MAGIC The users table enriched with churn data has been saved within our Spark Declarative Pipelines pipeline. All we have to do is read this information, analyze it and start an Auto-ML run.
 # MAGIC
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/raw/main/images/retail/lakehouse-churn/lakehouse-retail-churn-ds-flow.png" width="1000px">
 # MAGIC
@@ -82,7 +82,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install databricks-sdk==0.36.0 mlflow==2.19.0 databricks-feature-store==0.17.0
+# MAGIC %pip install databricks-sdk==0.36.0 mlflow==2.22.0 databricks-feature-store==0.17.0 # keep mlflow at 2.22.0 for now to work with databricks-feature-store 
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -94,7 +94,7 @@
 # MAGIC %md
 # MAGIC ## Data exploration and analysis
 # MAGIC
-# MAGIC Let's review our dataset and start analyze the data we have to predict our churn
+# MAGIC Let's review our dataset and start analyzing the data we have to predict our churn
 
 # COMMAND ----------
 
@@ -119,7 +119,7 @@ g.map_upper(sns.regplot)
 # MAGIC
 # MAGIC Because our Data Scientist team is familiar with Pandas, we'll use `pandas on spark` to scale `pandas` code. The Pandas instructions will be converted in the spark engine under the hood and distributed at scale.
 # MAGIC
-# MAGIC Typicaly Data Science project would involve more advanced preparation and likely require extra data prep step, including more complex feature preparation. We'll keep it simple for this demo.
+# MAGIC Typically Data Science projects would involve more advanced preparation and likely require extra data prep steps, including more complex feature preparation. We'll keep it simple for this demo.
 # MAGIC
 # MAGIC *Note: Starting from `spark 3.2`, koalas is builtin and we can get an Pandas Dataframe using `pandas_api()`.*
 
@@ -144,9 +144,9 @@ dataset = dataset.dropna()
 # MAGIC
 # MAGIC Once our features are ready, we'll save them in Databricks Feature Store. Under the hood, features store are backed by a Delta Lake table.
 # MAGIC
-# MAGIC This will allow discoverability and reusability of our feature accross our organization, increasing team efficiency.
+# MAGIC This will allow discoverability and reusability of our feature across our organization, increasing team efficiency.
 # MAGIC
-# MAGIC Feature store will bring traceability and governance in our deployment, knowing which model is dependent of which set of features. It also simplify realtime serving.
+# MAGIC Feature store will bring traceability and governance in our deployment, knowing which model is dependent on which set of features. It also simplifies real-time serving.
 # MAGIC
 # MAGIC Make sure you're using the "Machine Learning" menu to have access to your feature store using the UI.
 
@@ -179,11 +179,11 @@ display(features)
 # MAGIC
 # MAGIC ## Accelerating Churn model creation using MLFlow and Databricks Auto-ML
 # MAGIC
-# MAGIC MLflow is an open source project allowing model tracking, packaging and deployment. Everytime your datascientist team work on a model, Databricks will track all the parameter and data used and will save it. This ensure ML traceability and reproductibility, making it easy to know which model was build using which parameters/data.
+# MAGIC MLflow is an open source project allowing model tracking, packaging and deployment. Every time your data scientist team works on a model, Databricks will track all the parameters and data used and will save it. This ensures ML traceability and reproducibility, making it easy to know which model was built using which parameters/data.
 # MAGIC
 # MAGIC ### A glass-box solution that empowers data teams without taking away control
 # MAGIC
-# MAGIC While Databricks simplify model deployment and governance (MLOps) with MLFlow, bootstraping new ML projects can still be long and inefficient. 
+# MAGIC While Databricks simplifies model deployment and governance (MLOps) with MLFlow, bootstrapping new ML projects can still be long and inefficient. 
 # MAGIC
 # MAGIC Instead of creating the same boilerplate for each new project, Databricks Auto-ML can automatically generate state of the art models for Classifications, regression, and forecast.
 # MAGIC
@@ -191,7 +191,7 @@ display(features)
 # MAGIC <img width="1000" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/auto-ml-full.png"/>
 # MAGIC
 # MAGIC
-# MAGIC Models can be directly deployed, or instead leverage generated notebooks to boostrap projects with best-practices, saving you weeks of efforts.
+# MAGIC Models can be directly deployed, or instead leverage generated notebooks to bootstrap projects with best-practices, saving you weeks of effort.
 # MAGIC
 # MAGIC <br style="clear: both">
 # MAGIC
@@ -227,7 +227,7 @@ try:
     #Make sure all users can access dbdemos shared experiment
     DBDemos.set_experiment_permission(f"{xp_path}/{xp_name}")
 except Exception as e:
-    if "cannot import name 'automl'" in str(e):
+    if "cannot import name 'automl'" in str(e) or 'method_whitelist' in str(e):
         # Note: cannot import name 'automl' from 'databricks' likely means you're using serverless. Dbdemos doesn't support autoML serverless API - this will be improved soon.
         # Adding a temporary workaround to make sure it works well for now - ignore this for classic run
         DBDemos.create_mockup_automl_run(f"{xp_path}/{xp_name}", fs.read_table(f'{catalog}.{db}.churn_user_features').toPandas())
@@ -244,23 +244,23 @@ except Exception as e:
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC ### The model generated by AutoML is ready to be used in our DLT pipeline to detect customers about to churn.
+# MAGIC ### The model generated by AutoML is ready to be used in our SDP pipeline to detect customers about to churn.
 # MAGIC
-# MAGIC Our Data Engineer can now easily retrive the model `dbdemos_customer_churn` from our Auto ML run and predict churn within our Delta Live Table Pipeline.<br>
-# MAGIC Re-open the DLT pipeline to see how this is done.
+# MAGIC Our Data Engineer can now easily retrieve the model `dbdemos_customer_churn` from our Auto ML run and predict churn within our Spark Declarative Pipelines Pipeline.<br>
+# MAGIC Re-open the SDP pipeline to see how this is done.
 # MAGIC
 # MAGIC #### Track churn impact over the next month and campaign impact
 # MAGIC
-# MAGIC This churn prediction can be re-used in our dashboard to analyse future churn, take actiond and measure churn reduction. 
+# MAGIC This churn prediction can be re-used in our dashboard to analyse future churn, take action and measure churn reduction. 
 # MAGIC
-# MAGIC The pipeline created with the Lakehouse will offer a strong ROI: it took us a few hours to setup this pipeline end 2 end and we have potential gain for $129,914 / month!
+# MAGIC The pipeline created with the Lakehouse will offer a strong ROI: it took us a few hours to set up this pipeline end-to-end and we have potential gain of $129,914 / month!
 # MAGIC
 # MAGIC <img width="800px" src="https://raw.githubusercontent.com/QuentinAmbard/databricks-demo/main/retail/resources/images/lakehouse-retail/lakehouse-retail-churn-dbsql-prediction-dashboard.png">
 # MAGIC
 # MAGIC <a href='/sql/dashboards/f25702b4-56d8-40a2-a69d-d2f0531a996f'>Open the Churn prediction DBSQL dashboard</a> | [Go back to the introduction]($../00-churn-introduction-lakehouse)
 # MAGIC
-# MAGIC #### More advanced model deployment (batch or serverless realtime)
+# MAGIC #### More advanced model deployment (batch or serverless real-time)
 # MAGIC
-# MAGIC We can also use the model `dbdemos_custom_churn` and run our predict in a standalone batch or realtime inferences! 
+# MAGIC We can also use the model `dbdemos_custom_churn` and run our predict in a standalone batch or real-time inferences! 
 # MAGIC
 # MAGIC Next step:  [Explore the generated Auto-ML notebook]($./04.2-automl-generated-notebook) and [Run inferences in production]($./04.3-running-inference)

@@ -1,11 +1,11 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC # Getting realtime patient risks
+# MAGIC # Getting real-time patient risks
 # MAGIC
 # MAGIC Let's leverage the model we trained to deploy real-time inferences behind a REST API.
 # MAGIC
-# MAGIC This will provide instant recommandations for any new patient, on demand, potentially also explaining the recommendation (see [next notebook]($./03.5-Explainability-patient-readmission) for Explainability) 
+# MAGIC This will provide instant recommendations for any new patient, on demand, potentially also explaining the recommendation (see [next notebook]($./03.5-Explainability-patient-readmission) for Explainability) 
 # MAGIC
 # MAGIC Now that our model has been created with Databricks AutoML, we can easily flag it as Production Ready and turn on Databricks Model Serving.
 # MAGIC
@@ -30,7 +30,7 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,Make sure we have the latset sdk (used in the helper)
+# DBTITLE 1,Make sure we have the latest SDK (used in the helper)
 # MAGIC %pip install databricks-sdk==0.39.0 mlflow==2.19.0
 # MAGIC dbutils.library.restartPython()
 
@@ -129,7 +129,7 @@ print(f"Patient readmission risk: {predictions}.")
 # MAGIC * Slowly routing requests to the new model
 # MAGIC * Supporting auto-scaling & potential bursts
 # MAGIC * Performing some A/B testing ensuring the new model is providing better outcomes
-# MAGIC * Monitorig our model outcome and technical metrics (CPU/load etc)
+# MAGIC * Monitoring our model outcome and technical metrics (CPU/load etc)
 # MAGIC
 # MAGIC Databricks makes this process super simple with Serverless Model Serving endpoint.
 # MAGIC
@@ -142,9 +142,9 @@ print(f"Patient readmission risk: {predictions}.")
 # MAGIC
 # MAGIC Because the Model Serving runs within our Lakehouse, Databricks will automatically save and track all our Model Endpoint results as a Delta Table.
 # MAGIC
-# MAGIC We can then easily plug a feedback loop to start analysing the revenue in $ each model is offering. 
+# MAGIC We can then easily plug a feedback loop to start analyzing the revenue in $ each model is offering. 
 # MAGIC
-# MAGIC All these metrics, including A/B testing validation (p-values etc) can then be pluged into a Model Monitoring Dashboard and alerts can be sent for errors, potentially triggering new model retraining or programatically updating the Endpoint routes to fallback to another model.
+# MAGIC All these metrics, including A/B testing validation (p-values etc) can then be plugged into a Model Monitoring Dashboard and alerts can be sent for errors, potentially triggering new model retraining or programmatically updating the Endpoint routes to fallback to another model.
 # MAGIC
 # MAGIC
 # MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/fraud-detection/model-serving-monitoring.png" width="1200px" />
@@ -162,8 +162,8 @@ print(f"Patient readmission risk: {predictions}.")
 # MAGIC
 # MAGIC In this demo, we've seen an end 2 end flow with the Lakehouse:
 # MAGIC
-# MAGIC - Data ingestion made simple with Delta Live Table
-# MAGIC - Leveraging Databricks notebooks and SQL warehouse to create, anaylize and share our dashboards 
+# MAGIC - Data ingestion made simple with Spark Declarative Pipelines
+# MAGIC - Leveraging Databricks notebooks and SQL warehouse to create, analyze, and share our dashboards 
 # MAGIC - Model Training with AutoML for citizen Data Scientist
 # MAGIC - Ability to tune our model for better results, improving our patient journey quality
 # MAGIC - Ultimately, the ability to deploy and make explainable ML predictions, made possible with the full Lakehouse capabilities.

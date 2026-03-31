@@ -6,7 +6,7 @@
 # MAGIC
 # MAGIC <img src="https://cms.databricks.com/sites/default/files/inline-images/image1_5.png" width="700px" style="float: right; margin-left: 50px"/>
 # MAGIC
-# MAGIC Companies want to leverage open format and stay away from vendor lockin. Migration is costly and difficult, so they want to make the right decision up front and only have to save data once. 
+# MAGIC Companies want to leverage open format and stay away from vendor lock-in. Migration is costly and difficult, so they want to make the right decision up front and only have to save data once. 
 # MAGIC
 # MAGIC They ultimately want the best performance at the cheapest price for all of their data workloads including ETL, BI, and AI, and the flexibility to consume that data anywhere.
 # MAGIC
@@ -46,8 +46,13 @@
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC ##  Create a UniForm-enabled Delta table
+
+# COMMAND ----------
+
 # MAGIC %sql
-# MAGIC CREATE TABLE IF NOT EXISTS user_uniform ( id BIGINT, firstname STRING, lastname STRING, email STRING)
+# MAGIC CREATE OR REPLACE TABLE user_uniform ( id BIGINT, firstname STRING, lastname STRING, email STRING)
 # MAGIC     TBLPROPERTIES ('delta.universalFormat.enabledFormats' = 'iceberg', 
 # MAGIC                    'delta.enableIcebergCompatV2' = 'true')
 
@@ -57,6 +62,24 @@
 # MAGIC INSERT INTO user_uniform SELECT id, firstname, lastname, email FROM user_delta;  
 # MAGIC
 # MAGIC SELECT * FROM user_uniform;
+
+# COMMAND ----------
+
+# DBTITLE 1,Check if relevant Uniform property is present in table
+spark.sql("""
+SHOW TBLPROPERTIES user_uniform
+""").filter("key LIKE 'delta.universalFormat%' OR key LIKE 'delta_uniform_%'").display()
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC update user_uniform set firstname = 'John_c' where id < 100
+
+# COMMAND ----------
+
+# DBTITLE 1,Run Describe extended to Fetch Metdata Location
+# MAGIC %sql
+# MAGIC describe extended user_uniform
 
 # COMMAND ----------
 
@@ -72,15 +95,22 @@
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SHOW TBLPROPERTIES user_uniform;
+# MAGIC %md
+# MAGIC ### Upgrade Existing Table to UniForm (Optional)
+# MAGIC
+# MAGIC
+
+# COMMAND ----------
+
+# If needed, upgrade legacy Delta tables using REORG
+spark.sql("""
+REORG TABLE user_uniform
+ APPLY (UPGRADE UNIFORM(ICEBERG_COMPAT_VERSION=2)) """)
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ### Access your Delta Lake table using Iceberg REST Catalog API
-# MAGIC
-# MAGIC Our Delta Lake table is now available by any system reading Iceberg tables, such as native Iceberg reader or external system like Big Query.
 # MAGIC
 # MAGIC If you're using an external storage, Databricks expose the table information through:
 
@@ -121,10 +151,27 @@ table_info['delta_uniform_iceberg']
 
 # COMMAND ----------
 
-# MAGIC %md 
-# MAGIC That's it! You can now access all your Delta Lake table as Iceberg table, while getting the power of Delta Lake and bazing fast queries with Liquid Clustering.
+# MAGIC %md
+# MAGIC ### Uniform Limitations
 # MAGIC
-# MAGIC Your lakehouse is now fully open, without any vender lock-in. 
+# MAGIC Note: Uniform works only with Unity Catalog and not HMS
+# MAGIC
+# MAGIC Go to Limitations : https://docs.databricks.com/aws/en/delta/uniform#limitations
+# MAGIC
+# MAGIC
+
+# COMMAND ----------
+
+# DBTITLE 1,DV can be disabled if needed:
+# MAGIC %sql
+# MAGIC -- ALTER table user_uniform_dv set TBLPROPERTIES ('delta.columnMapping.mode' = 'name', 'delta.universalFormat.enabledFormats' = 'iceberg', 'delta.enableIcebergCompatV2' = 'true')
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC That's it! You can now access all your Delta Lake table as Iceberg table, while getting the power of Delta Lake and blazing fast queries with Liquid Clustering.
+# MAGIC
+# MAGIC Your lakehouse is now fully open, without any vendor lock-in. 
 # MAGIC
 # MAGIC
 # MAGIC Next: Deep dive into Delta Lake Change Data Capture capability with [the 04-Delta-Lake-CDF notebook]($./04-Delta-Lake-CDF) or go back to [00-Delta-Lake-Introduction]($./00-Delta-Lake-Introduction).

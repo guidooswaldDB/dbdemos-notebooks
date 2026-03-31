@@ -33,7 +33,7 @@
 # MAGIC 5. Automatic Data Profiling (in the cell below), and
 # MAGIC 6. GUI-based dashboards (in the cell below) that can also be added to any Databricks SQL Dashboard.
 # MAGIC
-# MAGIC These features enable teams within FSI organizations to become extremely fast and efficient in building the best ML model at reduced time, thereby making the most out of market opportunities such as the raising interest rates.
+# MAGIC These features enable teams within FSI organizations to become extremely fast and efficient in building the best ML model at reduced time, thereby making the most out of market opportunities such as the rising interest rates.
 
 # COMMAND ----------
 
@@ -57,7 +57,7 @@
 # MAGIC
 # MAGIC <br/>
 # MAGIC
-# MAGIC This where we use our existing tables and transform the data to be ready for our ML models. These features will later be stored in Databricks Feature Store (see below) and used to train the aforementioned ML models.
+# MAGIC This is where we use our existing tables and transform the data to be ready for our ML models. These features will later be stored in Databricks Feature Store (see below) and used to train the aforementioned ML models.
 # MAGIC
 # MAGIC <br/>
 # MAGIC
@@ -71,7 +71,7 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,Our any of your usual python libraries for analysis
+# DBTITLE 1,Or use any of your usual Python libraries for analysis
 data = spark.table("customer_gold") \
               .where("tenure_months BETWEEN 10 AND 150") \
               .groupBy("tenure_months", "education").sum("income_monthly") \
@@ -85,7 +85,7 @@ px.bar(data, x="tenure_months", y="sum(income_monthly)", color="education", titl
 # MAGIC
 # MAGIC # Building our Features for Credit Default risks
 # MAGIC
-# MAGIC To build our model predicting credit default risks, we'll need a buch of features. To improve our governance and centralize our data for multiple ML project, we can save our ML features using a Feature Store.
+# MAGIC To build our model predicting credit default risks, we'll need a bunch of features. To improve our governance and centralize our data for multiple ML projects, we can save our ML features using a Feature Store.
 
 # COMMAND ----------
 
@@ -137,7 +137,7 @@ display(feature_df)
 # MAGIC
 # MAGIC Once our features are ready, we'll save them in Databricks Feature Store. 
 # MAGIC
-# MAGIC Under the hood, feature store are backed by a Delta Lake table. This will allow discoverability and reusability of our feature across our organization, increasing team efficiency.
+# MAGIC Under the hood, feature stores are backed by a Delta Lake table. This will allow discoverability and reusability of our features across our organization, increasing team efficiency.
 # MAGIC
 # MAGIC
 # MAGIC Databricks Feature Store brings advanced capabilities to accelerate and simplify your ML journey, such as point in time support and online-store, fetching your features within ms for real time Serving. 

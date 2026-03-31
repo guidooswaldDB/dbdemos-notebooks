@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # 1/ Process and analyse text with Built In Databricks SQL AI functions
+# MAGIC # 1/ Process and analyze text with Built-In Databricks SQL AI functions
 # MAGIC
 # MAGIC Databricks SQL provides [built-in GenAI capabilities](https://docs.databricks.com/en/large-language-models/ai-functions.html), letting you perform adhoc operation, leveraging state of the art LLM, optimized for these tasks.
 # MAGIC
@@ -18,7 +18,7 @@
 # MAGIC
 # MAGIC Databricks builtin AI functions are powerful and let you quickly achieve many tasks with text.
 # MAGIC
-# MAGIC However, you might sometime require more fine-grained control and select wich Foundation Model you want to call (Mistral, Llama, Dbrx, OpenAI or one of your own fine-tuning model), passing specific instruction. 
+# MAGIC However, you might sometime require more fine-grained control and select which Foundation Model you want to call (Mistral, Llama, Dbrx, OpenAI or one of your own fine-tuning model), passing specific instruction. 
 # MAGIC
 # MAGIC You might also need to query your own fine-tuned LLMs, providing a solution to leverage small models to perform extremely well on specialized tasks, at a lower cost.
 

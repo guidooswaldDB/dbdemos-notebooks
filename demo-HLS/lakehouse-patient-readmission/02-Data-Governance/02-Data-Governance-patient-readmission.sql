@@ -20,7 +20,7 @@
 -- MAGIC
 -- MAGIC Let's see how the Lakehouse can solve this challenge leveraging Unity Catalog.
 -- MAGIC
--- MAGIC Our Data has been saved as Delta Table by our Data Engineering team.  The next step is to secure this data while allowing cross team to access it. <br>
+-- MAGIC Our data has been saved as Delta Table by our Data Engineering team. The next step is to secure this data while allowing cross-team to access it. <br>
 -- MAGIC A typical setup would be the following:
 -- MAGIC
 -- MAGIC * Data Engineers / Jobs can read and update the main data/schemas (ETL part)
@@ -28,11 +28,11 @@
 -- MAGIC * Data Analyst have READ access to the Data Engineering and Feature Tables and can ingest/transform additional data in a separate schema.
 -- MAGIC * Data is masked/anonymized dynamically based on each user access level
 -- MAGIC
--- MAGIC This is made possible by Unity Catalog. When tables are saved in the Unity Catalog, they can be made accessible to the entire organization, cross-workpsaces and cross users.
+-- MAGIC This is made possible by Unity Catalog. When tables are saved in the Unity Catalog, they can be made accessible to the entire organization, cross-workspaces and cross users.
 -- MAGIC
--- MAGIC Unity Catalog is key for data governance, including creating data products or organazing teams around datamesh. It brings among other:
+-- MAGIC Unity Catalog is key for data governance, including creating data products or organizing teams around data mesh. It brings among other:
 -- MAGIC
--- MAGIC * Fined grained ACL, Row and Column Masking 
+-- MAGIC * Fine-grained ACL, Row and Column Masking 
 -- MAGIC * Audit log,
 -- MAGIC * Data lineage,
 -- MAGIC * Data exploration & discovery,
@@ -115,12 +115,12 @@ SELECT * FROM protected_patients
 -- MAGIC
 -- MAGIC Lineage is critical for understanding compliance, audit, observability, but also discoverability of data.
 -- MAGIC
--- MAGIC These are three very common schenarios, where full data lineage becomes incredibly important:
+-- MAGIC These are three very common scenarios, where full data lineage becomes incredibly important:
 -- MAGIC 1. **Explainability** - we need to have the means of tracing features used in machine learning to the raw data that created those features,
 -- MAGIC 2. Tracing **missing values** in a dashboard or ML model to the origin,
--- MAGIC 3. **Finding specific data** - organizations have hundreds and even thousands of data tables and sources. Finiding the table or column that contains specific information can be daunting without a proper discoverability tools.
+-- MAGIC 3. **Finding specific data** - organizations have hundreds and even thousands of data tables and sources. Finding the table or column that contains specific information can be daunting without a proper discoverability tools.
 -- MAGIC
--- MAGIC In the image below, you can see every possible data (both ingested and created internally) in the same lineage graph, irrespective of the data type (stream vs batch), file type (csv, json, xml), language (SQL, python), or tool used (DLT, SQL query, Databricks Feature Store, or a python Notebook).
+-- MAGIC In the image below, you can see every possible data (both ingested and created internally) in the same lineage graph, irrespective of the data type (stream vs batch), file type (csv, json, xml), language (SQL, python), or tool used (SDP, SQL query, Databricks Feature Store, or a python Notebook).
 -- MAGIC
 -- MAGIC **Note**: To explore the whole lineage, open navigate to the Data Explorer, and find the ```customer_gold``` table inside your catalog and database.
 
@@ -130,7 +130,7 @@ SELECT * FROM protected_patients
 -- MAGIC
 -- MAGIC ### 4. Secure data sharing
 -- MAGIC
--- MAGIC Once our data is ready, we can easily share it leveraging Delta Sharing, an open protocol to share your data assets with any customer or partnair.
+-- MAGIC Once our data is ready, we can easily share it leveraging Delta Sharing, an open protocol to share your data assets with any customer or partner.
 -- MAGIC
 -- MAGIC For more details on Delta Sharing, run `dbdemos.install('delta-sharing-airlines')`
 
@@ -140,7 +140,7 @@ SELECT * FROM protected_patients
 CREATE SHARE IF NOT EXISTS dbdemos_patient_readmission_visits 
   COMMENT 'Sharing the Customer Gold table from the Credit Decisioning Demo.';
  
--- For the demo we'll grant ownership to all users. Typical deployments wouls have admin groups or similar.
+-- For the demo we'll grant ownership to all users. Typical deployments would have admin groups or similar.
 ALTER SHARE dbdemos_patient_readmission_visits OWNER TO `account users`;
 
 -- Simply add the tables you want to share to your SHARE:

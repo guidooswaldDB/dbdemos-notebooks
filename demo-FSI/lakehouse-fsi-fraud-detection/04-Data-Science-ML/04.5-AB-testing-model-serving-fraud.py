@@ -125,9 +125,9 @@ for i in range(10):
 # MAGIC
 # MAGIC Because the Model Serving runs within our Lakehouse, Databricks will automatically save and track all our Model Endpoint results as a Delta Table.
 # MAGIC
-# MAGIC We can then easily plug a feedback loop to start analysing the revenue in $ each model is offering. 
+# MAGIC We can then easily plug a feedback loop to start analyzing the revenue in $ each model is offering. 
 # MAGIC
-# MAGIC All these metrics, including A/B testing validation (p-values etc) can then be pluged into a Model Monitoring Dashboard and alerts can be sent for errors, potentially triggering new model retraining or programatically updating the Endpoint routes to fallback to another model.
+# MAGIC All these metrics, including A/B testing validation (p-values etc) can then be pluged into a Model Monitoring Dashboard and alerts can be sent for errors, potentially triggering new model retraining or programmatically updating the Endpoint routes to fallback to another model.
 # MAGIC
 # MAGIC
 # MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/fraud-detection/model-serving-monitoring.png" width="1200px" />
@@ -140,7 +140,7 @@ for i in range(10):
 # MAGIC
 # MAGIC In this demo, we've seen an end 2 end flow with the Lakehouse:
 # MAGIC
-# MAGIC - Data ingestion made simple with Delta Live Table
+# MAGIC - Data ingestion made simple with Spark Declarative Pipelines
 # MAGIC - Leveraging Databricks warehouse to Analyze existing Fraud
 # MAGIC - Model Training with AutoML for citizen Data Scientist
 # MAGIC - Ability to tune our model for better results, improving our revenue

@@ -19,7 +19,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install --quiet -U databricks-sdk==0.40.0 databricks-agents mlflow[databricks] databricks-langchain langchain==0.3.19 langchain_core==0.3.37 databricks-vectorsearch==0.49
+# MAGIC %pip install --quiet -U databricks-sdk==0.49.0 databricks-agents mlflow[databricks] "databricks-langchain>=0.4.0" langchain==0.3.25 langchain_core==0.3.59 databricks-vectorsearch==0.55 pydantic==2.10.1
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -30,7 +30,7 @@
 
 rag_chain_config = {
     "databricks_resources": {
-        "llm_endpoint_name": "databricks-meta-llama-3-1-70b-instruct",
+        "llm_endpoint_name": "databricks-meta-llama-3-3-70b-instruct",
         "vector_search_endpoint_name": VECTOR_SEARCH_ENDPOINT_NAME,
     },
     "input_example": {
@@ -166,7 +166,7 @@ model_config = mlflow.models.ModelConfig(development_config='rag_chain_config.ya
 # MAGIC prompt = ChatPromptTemplate.from_messages(
 # MAGIC     [
 # MAGIC         ("system", llm_config.get("llm_prompt_template")),
-# MAGIC         # Note: This chain does not compress the history, so very long converastions can overflow the context window.
+# MAGIC         # Note: This chain does not compress the history, so very long conversations can overflow the context window.
 # MAGIC         MessagesPlaceholder(variable_name="formatted_chat_history"),
 # MAGIC         # User's most current question
 # MAGIC         ("user", "{question}"),
@@ -174,7 +174,7 @@ model_config = mlflow.models.ModelConfig(development_config='rag_chain_config.ya
 # MAGIC )
 # MAGIC
 # MAGIC
-# MAGIC # Format the converastion history to fit into the prompt template above.
+# MAGIC # Format the conversation history to fit into the prompt template above.
 # MAGIC def format_chat_history_for_prompt(chat_messages_array):
 # MAGIC     history = extract_chat_history(chat_messages_array)
 # MAGIC     formatted_chat_history = []
@@ -187,7 +187,7 @@ model_config = mlflow.models.ModelConfig(development_config='rag_chain_config.ya
 # MAGIC     return formatted_chat_history
 # MAGIC
 # MAGIC
-# MAGIC # Prompt Template for query rewriting to allow converastion history to work - this will translate a query such as "how does it work?" after a question such as "what is spark?" to "how does spark work?".
+# MAGIC # Prompt Template for query rewriting to allow conversation history to work - this will translate a query such as "how does it work?" after a question such as "what is spark?" to "how does spark work?".
 # MAGIC query_rewrite_template = """Based on the chat history below, we want you to generate a query for an external data source to retrieve relevant documents so that we can better answer the question. The query should be in natural language. The external data source uses similarity search to search for relevant documents in a vector space. So the query should be similar to the relevant documents semantically. Answer with only the query. Do not add explanation.
 # MAGIC
 # MAGIC Chat history: {chat_history}
@@ -258,6 +258,9 @@ with mlflow.start_run(run_name=f"dbdemos_rag_advanced"):
             DatabricksVectorSearchIndex(index_name=model_config.get("retriever_config").get("vector_search_index")),
             DatabricksServingEndpoint(endpoint_name=model_config.get("retriever_config").get("embedding_model")),
             DatabricksServingEndpoint(endpoint_name=model_config.get("databricks_resources").get("llm_endpoint_name"))
+        ],
+        extra_pip_requirements=[
+            "databricks-connect"
         ]
     )
 
@@ -326,7 +329,7 @@ print(f"Share this URL with your stakeholders: {deployment_info.review_app_url}"
 # MAGIC
 # MAGIC As you add capabilities to your model and tune the prompt, it will get harder to evaluate your model performance in a repeatable way.
 # MAGIC
-# MAGIC Your new prompt might work well for what you tried to fixed, but could also have impact on other questions.
+# MAGIC Your new prompt might work well for what you tried to fix, but could also have impact on other questions.
 # MAGIC
 # MAGIC ## Next: Introducing offline model evaluation with Mosaic AI Agent Evaluation
 # MAGIC

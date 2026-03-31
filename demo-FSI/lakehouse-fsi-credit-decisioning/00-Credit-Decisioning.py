@@ -12,7 +12,7 @@
 # MAGIC   One single platform and governance/security layer for your data warehousing and AI to **accelerate innovation** and **reduce risks**. No need to stitch together multiple solutions with disparate governance and high complexity.
 # MAGIC
 # MAGIC ### 2. Open
-# MAGIC   Built on open source and open standards. You own your data and prevent vendor lock-in, with easy integration with external solution. Being open also lets you share your data with any external organization, regardless of their data stack/vendor.
+# MAGIC   Built on open source and open standards. You own your data and prevent vendor lock-in, with easy integration with external solutions. Being open also lets you share your data with any external organization, regardless of their data stack/vendor.
 # MAGIC
 # MAGIC ### 3. Multicloud
 # MAGIC   Multicloud is one of the key strategic considerations for FS companies, 88% of single-cloud FS customers are adopting a multi-cloud architecture (<a href="https://www.fstech.co.uk/fst/88_Of_FIs_Considering_Multicloud.php">reference</a>). Multicloud architecture, however can be expensive and difficult to build. The Lakehouse provides one consistent data platform across clouds and gives companies the ability to process your data where your need.
@@ -34,7 +34,7 @@
 # MAGIC %md-sandbox
 # MAGIC ## DEMO: upsell your underbanked customers and reduce your risk through better credit scoring models
 # MAGIC
-# MAGIC In this demo, we'll step in the shoes of a retail bank trying to utilize the current interest rates hike and enhance it's bottom line performance (both increasing revenue and decreasing costs).
+# MAGIC In this demo, we'll step in the shoes of a retail bank trying to utilize the current interest rates hike and enhance its bottom line performance (both increasing revenue and decreasing costs).
 # MAGIC
 # MAGIC The business has determined that the bank's focus is at improving the credit evaluation of current and potential credit customers. We're asked to:
 # MAGIC
@@ -64,10 +64,10 @@
 # MAGIC   <div class="badge_b"><div class="badge">1</div> Ingest all the various sources of data and create our credit decisioning database (<strong>unification of data</strong>) </div>
 # MAGIC   <div class="badge_b"><div class="badge">2</div>  Secure data and grant read access to the Data Analyst and Data Science teams, including row- and column-level filtering, PII data masking, and others (<strong>data security and control</strong>)</div>
 # MAGIC   <div class="badge_b"><div class="badge">3</div> Use the Databricks unified <strong>data lineage</strong> to understand how your data flows and is used in your organisation</div>
-# MAGIC   <div class="badge_b"><div class="badge">4</div> Run BI  queries and EDA to analyze existing credit risk</div>
+# MAGIC   <div class="badge_b"><div class="badge">4</div> Run BI queries and EDA to analyze existing credit risk</div>
 # MAGIC   <div class="badge_b"><div class="badge">5</div>  Build ML model to <strong>predict credit worthiness</strong> of underbanked customers, evaluate the risk of current debt-holders, and deploy ML models for real-time serving in order to enable Buy Now, Pay Later use cases</div>
 # MAGIC   <div class="badge_b"><div class="badge">6</div> <strong>Visualise your business</strong> models along with all actionable insights coming from machine learning</div>
-# MAGIC   <div class="badge_b"><div class="badge">7</div>Provide an easy and simple way to securely share these insights to non-data users, such as bank tellers, call center agents, or credit agents (<strong>data democratization</strong>)</div>
+# MAGIC   <div class="badge_b"><div class="badge">7</div> Provide an easy and simple way to securely share these insights with non-data users, such as bank tellers, call center agents, or credit agents (<strong>data democratization</strong>)</div>
 # MAGIC </div>
 # MAGIC <br/><br/>
 # MAGIC <img width="1250px" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/credit_decisioning/fsi_credit_decisioning_flow.png" />
@@ -91,7 +91,7 @@
 # MAGIC %md 
 # MAGIC ## 1: Ingesting data & building our FS Lakehouse Database
 # MAGIC
-# MAGIC First, we need to ingest and transform customer, credit, and payments data sources with the [Delta Live Table SQL Pipeline notebook]($./01-Data-Ingestion/01-DLT-Internal-Banking-Data-SQL). This will create a <a href="/" dbdemos-pipeline-id="dlt-fsi-credit-decisioning" target="_blank">DLT Pipeline</a> running in batch or streaming, and saving our data within Unity Catalog as Delta tables.
+# MAGIC First, we need to ingest and transform customer, credit, and payments data sources with the [Spark Declarative Pipelines SQL Pipeline notebook]($./01-Data-Ingestion/01-SDP-Internal-Banking-Data-SQL). This will create a <a href="/" dbdemos-pipeline-id="sdp-fsi-credit-decisioning" target="_blank">SDP Pipeline</a> running in batch or streaming, and saving our data within Unity Catalog as Delta tables.
 
 # COMMAND ----------
 
@@ -102,9 +102,9 @@
 # MAGIC
 # MAGIC To leverage our data assets across the entire organization, we need:
 # MAGIC
-# MAGIC * Fine grained ACLs for our Analysts & Data Scientists teams
+# MAGIC * Fine-grained ACLs for our analysts and data scientists teams
 # MAGIC * Lineage between all our data assets
-# MAGIC * real-time PII data encryption 
+# MAGIC * Real-time PII data encryption 
 # MAGIC * Audit logs
 # MAGIC * Data Sharing with external organization 
 # MAGIC
@@ -125,7 +125,7 @@
 # MAGIC Databricks AutoML will then accelerate our ML journey by creating state of the art Notebooks that we'll use to deploy our model in production within MLFlow Model registry.
 # MAGIC
 # MAGIC
-# MAGIC Once our is model ready, we'll leverage it to:
+# MAGIC Once our model is ready, we'll leverage it to:
 # MAGIC
 # MAGIC <div style="padding-left: 20px;">
 # MAGIC
@@ -177,7 +177,7 @@
 # MAGIC
 # MAGIC Using the model we built, we can score current and new customers to offer credit instruments (such as credit cards, loans, and mortgages). 
 # MAGIC
-# MAGIC We'll use our model outcome to only upsell customer filter our customers and build a dashboard including all this information:
+# MAGIC We'll use our model outcome to filter our customers and build a dashboard including all this information:
 # MAGIC 1. Evaluates the credit worthiness of individuals without financial history,
 # MAGIC 2. Estimates the ROI and revenue from upselling current customers who do not have credit instruments,
 # MAGIC 3. Provides explainability on an individual level, making it easier to create targeted offers to each customer.
@@ -208,4 +208,4 @@
 # MAGIC
 # MAGIC ## 5: Workflow orchestration
 # MAGIC
-# MAGIC Now that all our lakehouse pipeline is working, let's review how we can leverage Databricks Workflows to orchestrate our tasks and link them together: [05-Workflow-Orchestration-credit-decisioning]($./05-Workflow-Orchestration/05-Workflow-Orchestration-credit-decisioning).
+# MAGIC Now that all our lakehouse pipeline is working, let's review how we can leverage Databricks Workflows to orchestrate our tasks and link them together: [06-Workflow-Orchestration-credit-decisioning]($./06-Workflow-Orchestration/06-Workflow-Orchestration-credit-decisioning).

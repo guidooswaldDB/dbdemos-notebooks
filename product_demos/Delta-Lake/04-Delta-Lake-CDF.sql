@@ -1,12 +1,12 @@
 -- Databricks notebook source
 -- MAGIC %md-sandbox
 -- MAGIC
--- MAGIC # Delta Lake Change Data Flow
+-- MAGIC # Delta Lake Change Data Feed
 -- MAGIC <img src="https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-logo-whitebackground.png" style="width:200px; float: right"/>
 -- MAGIC
 -- MAGIC Delta Lake is an open format and can be read using multiple engine or with standalone libraries (java, python, rust)...
 -- MAGIC
--- MAGIC It's then easy to subscribe to modifications stream on one of your table to propagage the changes downstream in a medaillon architecture.
+-- MAGIC It's then easy to subscribe to modifications stream on one of your table to propagate the changes downstream in a medallion architecture.
 -- MAGIC
 -- MAGIC See the [documentation](https://docs.databricks.com/delta/delta-change-data-feed.html) for more details.
 -- MAGIC
@@ -30,11 +30,21 @@
 -- MAGIC
 -- MAGIC When sharing data within a Datamesh and/or to external organization with Delta Sharing, you not only need to share existing data, but also all modifications, so that your consumer can capture apply the same changes.
 -- MAGIC
--- MAGIC CDF makes **Data Mesh** implementation easier. Once enabled by an organisation, data can be shared with other. It's then easy to subscribe to the modification stream and propagage GDPR DELETE downstream.
+-- MAGIC CDF makes **Data Mesh** implementation easier. Once enabled by an organization, data can be shared with others. It's then easy to subscribe to the modification stream and propagate GDPR DELETE downstream.
 -- MAGIC
 -- MAGIC To do so, we need to make sure the CDF are enabled at the table level. Once enabled, it'll capture all the table modifications using the `table_changes` function.
 -- MAGIC
 -- MAGIC For more details, visit the [CDF documentation](https://docs.databricks.com/delta/delta-change-data-feed.html)
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ### Try Out CDF :
+-- MAGIC - Enable CDF
+-- MAGIC - Do Sample changes
+-- MAGIC - Query Delta History to ensure changes went through
+-- MAGIC - Query older version
+-- MAGIC - Check for CDF tracking columns
 
 -- COMMAND ----------
 
@@ -66,11 +76,18 @@ DELETE FROM user_delta WHERE ID > 1000;
 
 -- COMMAND ----------
 
-select * from table_changes("user_delta", 13);
+-- DBTITLE 1,Use below command to get history of all operations on this table
+DESCRIBE HISTORY user_delta;
 
 -- COMMAND ----------
 
-select distinct(_change_type) from table_changes("user_delta", 13)
+-- DBTITLE 1,Use below command to get the table as of the version number
+select * from table_changes("user_delta", 118);
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Below Query will tell us what are the distinct changes that happened in the version
+select distinct(_change_type) from table_changes("user_delta", 118)
 
 -- COMMAND ----------
 
@@ -86,10 +103,70 @@ select distinct(_change_type) from table_changes("user_delta", 13)
 -- MAGIC %python
 -- MAGIC stream = spark.readStream.format("delta") \
 -- MAGIC               .option("readChangeFeed", "true") \
--- MAGIC               .option("startingVersion", 13) \
+-- MAGIC               .option("startingVersion", 118) \
 -- MAGIC               .table("user_delta")
 -- MAGIC
--- MAGIC display(stream, checkpointLocation = get_chkp_folder(folder))
+-- MAGIC
+-- MAGIC display(stream.select("_change_type", "_commit_version", "_commit_timestamp", "id", "firstname", "email"), checkpointLocation = get_chkp_folder(folder))
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ## Using CDF for CDC on source table, and MERGE incrementally on target
+-- MAGIC
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Create Target Table (No CDF required)
+CREATE table user_delta_silver as select * from user_delta
+
+-- COMMAND ----------
+
+select * from user_delta_silver
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Sample change in source table user_delta
+-- Make sure you run the first notebook to load all the data.
+UPDATE user_delta SET firstname = 'John_cdc' WHERE ID < 10;
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Making sure change went through in user_delta
+select * from user_delta WHERE ID < 10;
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Query delta history to get correct version for CDF
+describe history user_delta
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC cdf_changes = spark.read.format("delta") \
+-- MAGIC   .option("readChangeData", "true") \
+-- MAGIC   .option("startingVersion", 121) \
+-- MAGIC   .table("user_delta")
+-- MAGIC
+-- MAGIC cdf_changes.createOrReplaceTempView("source_cdf_changes")
+-- MAGIC display(cdf_changes)
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Use MERGE to Apply CDC to Target Table
+MERGE INTO user_delta_silver AS target
+USING (
+  SELECT * FROM source_cdf_changes
+  WHERE _change_type IN ('update_postimage', 'insert')
+) AS source
+ON target.id = source.id
+WHEN MATCHED THEN UPDATE SET *
+WHEN NOT MATCHED THEN INSERT *
+
+-- COMMAND ----------
+
+-- DBTITLE 1,Ensuring Merge applied CDC to target
+select * from user_delta_silver WHERE ID < 10;
 
 -- COMMAND ----------
 
@@ -100,9 +177,9 @@ select distinct(_change_type) from table_changes("user_delta", 13)
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC ## Easier CDF with Delta Live Table APPLY CHANGES
+-- MAGIC ## Easier CDF with Spark Declarative Pipelines APPLY CHANGES
 -- MAGIC
--- MAGIC Delta Lake CDF is a low level API. To implement simple CDC pipeline using pure SQL (including SCDT2 tables), you can leverage the Delta Live Table engine! See the [documentation](https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-cdc.html) for more details.
+-- MAGIC Delta Lake CDF is a low level API. To implement simple CDC pipeline using pure SQL (including SCDT2 tables), you can leverage the Spark Declarative Pipelines engine! See the [documentation](https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-cdc.html) for more details.
 
 -- COMMAND ----------
 

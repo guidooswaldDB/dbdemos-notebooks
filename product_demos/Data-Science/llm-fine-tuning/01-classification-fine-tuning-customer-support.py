@@ -28,6 +28,9 @@
 # MAGIC - [Named Entity Extraction and evaluation]($./03-entity-extraction-fine-tuning/03.1-llm-entity-extraction-drug-fine-tuning)
 # MAGIC - [RAG LLM fine tuning]($./02-chatbot-rag-fine-tuning/02.1-llm-rag-fine-tuning) 
 # MAGIC
+# MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
+# MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-science&org_id=1444828305810485&notebook=01-classification-fine-tuning-customer-support&demo_name=llm-fine-tuning&event=VIEW">
+# MAGIC
 
 # COMMAND ----------
 
@@ -115,13 +118,13 @@ Based on the above categorize the following issue: \n\n"""
 # COMMAND ----------
 
 # Make sure you put your PROVISIONED THROUGHPUT ENDPOINT NAME HERE.
-# You can also try the foundation model API, however this will be slower: databricks-meta-llama-3-1-70b-instruct
-llama_3_1_8b_endpoint = "databricks-meta-llama-3-1-70b-instruct" #"meta_llama_3_8b_instruct"
+# You can also try the foundation model API, however this will be slower: databricks-meta-llama-3-3-70b-instruct
+llama_3_1_8b_endpoint = "databricks-meta-llama-3-3-70b-instruct" #"meta_llama_3_8b_instruct"
 
 # COMMAND ----------
 
 spark.sql(f"""SELECT 
-            ai_query("{llama_3_1_8b_endpoint}", concat("{system_prompt}", description)) AS llama_3_1_8b,
+            ai_query("databricks-meta-llama-3-3-70b-instruct", concat("{system_prompt}", description)) AS llama_3_1_8b,
             description
         FROM customer_tickets 
         LIMIT 5""").display()
@@ -130,7 +133,7 @@ spark.sql(f"""SELECT
 
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC As you can see, this isn't ideal. It's adding lot of text, and isn't classifying properly our dataset (resultat might vary depending on the size of the model used).
+# MAGIC As you can see, this isn't ideal. It's adding a lot of text, and isn't classifying properly our dataset (results may vary depending on the size of the model used).
 # MAGIC
 # MAGIC ## Preparing the Dataset for Chat Completion for Fine Tuning
 # MAGIC
@@ -183,7 +186,7 @@ spark.table('ticket_priority_training_dataset').display()
 # MAGIC
 # MAGIC Once the training is done, your model will automatically be saved within Unity Catalog and available for you to serve!
 # MAGIC
-# MAGIC In this demo, we'll be using the API on the table we just created to programatically fine tune our LLM.
+# MAGIC In this demo, we'll be using the API on the table we just created to programmatically fine tune our LLM.
 # MAGIC
 # MAGIC However, you can also create a new Fine Tuning experiment from the UI!
 
@@ -209,7 +212,7 @@ run = fm.create(
     model=base_model_name,  
     train_data_path=f'{catalog}.{db}.ticket_priority_training_dataset',
     task_type="CHAT_COMPLETION",  
-    training_duration="10ep",  #opnly 10 epochs for the demo
+    training_duration="10ep",  #only 10 epochs for the demo
     register_to=registered_model_name,
     learning_rate="5e-7",
 )
@@ -290,7 +293,7 @@ except:
 # MAGIC
 # MAGIC That's it! We're now ready to serve our Fine Tuned model and start asking questions!
 # MAGIC
-# MAGIC The reponses will now be improved and specialized from the Databricks documentation and our RAG chatbot formatted output!
+# MAGIC The responses will now be improved and specialized from the Databricks documentation and our RAG chatbot formatted output!
 
 # COMMAND ----------
 

@@ -20,9 +20,9 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install mlflow==2.20.2 cloudpickle==2.2.1 databricks-sdk==0.40.0
-# MAGIC # hardcode the ml 15.4 LTS libraries versions here for demo stability
-# MAGIC %pip install category-encoders==2.6.3 cffi==1.15.1 cloudpickle==2.2.1 databricks-automl-runtime==0.2.21 defusedxml==0.7.1 holidays==0.45 lightgbm==4.2.0 lz4==4.3.2 matplotlib==3.7.2 numpy==1.23.5 pandas==1.5.3 psutil==5.9.0 pyarrow==14.0.1 scikit-learn==1.3.0 scipy==1.11.1 shap==0.46.0 hyperopt==0.2.7
+# MAGIC %pip install mlflow==3.1.1 cloudpickle==2.2.1 databricks-sdk==0.59.0
+# MAGIC # hardcode the ml 16.4 LTS libraries versions here for demo stability
+# MAGIC %pip install category-encoders==2.6.3 cffi==1.16.0 databricks-automl-runtime==0.2.21 defusedxml==0.7.1 holidays==0.54 lightgbm==4.5.0 lz4==4.3.2 matplotlib==3.8.4 numpy==1.26.4 pandas==2.2.3 psutil==5.9.0 pyarrow==15.0.2 scikit-learn==1.4.2 scipy==1.13.1 shap==0.46.0 https://github.com/databricks-demos/dbdemos-resources/raw/refs/heads/main/hyperopt-0.2.8-py3-none-any.whl networkx==3.2.1
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -145,7 +145,7 @@ datetime_transformers = []
 
 for col in ["hourly_timestamp"]:
     ohe_transformer = ColumnTransformer(
-        [("ohe", OneHotEncoder(sparse=False, handle_unknown="ignore"), [TimestampTransformer.HOUR_COLUMN_INDEX])],
+        [("ohe", OneHotEncoder(sparse_output=False, handle_unknown="ignore"), [TimestampTransformer.HOUR_COLUMN_INDEX])],
         remainder="passthrough")
     timestamp_preprocessor = Pipeline([
         (f"impute_{col}", imputers[col]),
@@ -231,7 +231,7 @@ preprocessor = ColumnTransformer(transformers, remainder="passthrough", sparse_t
 # COMMAND ----------
 
 # AutoML completed train - validation - test split internally and used _automl_split_col_xxxx to specify the set
-split_col = [c for c in df_loaded.columns if c.startswith('_automl_split_col')][0]
+split_col = [c for c in df_loaded.columns if c.startswith('_automl_split_col') or c == 'split'][0]
 
 split_train_df = df_loaded.loc[df_loaded[split_col] == "train"]
 split_val_df = df_loaded.loc[df_loaded[split_col] == "val"]
@@ -285,6 +285,7 @@ from mlflow import pyfunc
 import sklearn
 from sklearn import set_config
 from sklearn.pipeline import Pipeline
+from unittest import mock
 
 from hyperopt import hp, tpe, fmin, STATUS_OK, Trials
 
@@ -299,7 +300,8 @@ X_val_processed = pipeline_val.transform(X_val)
 dataset = mlflow.data.from_pandas(X_train)
 
 def objective(params):
-  with mlflow.start_run(experiment_id=run['experiment_id'], run_name="lightgbm") as mlflow_run:
+  #Temporary pin python to 3.11.10
+  with mlflow.start_run(experiment_id=run['experiment_id'], run_name="lightgbm") as mlflow_run, mock.patch("mlflow.utils.environment.PYTHON_VERSION", DBDemos.get_python_version_mlflow()):
     lgbmc_classifier = LGBMClassifier(**params)
     mlflow.log_input(dataset, context="training")
     model = Pipeline([
@@ -446,6 +448,57 @@ model
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ### Patch pandas version in logged model
+# MAGIC
+# MAGIC Ensures that model serving uses the same version of pandas that was used to train the model.
+
+# COMMAND ----------
+
+import mlflow
+import os
+import shutil
+import tempfile
+import yaml
+
+run_id = mlflow_run.info.run_id
+
+# Set up a local dir for downloading the artifacts.
+tmp_dir = tempfile.mkdtemp()
+
+client = mlflow.tracking.MlflowClient()
+
+# Fix conda.yaml
+conda_file_path = mlflow.artifacts.download_artifacts(artifact_uri=f"runs:/{run_id}/model/conda.yaml", dst_path=tmp_dir)
+with open(conda_file_path) as f:
+  conda_libs = yaml.load(f, Loader=yaml.FullLoader)
+pandas_lib_exists = any([lib.startswith("pandas==") for lib in conda_libs["dependencies"][-1]["pip"]])
+if not pandas_lib_exists:
+  print("Adding pandas dependency to conda.yaml")
+  conda_libs["dependencies"][-1]["pip"].append(f"pandas=={pd.__version__}")
+
+  with open(f"{tmp_dir}/conda.yaml", "w") as f:
+    f.write(yaml.dump(conda_libs))
+  client.log_artifact(run_id=run_id, local_path=conda_file_path, artifact_path="model")
+
+# Fix requirements.txt
+venv_file_path = mlflow.artifacts.download_artifacts(artifact_uri=f"runs:/{run_id}/model/requirements.txt", dst_path=tmp_dir)
+with open(venv_file_path) as f:
+  venv_libs = f.readlines()
+venv_libs = [lib.strip() for lib in venv_libs]
+pandas_lib_exists = any([lib.startswith("pandas==") for lib in venv_libs])
+if not pandas_lib_exists:
+  print("Adding pandas dependency to requirements.txt")
+  venv_libs.append(f"pandas=={pd.__version__}")
+
+  with open(f"{tmp_dir}/requirements.txt", "w") as f:
+    f.write("\n".join(venv_libs))
+  client.log_artifact(run_id=run_id, local_path=venv_file_path, artifact_path="model")
+
+shutil.rmtree(tmp_dir)
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Feature importance
 # MAGIC
 # MAGIC SHAP is a game-theoretic approach to explain machine learning models, providing a summary plot
@@ -540,10 +593,10 @@ MlflowClient().set_registered_model_alias(name=f"{catalog}.{db}.{model_name}", a
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC ### The model generated by AutoML is ready to be used in our DLT pipeline to detect Wind Turbine requiring potential maintenance.
+# MAGIC ### The model generated by AutoML is ready to be used in our SDP pipeline to detect Wind Turbine requiring potential maintenance.
 # MAGIC
-# MAGIC Our Data Engineer can now easily retrive the model `dbdemos_turbine_maintenance` from our Auto ML run and detect anomalies within our Delta Live Table Pipeline.<br>
-# MAGIC Re-open the DLT pipeline to see how this is done.
+# MAGIC Our Data Engineer can now easily retrive the model `dbdemos_turbine_maintenance` from our Auto ML run and detect anomalies within our Spark Declarative Pipelines Pipeline.<br>
+# MAGIC Re-open the SDP pipeline to see how this is done.
 # MAGIC
 # MAGIC #### Adjust spare stock based on predictive maintenance result
 # MAGIC

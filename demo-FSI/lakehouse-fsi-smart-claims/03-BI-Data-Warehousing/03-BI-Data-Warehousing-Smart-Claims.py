@@ -55,9 +55,9 @@
 # MAGIC
 # MAGIC By leveraging auto-completion and the schema browser, we can start running adhoc queries on top of our data.
 # MAGIC
-# MAGIC While this is ideal for Data Analyst to start analysing our customer Churn, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
+# MAGIC While this is ideal for Data Analyst to start analyzing our customer Churn, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
 # MAGIC
-# MAGIC Open the [Queries menu](/sql/queries) to start writting your first analysis.
+# MAGIC Open the [Queries menu](/sql/queries) to start writing your first analysis.
 
 # COMMAND ----------
 
@@ -128,4 +128,4 @@
 # MAGIC
 # MAGIC We're now ready to create an end to end job to deploy our entire pipeline in production, from data ingestion to model serving and DBSQL Dashboard.
 # MAGIC
-# MAGIC Open the [04-Workflow-Orchestration-Smart-Claims]($../04-Workflow-Orchestration/04-Workflow-Orchestration-Smart-Claims) notebook to see how Databricks can orchestrate your pipelines.
+# MAGIC Open the [05-Workflow-Orchestration-Smart-Claims]($../05-Workflow-Orchestration/05-Workflow-Orchestration-Smart-Claims) notebook to see how Databricks can orchestrate your pipelines.

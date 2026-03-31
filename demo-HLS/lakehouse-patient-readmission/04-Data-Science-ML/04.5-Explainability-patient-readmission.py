@@ -91,7 +91,7 @@ shap.summary_plot(shap_values, train_sample)
 # MAGIC %md
 # MAGIC Shapely values can also help for the analysis of local, instance-wise effects. 
 # MAGIC
-# MAGIC We can also easily explain which feature impacted the decision for a given user. This can helps agent to understand the model an personalized health care further.
+# MAGIC We can also easily explain which feature impacted the decision for a given user. This can helps agents to understand the model and personalize health care further.
 
 # COMMAND ----------
 
@@ -127,7 +127,7 @@ shap.dependence_plot("INCOME", shap_values, train_sample[features], interaction_
 
 # COMMAND ----------
 
-# MAGIC %md #### Computing SHAP values on the entier dataset:
+# MAGIC %md #### Computing SHAP values on the entire dataset:
 # MAGIC These graph are great to understand the model against a subset of data. If we want to to further analyze based on the shap values on millions on rows, we can use spark to compute the shap values.
 # MAGIC
 # MAGIC We can use spark 3 `mapInPandas` function, or create a `@pandas_udf`:
@@ -154,8 +154,8 @@ df = dataset_to_explain.mapInPandas(compute_shap_values, schema=", ".join([x+"_s
 # MAGIC In this demo, we've seen an end 2 end flow with the Lakehouse:
 # MAGIC
 # MAGIC
-# MAGIC - Data ingestion made simple with Delta Live Table
-# MAGIC - Leveraging Databricks notebooks and SQL warehouse to create, anaylize and share our dashboards 
+# MAGIC - Data ingestion made simple with Spark Declarative Pipelines
+# MAGIC - Leveraging Databricks notebooks and SQL warehouse to create, analyze, and share our dashboards 
 # MAGIC - Model Training with AutoML for citizen Data Scientist
 # MAGIC - Ability to tune our model for better results, improving our patient journey quality
 # MAGIC - Ultimately, the ability to deploy and make explainable ML predictions, made possible with the full Lakehouse capabilities.

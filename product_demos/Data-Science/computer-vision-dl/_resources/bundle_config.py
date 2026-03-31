@@ -78,14 +78,14 @@
       "publish_on_website": True, 
       "add_cluster_setup_cell": True, 
       "title":  "Deploy the pipeline for inference", 
-      "description": "Run batch/streaming or realtime inference (Model Endpoint)"
+      "description": "Run batch/streaming or real-time inference (Model Endpoint)"
     },
     {
       "path": "04-explaining-inference", 
       "pre_run": True, 
       "publish_on_website": True, 
       "add_cluster_setup_cell": True, 
-      "title":  "Hihlight default in PCB image", 
+      "title":  "Highlight default in PCB image", 
       "description": "Add model explainer to highglight pixels having a potential default"
     },
     {
@@ -102,7 +102,7 @@
     "spark_conf": {
         "spark.master": "local[*, 4]"
     },
-    "spark_version": "15.4.x-scala2.12",
+    "spark_version": "16.4.x-scala2.12",
     "single_user_name": "{{CURRENT_USER}}",
     "data_security_mode": "SINGLE_USER"
   }  

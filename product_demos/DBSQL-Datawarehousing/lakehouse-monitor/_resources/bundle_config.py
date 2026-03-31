@@ -17,7 +17,7 @@
   "description": "Monitor your data quality with Lakehouse Monitoring",
   "fullDescription": "Databricks Lakehouse Monitoring allows you to monitor all your data pipelines and ML models – without additional tools and complexity. Integrated into Unity Catalog, teams can track quality alongside governance, building towards the self-serve data platform dream. By continuously assessing the profile of your data, Lakehouse Monitoring allows you to stay ahead of potential issues, ensuring that pipelines run smoothly and ML models remain effective over time.",
   "bundle": True,
-  "tags": [{"dlt": "Delta Live Table"},  {"ds": "Data Science"}, {"dbsql": "BI/DW/DBSQL"}],
+  "tags": [{"dlt": "Spark Declarative Pipelines"},  {"ds": "Data Science"}, {"dbsql": "BI/DW/DBSQL"}],
   "notebooks": [
     {
       "path": "_resources/01-DataGeneration", 
@@ -59,7 +59,7 @@
             "min_workers": 1,
             "max_workers": 1
         },
-        "spark_version": "13.3.x-cpu-ml-scala2.12",
+        "spark_version": "16.4.x-cpu-ml-scala2.12",
         "single_user_name": "{{CURRENT_USER}}",
         "data_security_mode": "SINGLE_USER",
         "runtime_engine": "STANDARD"

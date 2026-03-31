@@ -8,12 +8,30 @@ reset_all_data = dbutils.widgets.get("reset_all_data") == "true"
 
 # COMMAND ----------
 
+import sys
+major, minor = sys.version_info[:2]
+assert (major, minor) >= (3, 11), f"This demo expect python version 3.11, but found {major}.{minor}. \nUse DBR15.4 or above. \nIf you're on serverless compute, open the 'Environment' menu on the right of your notebook, set it to >=2 and apply."
+
+# COMMAND ----------
+
 # MAGIC %run ../../../_resources/00-global-setup-v2
 
 # COMMAND ----------
 
 DBDemos.setup_schema(catalog, db, reset_all_data, volume_name)
 volume_folder =  f"/Volumes/{catalog}/{db}/{volume_name}"
+
+# COMMAND ----------
+
+def get_last_model_version(model_full_name):
+    from mlflow import MlflowClient
+    mlflow_client = MlflowClient(registry_uri="databricks-uc")
+    # Use the MlflowClient to get a list of all versions for the registered model in Unity Catalog
+    all_versions = mlflow_client.search_model_versions(f"name='{model_full_name}'")
+    # Sort the list of versions by version number and get the latest version
+    latest_version = max([int(v.version) for v in all_versions])
+    # Use the MlflowClient to get the latest version of the registered model in Unity Catalog
+    return mlflow_client.get_model_version(model_full_name, str(latest_version)).version
 
 # COMMAND ----------
 

@@ -25,7 +25,26 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install --quiet shap==0.46.0 mlflow==2.19.0 scikit-learn==1.3.0
+# MAGIC %pip install --quiet shap==0.46.0 mlflow==2.22.0
+# MAGIC dbutils.library.restartPython()
+
+# COMMAND ----------
+
+# MAGIC %run ../_resources/00-setup $reset_all_data=false
+
+# COMMAND ----------
+
+import mlflow
+from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
+
+# Configure MLflow to use Unity Catalog instead of Workspace Model Registry
+mlflow.set_registry_uri('databricks-uc')
+
+requirements_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_fsi_credit_decisioning@prod").download_artifacts(artifact_path="requirements.txt")
+
+# COMMAND ----------
+
+# MAGIC %pip install --quiet -r $requirements_path
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -180,10 +199,10 @@ final_df.drop('CREDIT_CURRENCY', '_rescued_data') \
 # MAGIC
 # MAGIC In this demo, we've seen an end 2 end flow with the Lakehouse:
 # MAGIC
-# MAGIC - Data ingestion made simple with Delta Live Table
+# MAGIC - Data ingestion made simple with Spark Declarative Pipelines
 # MAGIC - Leveraging Databricks warehouse to making credit decisions
 # MAGIC - Model Training with AutoML for citizen Data Scientist
 # MAGIC - Ability to tune our model for better results, improving our revenue
 # MAGIC - Ultimately, the ability to deploy and make explainable ML predictions, made possible with the full Lakehouse capabilities.
 # MAGIC
-# MAGIC [Go back to the introduction]($../00-Credit-Decisioning) or discover how to use Databricks Workflow to orchestrate this tasks: [05-Workflow-Orchestration-credit-decisioning]($../05-Workflow-Orchestration/05-Workflow-Orchestration-credit-decisioning)
+# MAGIC [Go back to the introduction]($../00-Credit-Decisioning) or discover how to use Databricks Workflow to orchestrate this tasks: [06-Workflow-Orchestration-credit-decisioning]($../06-Workflow-Orchestration/06-Workflow-Orchestration-credit-decisioning)

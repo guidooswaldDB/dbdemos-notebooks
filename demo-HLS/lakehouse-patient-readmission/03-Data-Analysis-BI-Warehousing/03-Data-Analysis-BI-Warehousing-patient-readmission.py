@@ -74,7 +74,7 @@ px.bar(df, x="DESCRIPTION", y="count", color="GENDER", barmode="group")
 # MAGIC %md
 # MAGIC ### 3.1/ Cohort definition
 # MAGIC
-# MAGIC To ensure better reproducibility and organizing the data, we first create patient cohorts based on the criteria of interest (being admitted to hopital, infection status, disease hirtory etc). We can the store the result in a downstream table that we'll use later on to train a model on patient readmission.
+# MAGIC To ensure better reproducibility and organizing the data, we first create patient cohorts based on the criteria of interest (being admitted to hopital, infection status, disease history, etc). We can the store the result in a downstream table that we'll use later on to train a model on patient readmission.
 
 # COMMAND ----------
 
@@ -119,7 +119,7 @@ create_save_cohort('all_patients')
 # MAGIC
 # MAGIC <div style="float: left; margin-top: 240px; font-size: 23px">
 # MAGIC   Instant, elastic compute<br>
-# MAGIC   Lower TCO with Serveless<br>
+# MAGIC   Lower TCO with Serverless<br>
 # MAGIC   Zero management<br><br>
 # MAGIC
 # MAGIC   Governance layer - row level<br><br>
@@ -147,7 +147,7 @@ create_save_cohort('all_patients')
 # MAGIC
 # MAGIC ### Creating a SQL Warehouse
 # MAGIC
-# MAGIC SQL Wharehouse are managed by databricks. [Creating a warehouse](/sql/warehouses) is a 1-click step: 
+# MAGIC SQL Warehouses are managed by Databricks. [Creating a warehouse](/sql/warehouses) is a 1-click step: 
 
 # COMMAND ----------
 
@@ -161,9 +161,9 @@ create_save_cohort('all_patients')
 # MAGIC
 # MAGIC By leveraging auto-completion and the schema browser, we can start running adhoc queries on top of our data.
 # MAGIC
-# MAGIC Once merged While this is ideal for Data Analyst to start analysing our customer Churn, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
+# MAGIC While this is ideal for Data Analyst to start analyzing our patient data, other personas can also leverage DBSQL to track our data ingestion pipeline, the data quality, model behavior etc.
 # MAGIC
-# MAGIC Open the [Queries menu](/sql/queries) to start writting your first analysis.
+# MAGIC Open the [Queries menu](/sql/queries) to start writing your first analysis.
 
 # COMMAND ----------
 

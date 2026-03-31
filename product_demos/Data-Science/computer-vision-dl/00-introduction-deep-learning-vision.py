@@ -14,7 +14,7 @@
 # MAGIC Computer vision is a field of study that has been advancing rapidly in recent years, thanks to the availability of large amounts of data, powerful GPUs, pre-trained deep learning models, transfer learning and higher level frameworks. However, training and serving a computer vision model can be very hard because of different challenges:
 # MAGIC - Data ingestion and preprocessing at scale
 # MAGIC - Data volumes that require multiple GPUs for training
-# MAGIC - Governance and production-readiness requirement MLOps pipelines for the the end-to-end model lifecycle.
+# MAGIC - Governance and production-readiness requirement MLOps pipelines for the end-to-end model lifecycle.
 # MAGIC - Demanding SLAs for streaming or real-time inferences
 # MAGIC
 # MAGIC Databricks Lakehouse is designed to make this overall process simple, letting Data Scientists focus on the core use-case.
@@ -78,28 +78,28 @@
 
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC ## 3/ Running inference in batch and deploying a realtime Serverless Model Endpoint
+# MAGIC ## 3/ Running inference in batch and deploying a real-time Serverless Model Endpoint
 # MAGIC
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/product/computer-vision/deeplearning-cv-pcb-3.png?raw=true" width="500px" style="float: right" />
 # MAGIC
 # MAGIC Now that our model is created and available in our MLFlow registry, we'll be able to use it.
 # MAGIC
-# MAGIC Typical servinng use-case include:
+# MAGIC Typical serving use-cases include:
 # MAGIC
-# MAGIC - Batch and Streaming use-cases (including with Delta Live Table)
-# MAGIC - Realtime model serving with Databricks Serverless Endpoints
+# MAGIC - Batch and Streaming use-cases (including with Spark Declarative Pipelines)
+# MAGIC - Real-time model serving with Databricks Serverless Endpoints
 # MAGIC
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Open the [03-running-cv-inferences notebook]($./03-running-cv-inferences) to run distributed and realtime inferences.
+# MAGIC Open the [03-running-cv-inferences notebook]($./03-running-cv-inferences) to run distributed and real-time inferences.
 
 # COMMAND ----------
 
 # MAGIC %md-sandbox
 # MAGIC
-# MAGIC ## 4/ Explaining our model prediction and highlighting damanged PCB pixels
+# MAGIC ## 4/ Explaining our model prediction and highlighting damaged PCB pixels
 # MAGIC
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/product/computer-vision/deeplearning-cv-pcb-explainer.png?raw=true" width="500px" style="float: right" />
 # MAGIC
@@ -124,7 +124,7 @@
 # MAGIC
 # MAGIC In addition, we'll also demonstrate how Databricks makes it easy to distribute the training on multiple GPUs using `TorchDistributor`.
 # MAGIC
-# MAGIC Open the [05-torch-lightning-training-and-inference]($./05-torch-lightning-training-and-inference) to see how to train your model & run distributed and realtime inferences.
+# MAGIC Open the [05-torch-lightning-training-and-inference]($./05-torch-lightning-training-and-inference) to see how to train your model & run distributed and real-time inferences.
 
 # COMMAND ----------
 
@@ -135,4 +135,4 @@
 # MAGIC
 # MAGIC - Accelerate your data ingestion and transformation at scale
 # MAGIC - Simplify model training and governance
-# MAGIC - One-click model deployment for all use-cases, from batch to realtime inferences
+# MAGIC - One-click model deployment for all use-cases, from batch to real-time inferences

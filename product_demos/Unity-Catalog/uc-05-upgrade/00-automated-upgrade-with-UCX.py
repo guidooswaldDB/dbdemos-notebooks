@@ -33,7 +33,7 @@
 # MAGIC New tables created with Unity Catalog will available at the account level, meaning that they're cross-workspace.
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection. View README for more details.  -->
-# MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=governance&notebook=00-Upgrade-database-to-UC&demo_name=uc-05-upgrade&event=VIEW">
+# MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=governance&notebook=00-automated-upgrade-with-UCX&demo_name=uc-05-upgrade&event=VIEW">
 
 # COMMAND ----------
 
@@ -58,7 +58,7 @@
 # MAGIC </div>
 # MAGIC
 # MAGIC ## UC Migration - Overview
-# MAGIC Migrating to Unity Catalog requires the follwing steps:
+# MAGIC Migrating to Unity Catalog requires the following steps:
 # MAGIC * Assessing your current Databricks deployment
 # MAGIC * Creating and Attaching a metastore
 # MAGIC * Migrating Workspace Groups
@@ -85,8 +85,8 @@
 # MAGIC
 # MAGIC <iframe style="float:right" width="560" height="315" src="https://www.youtube.com/embed/7tu74nJwHJM?si=A8qzRLREotg5OYED" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 # MAGIC
-# MAGIC UCX (and other Databricks Labs projects) is now embeded with the [Databrick CLI](https://docs.databricks.com/aws/en/dev-tools/cli/install).<br/>
-# MAGIC The updated list of requirements for installation is avalailable in the [Documentation Site](https://databrickslabs.github.io/ucx/docs/installation/#installation-requirements).<br/>
+# MAGIC UCX (and other Databricks Labs projects) is now embedded with the [Databrick CLI](https://docs.databricks.com/aws/en/dev-tools/cli/install).<br/>
+# MAGIC The updated list of requirements for installation is available in the [Documentation Site](https://databrickslabs.github.io/ucx/docs/installation/#installation-requirements).<br/>
 # MAGIC Installing UCX is as simple as issuing the command `databricks labs install ucx`.
 # MAGIC
 # MAGIC During the installation you'll be prompted with a number of questions pertaining to the installation and use of UCX.
@@ -113,7 +113,7 @@
 # MAGIC </div>
 # MAGIC
 # MAGIC # 3/ Account and Cloud Assets
-# MAGIC Before we can migrate tables, we have to complete the following steps to make sure your account and cloud policies matche your organization requirements:
+# MAGIC Before we can migrate tables, we have to complete the following steps to make sure your account and cloud policies match your organization requirements:
 # MAGIC - [Create Account Groups](https://databrickslabs.github.io/ucx/docs/reference/commands/#create-account-groups)
 # MAGIC - [Assigning Metastore](https://databrickslabs.github.io/ucx/docs/reference/commands/#assign-metastore)
 # MAGIC - [Migrate Permissions from Workspace Groups to Account Groups](https://databrickslabs.github.io/ucx/docs/reference/workflows/#group-migration-workflow)
@@ -206,7 +206,7 @@
 # MAGIC
 # MAGIC Static code linting crawls code accessible by the workstation that runs the CLI. Typically it is used to analyze code that is hosted in a GIT repository and is cloned/pulled locally.<br/>
 # MAGIC
-# MAGIC Lint local code is inoked by the `databricks labs ucx lint-local-code` cli command.<br/>
+# MAGIC Lint local code is invoked by the `databricks labs ucx lint-local-code` cli command.<br/>
 # MAGIC Running this command from a modern IDE (such as PyCharm/IntelliJ/VSCode) will yield hyperlinks to the code issues.<br/>
 # MAGIC
 # MAGIC More information is available in the [documentation](https://databrickslabs.github.io/ucx/docs/reference/commands/#lint-local-code).

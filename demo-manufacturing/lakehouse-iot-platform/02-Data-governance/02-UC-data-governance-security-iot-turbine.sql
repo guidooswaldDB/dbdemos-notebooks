@@ -83,7 +83,7 @@
 -- MAGIC
 -- MAGIC Let's see how the Lakehouse can solve this challenge leveraging Unity Catalog.
 -- MAGIC
--- MAGIC Our Data has been saved as Delta Table by our Data Engineering team.  The next step is to secure this data while allowing cross team to access it. <br>
+-- MAGIC Our data has been saved as Delta Table by our Data Engineering team. The next step is to secure this data while allowing cross-team to access it. <br>
 -- MAGIC A typical setup would be the following:
 -- MAGIC
 -- MAGIC * Data Engineers / Jobs can read and update the main data/schemas (ETL part)
@@ -91,11 +91,11 @@
 -- MAGIC * Data Analyst have READ access to the Data Engineering and Feature Tables and can ingest/transform additional data in a separate schema.
 -- MAGIC * Data is masked/anonymized dynamically based on each user access level
 -- MAGIC
--- MAGIC This is made possible by Unity Catalog. When tables are saved in the Unity Catalog, they can be made accessible to the entire organization, cross-workpsaces and cross users.
+-- MAGIC This is made possible by Unity Catalog. When tables are saved in the Unity Catalog, they can be made accessible to the entire organization, cross-workspaces and cross users.
 -- MAGIC
--- MAGIC Unity Catalog is key for data governance, including creating data products or organazing teams around datamesh. It brings among other:
+-- MAGIC Unity Catalog is key for data governance, including creating data products or organizing teams around data mesh. It brings among other:
 -- MAGIC
--- MAGIC * Fined grained ACL
+-- MAGIC * Fine-grained ACL
 -- MAGIC * Audit log
 -- MAGIC * Data lineage
 -- MAGIC * Data exploration & discovery
@@ -181,7 +181,6 @@ SHOW TABLES;
 -- DBTITLE 1,Granting access to Analysts & Data Engineers:
 -- Let's grant our ANALYSTS a SELECT permission:
 -- Note: make sure you created an analysts and dataengineers group first.
-GRANT SELECT ON TABLE main_build.dbdemos_iot_platform.turbine TO `analysts`;
 GRANT SELECT ON TABLE main_build.dbdemos_iot_platform.sensor_bronze TO `analysts`;
 GRANT SELECT ON TABLE main_build.dbdemos_iot_platform.sensor_hourly TO `analysts`;
 GRANT SELECT ON TABLE main_build.dbdemos_iot_platform.historical_turbine_status TO `analysts`;
@@ -260,7 +259,7 @@ SELECT * FROM parts_secured;
 -- MAGIC
 -- MAGIC ## Going further with Data governance & security
 -- MAGIC
--- MAGIC By bringing all your data assets together, Unity Catalog let you build a complete and simple governance to help you scale your teams.
+-- MAGIC By bringing all your data assets together, Unity Catalog lets you build a complete and simple governance to help you scale your teams.
 -- MAGIC
 -- MAGIC Unity Catalog can be leveraged from simple GRANT to building a complete datamesh organization.
 -- MAGIC
@@ -272,20 +271,20 @@ SELECT * FROM parts_secured;
 -- MAGIC
 -- MAGIC ### Secure external location (S3/ADLS/GCS)
 -- MAGIC
--- MAGIC Unity Catatalog let you secure your managed table but also your external locations:  `dbdemos.intall('uc-02-external-location')`
+-- MAGIC Unity Catalog lets you secure your managed table but also your external locations:  `dbdemos.intall('uc-02-external-location')`
 -- MAGIC
 -- MAGIC ### Lineage 
 -- MAGIC
 -- MAGIC UC automatically captures table dependencies and let you track how your data is used, including at a row level: `dbdemos.intall('uc-03-data-lineage')`
 -- MAGIC
--- MAGIC This leat you analyze downstream impact, or monitor sensitive information across the entire organization (GDPR).
+-- MAGIC This lets you analyze downstream impact, or monitor sensitive information across the entire organization (GDPR).
 -- MAGIC
 -- MAGIC
 -- MAGIC ### Audit log
 -- MAGIC
 -- MAGIC UC captures all events. Need to know who is accessing which data? Query your audit log:  `dbdemos.intall('uc-04-audit-log')`
 -- MAGIC
--- MAGIC This leat you analyze downstream impact, or monitor sensitive information across the entire organization (GDPR).
+-- MAGIC This lets you analyze downstream impact, or monitor sensitive information across the entire organization (GDPR).
 -- MAGIC
 -- MAGIC ### Upgrading to UC
 -- MAGIC

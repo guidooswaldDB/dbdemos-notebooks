@@ -43,7 +43,7 @@
       "publish_on_website": True, 
       "add_cluster_setup_cell": True, 
       "title":  "Audit log ingestion", 
-      "description": "Create an ingestion pipeline to ingest and analyse your logs."
+      "description": "Create an ingestion pipeline to ingest and analyze your logs."
     },
     {
       "path": "02-log-analysis-query", 

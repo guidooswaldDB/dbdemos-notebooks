@@ -4,7 +4,7 @@
 # MAGIC
 # MAGIC In the previous notebook, we saw how Databricks simplifies LLM Fine-tuning.
 # MAGIC
-# MAGIC While fine-tuning is a simple API call, you need to evaluate how your new LLM behave. This is critical to assess if the fine tuning helped in the right way, and also key to understanding how you can improve your fine-tuning dataset and detect potential gaps.
+# MAGIC While fine-tuning is a simple API call, you need to evaluate how your new LLM behaves. This is critical to assess if the fine tuning helped in the right way, and also key to understanding how you can improve your fine-tuning dataset and detect potential gaps.
 # MAGIC
 # MAGIC
 # MAGIC Databricks leverages MLFlow and its new LLM capabilities. We will be comparing the plain/base Foundation Model versus the fine tuned one across different metrics.
@@ -12,6 +12,10 @@
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/product/llm-fine-tuning/databricks-llm-fine-tuning-eval-judge.png?raw=true" width="1200px">
 # MAGIC
 # MAGIC To do so, we need to create an evaluation dataset and have our RAG application call the 2 models we want to benchmark: a baseline vs the fine-tuned one. This will let us appreciate how Fine Tuning improved our model performance!
+# MAGIC
+# MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
+# MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-science&org_id=1444828305810485&notebook=02.2-llm-evaluation&demo_name=llm-fine-tuning&event=VIEW">
+# MAGIC
 
 # COMMAND ----------
 
@@ -166,7 +170,7 @@ fine_tuned_results = eval_llm(serving_endpoint_ft_name, eval_dataset, llm_judge 
 
 # DBTITLE 1,Cancel Run Llama Python
 # MAGIC %md
-# MAGIC ## 3/ Using MLFlow experiment UI to analyse our runs
+# MAGIC ## 3/ Using MLFlow experiment UI to analyze our runs
 # MAGIC
 # MAGIC MLFlow will automatically collect the stats for us.
 # MAGIC
@@ -181,10 +185,10 @@ fine_tuned_results = eval_llm(serving_endpoint_ft_name, eval_dataset, llm_judge 
 
 # COMMAND ----------
 
-# MAGIC %md 
-# MAGIC You can also analyse individual queries and filter on the question with very incorrect answer, and improve your training dataset accordingly.
+# MAGIC %md
+# MAGIC You can also analyze individual queries and filter on the questions with very incorrect answers, and improve your training dataset accordingly.
 # MAGIC
-# MAGIC If you have a bigger dataset, you can also programatically filter on the rows having bad answer, and ask an external model such as a Llama model to summarize what is not working to give you insights on your training dataset at scale!
+# MAGIC If you have a bigger dataset, you can also programmatically filter on the rows having bad answers, and ask an external model such as a Llama model to summarize what is not working to give you insights on your training dataset at scale!
 
 # COMMAND ----------
 

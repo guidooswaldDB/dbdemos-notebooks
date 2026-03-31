@@ -60,6 +60,14 @@ DESCRIBE DETAIL `delta`.`/Volumes/main__build/dbdemos_delta_lake/delta_lake_raw_
 -- COMMAND ----------
 
 -- MAGIC %md
+-- MAGIC ## Unpacking the transaction log
+-- MAGIC The transaction log is key to understanding Delta Lake because it is the common
+-- MAGIC thread that runs through many of its most important features, including ACID transactions, scalable metadata handling, time travel and more. The Delta Lake transaction log is an ordered record of every transaction that has ever been performed on
+-- MAGIC a Delta Lake table since its inception.
+
+-- COMMAND ----------
+
+-- MAGIC %md
 -- MAGIC ## OPTIMIZE in action
 -- MAGIC Running an `OPTIMIZE` + `VACUUM` will re-order all our files.
 -- MAGIC
@@ -96,6 +104,10 @@ OPTIMIZE `delta`.`/Volumes/main__build/dbdemos_delta_lake/delta_lake_raw_data/us
 -- MAGIC %md
 -- MAGIC That's it! You know everything about Delta Lake!
 -- MAGIC
--- MAGIC As next step, you learn more about Delta Live Table to simplify your ingestion pipeline: `dbdemos.install('delta-live-table')`
+-- MAGIC As next step, you learn more about Spark Declarative Pipelines to simplify your ingestion pipeline: `dbdemos.install('pipeline-bike')`
 -- MAGIC
 -- MAGIC Go back to [00-Delta-Lake-Introduction]($./00-Delta-Lake-Introduction).
+
+-- COMMAND ----------
+
+

@@ -5,9 +5,9 @@
 # MAGIC
 # MAGIC With AutoML, our best model was automatically saved in our MLFlow registry.
 # MAGIC
-# MAGIC All we need to do now is use this model to run Inferences. A simple solution is to share the model name to our Data Engineering team and they'll be able to call this model within the pipeline they maintained. That's what we did in our Delta Live Table pipeline!
+# MAGIC All we need to do now is use this model to run Inferences. A simple solution is to share the model name to our Data Engineering team and they'll be able to call this model within the pipeline they maintained. That's what we did in our Spark Declarative Pipelines pipeline!
 # MAGIC
-# MAGIC Alternatively, this can be schedule in a separate job. Here is an example to show you how MLFlow can be directly used to retriver the model and run inferences.
+# MAGIC Alternatively, this can be schedule in a separate job. Here is an example to show you how MLFlow can be directly used to retrieve the model and run inferences.
 # MAGIC
 # MAGIC *Make sure you run the previous notebook to be able to access the data.*
 # MAGIC
@@ -19,28 +19,7 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install mlflow==2.20.2 databricks-sdk==0.40.0
-
-# COMMAND ----------
-
-# MAGIC %run ../config
-
-# COMMAND ----------
-
-import os
-import mlflow
-from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
-mlflow.set_registry_uri('databricks-uc')
-local_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod").download_artifacts("") # download model from remote registry
-
-requirements_path = os.path.join(local_path, "requirements.txt")
-if not os.path.exists(requirements_path):
-  dbutils.fs.put("file:" + requirements_path, "", True)
-
-# COMMAND ----------
-
-# MAGIC %pip install -r $requirements_path
-# MAGIC dbutils.library.restartPython()
+# MAGIC %pip install mlflow==3.1.1 databricks-sdk==0.59.0
 
 # COMMAND ----------
 
@@ -68,12 +47,13 @@ if not os.path.exists(requirements_path):
 
 import mlflow
 mlflow.set_registry_uri('databricks-uc')
-#                                                                                                   Stage/version
-#                                                                                 Model name              |
-#                                                                                       |                 |
-predict_maintenance = mlflow.pyfunc.spark_udf(spark, f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod", result_type="string")
+#                                                                                                    Stage/version  
+#                                                                                       Model name         |        
+#                                                                                           |              |        
+predict_maintenance = mlflow.pyfunc.spark_udf(spark, f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod", "string", env_manager='virtualenv')
 #We can use the function in SQL
 spark.udf.register("predict_maintenance", predict_maintenance)
+columns = predict_maintenance.metadata.get_input_schema().input_names()
 
 # COMMAND ----------
 
@@ -94,7 +74,29 @@ spark.table('turbine_hourly_features').withColumn("dbdemos_turbine_maintenance",
 
 # COMMAND ----------
 
+from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
+mlflow.set_registry_uri('databricks-uc')
+local_path = ModelsArtifactRepository(f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod").download_artifacts("") # download model from remote registry
+
+requirements_path = os.path.join(local_path, "requirements.txt")
+if not os.path.exists(requirements_path):
+  dbutils.fs.put("file:" + requirements_path, "", True)
+
+# COMMAND ----------
+
+# MAGIC %pip install -r $requirements_path
+# MAGIC dbutils.library.restartPython()
+
+# COMMAND ----------
+
+# MAGIC %run ../_resources/00-setup $reset_all_data=false
+
+# COMMAND ----------
+
+import mlflow
+mlflow.set_registry_uri('databricks-uc')
 model = mlflow.pyfunc.load_model(f"models:/{catalog}.{db}.dbdemos_turbine_maintenance@prod")
+columns = model.metadata.get_input_schema().input_names()
 df = spark.table('turbine_hourly_features').select(*columns).limit(10).toPandas()
 df['churn_prediction'] = model.predict(df)
 display(df)
@@ -109,7 +111,7 @@ display(df)
 # MAGIC
 # MAGIC Databricks also provides serverless serving.
 # MAGIC
-# MAGIC Click on model Serving, enable realtime serverless and your endpoint will be created, providing serving over REST api within a Click.
+# MAGIC Click on model Serving, enable real-time serverless and your endpoint will be created, providing serving over REST API within a click.
 # MAGIC
 # MAGIC Databricks Serverless offer autoscaling, including downscaling to zero when you don't have any traffic to offer best-in-class TCO while keeping low-latencies model serving.
 
@@ -118,9 +120,9 @@ display(df)
 # MAGIC %md
 # MAGIC ## Real time model inference
 # MAGIC
-# MAGIC Let's now deploy our model behind a realtime model serving endpoint.
+# MAGIC Let's now deploy our model behind a real-time model serving endpoint.
 # MAGIC
-# MAGIC We'll then use this endpoint in our GenAI Agentic demo to be able to fetch a turbine status in realtime
+# MAGIC We'll then use this endpoint in our GenAI Agentic demo to be able to fetch a turbine status in real-time
 # MAGIC
 
 # COMMAND ----------
@@ -161,7 +163,6 @@ while client.get_endpoint(MODEL_SERVING_ENDPOINT_NAME)['state']['config_update']
 # DBTITLE 1,Call the REST API deployed using standard python
 from mlflow import deployments
 
-
 def score_model(dataset):
   client = mlflow.deployments.get_deploy_client("databricks")
   predictions = client.predict(endpoint=MODEL_SERVING_ENDPOINT_NAME, inputs=dataset.to_dict(orient='split'))
@@ -173,24 +174,64 @@ dataset = spark.table(f'turbine_hourly_features').select(*columns).limit(3).toPa
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Another way to run inference is the use of ai_query. ai_query is one of multiple Databricks SQL ai function that allows you to invoke a machine learning model serving endpoint directly from SQL queries.
+# MAGIC It sends structured input data to the specified model endpoint and returns predictions as part of your query results.
+# MAGIC Benefits:
+# MAGIC - Enables seamless integration of ML predictions into SQL analytics workflows.
+# MAGIC - Allows batch scoring on large datasets using SQL.
+# MAGIC - Simplifies operationalization of ML models for business users and analysts.
+# MAGIC - Reduces the need for custom Python code to call model endpoints.
+# MAGIC
+# MAGIC Find out more here: https://docs.databricks.com/aws/en/large-language-models/ai-functions
+# MAGIC
+# MAGIC Example usage in Databricks SQL:
+# MAGIC ```
+# MAGIC SELECT *, ai_query(
+# MAGIC         'model_serving_endpoint_name',
+# MAGIC         named_struct(
+# MAGIC             'feature1', feature1,
+# MAGIC             'feature2', feature2,
+# MAGIC             ...
+# MAGIC         ),
+# MAGIC         'STRING'
+# MAGIC     ) as prediction
+# MAGIC FROM your_table
+# MAGIC ```
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT *, ai_query(
+# MAGIC         'dbdemos_iot_turbine_prediction_endpoint', 
+# MAGIC         named_struct(
+# MAGIC             'hourly_timestamp', hourly_timestamp,
+# MAGIC             'avg_energy', avg_energy,
+# MAGIC             'std_sensor_A', std_sensor_A,
+# MAGIC             'std_sensor_B', std_sensor_B,
+# MAGIC             'std_sensor_C', std_sensor_C,
+# MAGIC             'std_sensor_D', std_sensor_D,
+# MAGIC             'std_sensor_E', std_sensor_E,
+# MAGIC             'std_sensor_F', std_sensor_F,
+# MAGIC             'location', location,
+# MAGIC             'model', model,
+# MAGIC             'state', state),
+# MAGIC         'STRING'
+# MAGIC     ) as prediction
+# MAGIC FROM turbine_hourly_features
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC
 # MAGIC # Next step: Leverage inferences and automate action to lower cost
 # MAGIC
 # MAGIC ## Automate action to react on potential turbine failure
 # MAGIC
-# MAGIC We now have an end 2 end data pipeline analizing and predicting churn. We can now easily trigger actions to reduce the churn based on our business:
+# MAGIC We now have an end 2 end data pipeline analyzing and predicting failures. We can now easily trigger actions to reduce downtime, such as dispatching a team earlier to fix the issue before an actual outage!
 # MAGIC
-# MAGIC - Send targeting email campaign to the customer the most likely to churn
-# MAGIC - Phone campaign to discuss with our customers and understand what's going
-# MAGIC - Understand what's wrong with our line of product and fixing it
+# MAGIC ## Track windturbine failure and impact
 # MAGIC
-# MAGIC These actions are out of the scope of this demo and simply leverage the Churn prediction field from our ML model.
-# MAGIC
-# MAGIC ## Track churn impact over the next month and campaign impact
-# MAGIC
-# MAGIC Of course, this churn prediction can be re-used in our dashboard to analyse future churn and measure churn reduction. 
-# MAGIC
-# MAGIC The pipeline created with the Data Intelligence Platform will offer a strong ROI: it took us a few hours to setup this pipeline end 2 end and we have potential gain for $129,914 / month!
+# MAGIC Of course, this prediction can be re-used in our dashboard to analyse future failure and measure impact. 
 # MAGIC
 # MAGIC <img width="800px" src="https://github.com/databricks-demos/dbdemos-resources/raw/main/images/manufacturing/lakehouse-iot-turbine/lakehouse-manuf-iot-dashboard-2.png">
 # MAGIC

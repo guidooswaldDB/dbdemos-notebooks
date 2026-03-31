@@ -11,7 +11,7 @@
 # MAGIC
 # MAGIC All the code below has been automatically generated. As data scientists, we can tune it based on our business knowledge, or use the generated model as-is.
 # MAGIC
-# MAGIC This saves data scientists hours of developement and allows team to quickly bootstrap and validate new projects, especally when we may not know the predictors for alternative data such as the telco payment data.
+# MAGIC This saves data scientists hours of development and allows teams to quickly bootstrap and validate new projects, especially when we may not know the predictors for alternative data such as the telco payment data.
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection. View README for more details.  -->
 # MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=lakehouse&notebook=03.3-Batch-Scoring-credit-decisioning&demo_name=lakehouse-fsi-credit-decisioning&event=VIEW">
@@ -37,11 +37,11 @@
 # MAGIC Now that our model was created and deployed in production within the MLFlow registry.
 # MAGIC
 # MAGIC <br/>
-# MAGIC We can now easily load it calling the `Production` stage, and use it in any Data Engineering pipeline (a job running every night, in streaming or even within a Delta Live Table pipeline).
+# MAGIC We can now easily load it calling the `Production` stage, and use it in any Data Engineering pipeline (a job running every night, in streaming or even within a Spark Declarative Pipelines pipeline).
 # MAGIC
 # MAGIC <br/>
 # MAGIC
-# MAGIC We'll then save this information as a new table without our FS database, and start building dashboards and alerts on top of it to run live analysis.
+# MAGIC We'll then save this information as a new table within our FS database, and start building dashboards and alerts on top of it to run live analysis.
 
 # COMMAND ----------
 
@@ -65,7 +65,7 @@ display(underbanked_df)
 
 # MAGIC %md
 # MAGIC
-# MAGIC In the scored data frame above, we have essentially created an end-to-end process to predict credit worthiness for any customer, regardless of whether the customer has an existing bank account. We have a binary prediction which captures this and incorporates all the intellience from Databricks AutoML and curated features from our feature store.
+# MAGIC In the scored data frame above, we have essentially created an end-to-end process to predict credit worthiness for any customer, regardless of whether the customer has an existing bank account. We have a binary prediction which captures this and incorporates all the intelligence from Databricks AutoML and curated features from our feature store.
 
 # COMMAND ----------
 

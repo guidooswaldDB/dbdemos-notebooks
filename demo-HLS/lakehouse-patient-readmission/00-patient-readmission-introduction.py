@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
-# MAGIC # Intelligence Data Platform for HLS - Patient Cohorts and re-admission 
+# MAGIC # Data Intelligence Platform for HLS - Patient Cohorts and re-admission 
 # MAGIC <br />
 # MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/hls/patient-readmission/hls-patient-readmision-lakehouse-0.png" style="float: left; margin-right: 30px; margin-top:10px" width="650px" />
 # MAGIC
@@ -32,7 +32,7 @@
 # MAGIC  This approach not only improves patient outcomes but also reduces the burden on healthcare facilities and optimizes resource allocation.
 # MAGIC
 # MAGIC ***Cost Optimization***
-# MAGIC Precise readmission prediction plays a pivotal role in cost containment for both hospitals and insurance groups. Hospital readmissions contribute significantly to healthcare expenditures, and accurate prediction can help identify patterns and risk factors associated with costly readmission cases. Developpigng proactive approach not only reduces healthcare costs but also promotes financial sustainability for hospitals and insurance providers.
+# MAGIC Precise readmission prediction plays a pivotal role in cost containment for both hospitals and insurance groups. Hospital readmissions contribute significantly to healthcare expenditures, and accurate prediction can help identify patterns and risk factors associated with costly readmission cases. Developing a proactive approach not only reduces healthcare costs but also promotes financial sustainability for hospitals and insurance providers.
 # MAGIC
 # MAGIC
 # MAGIC Databricks offers hospitals and insurance companies unique capabilities to predict readmissions and drive value. Databricks' holistic approach empowers healthcare organizations to leverage data effectively and achieve accurate readmission predictions while saving time and resources.
@@ -40,7 +40,7 @@
 # MAGIC
 # MAGIC ### What we will build
 # MAGIC
-# MAGIC To predict patient re-admissions, we'll build an end-to-end solution with the Lakehouse, leveraging data from external and internal systems: patient demographics, logitudinal health records (past visits, conditions, allergies, etc), and real-time patient admission, discharge, transofrm (ADT) information...  
+# MAGIC To predict patient re-admissions, we'll build an end-to-end solution with the Lakehouse, leveraging data from external and internal systems: patient demographics, longitudinal health records (past visits, conditions, allergies, etc), and real-time patient admission, discharge, transform (ADT) information...  
 # MAGIC
 # MAGIC At a high level, we will implement the following flow:
 # MAGIC
@@ -58,8 +58,8 @@
 # MAGIC
 # MAGIC <div style="margin-left: 20px">
 # MAGIC   <div class="badge_b"><div class="badge">1</div> Ingest all the various sources of data and create our longitudinal health records database (based on OMOP CDM) (<strong>unification of data</strong>) </div>
-# MAGIC   <div class="badge_b"><div class="badge">2</div>  Secure data and grant read access to the Data Analyst and Data Science teams, including row- and column-level filtering, PHI data masking, and others (<strong>data security and control</strong>). Use the Databricks unified <strong>data lineage</strong> to understand how your data flows and is used in your organisation</div>
-# MAGIC   <div class="badge_b"><div class="badge">4</div> Run BI  queries and EDA to analyze population-level trends</div>
+# MAGIC   <div class="badge_b"><div class="badge">2</div>  Secure data and grant read access to the Data Analyst and Data Science teams, including row- and column-level filtering, PHI data masking, and others (<strong>data security and control</strong>). Use the Databricks unified <strong>data lineage</strong> to understand how your data flows and is used in your organization</div>
+# MAGIC   <div class="badge_b"><div class="badge">4</div> Run BI queries and EDA to analyze population-level trends</div>
 # MAGIC   <div class="badge_b"><div class="badge">5</div>  Build ML model to <strong>predict readmission risk</strong> and deploy ML models for real-time serving</div>
 # MAGIC </div>
 # MAGIC <br/><br/>
@@ -75,27 +75,27 @@
 # MAGIC
 # MAGIC <br/>
 # MAGIC <div style="padding-left: 420px">
-# MAGIC Our first step is to ingest and clean the raw data we received so that our Data Analyst team can start running analysis on top of it.
+# MAGIC Our first step is to ingest and clean the raw data we received so that our data analyst team can start running analysis on top of it.
 # MAGIC
 # MAGIC
 # MAGIC <img src="https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-logo.png" style="float: right; margin-top: 20px" width="200px">
 # MAGIC
 # MAGIC ### Delta Lake
 # MAGIC
-# MAGIC All the tables we'll create in the Lakehouse will be stored as Delta Lake table. [Delta Lake](https://delta.io) is an open storage framework for reliability and performance. <br/>
+# MAGIC All the tables we'll create in the Lakehouse will be stored as Delta Lake tables. [Delta Lake](https://delta.io) is an open storage framework for reliability and performance. <br/>
 # MAGIC It provides many functionalities *(ACID Transaction, DELETE/UPDATE/MERGE, Clone zero copy, Change data Capture...)* <br />
 # MAGIC For more details on Delta Lake, run `dbdemos.install('delta-lake')`
 # MAGIC
-# MAGIC ### Simplify ingestion with Delta Live Tables (DLT)
+# MAGIC ### Simplify ingestion with Spark Declarative Pipelines (SDP)
 # MAGIC
-# MAGIC Databricks simplifies data ingestion and transformation with Delta Live Tables by allowing SQL users to create advanced pipelines, in batch or streaming. The engine will simplify pipeline deployment and testing and reduce operational complexity, so that you can focus on your business transformation and ensure data quality.<br/>
+# MAGIC Databricks simplifies data ingestion and transformation with Spark Declarative Pipelines by allowing SQL users to create advanced pipelines, in batch or streaming. The engine will simplify pipeline deployment and testing and reduce operational complexity, so that you can focus on your business transformation and ensure data quality.<br/>
 
 # COMMAND ----------
 
 # MAGIC %md 
 # MAGIC
-# MAGIC Open the HLS patient readmission  <a dbdemos-pipeline-id="dlt-patient-readmission" href="#joblist/pipelines/ff2fd2cb-733b-4166-85ed-a34b84129a35" target="_blank">Delta Live Table pipeline</a> or the [SQL notebook]($./01-Data-Ingestion/01.1-DLT-patient-readmission-SQL) *(python DLT notebook alternative coming soon).* <br>
-# MAGIC   For more details on DLT: `dbdemos.install('dlt-loan')` or `dbdemos.install('dlt-cdc')`
+# MAGIC Open the HLS patient readmission  <a dbdemos-pipeline-id="sdp-patient-readmission" href="#joblist/pipelines/ff2fd2cb-733b-4166-85ed-a34b84129a35" target="_blank">Spark Declarative Pipelines pipeline</a> or the [SQL notebook]($./01-Data-Ingestion/01.1-SDP-patient-readmission-SQL) *(python SDP notebook alternative coming soon).* <br>
+# MAGIC   For more details on SDP: `dbdemos.install('pipeline-bike')` or `dbdemos.install('declarative-pipeline-cdc')`
 
 # COMMAND ----------
 
@@ -111,9 +111,9 @@
 # MAGIC
 # MAGIC To leverage our data assets across the entire organization, we need:
 # MAGIC
-# MAGIC * Fine grained ACLs for our Analysts & Data Scientists teams
+# MAGIC * Fine-grained ACLs for our analysts and data scientists teams
 # MAGIC * Lineage between all our data assets
-# MAGIC * real-time PII data encryption 
+# MAGIC * Real-time PII data encryption 
 # MAGIC * Audit logs
 # MAGIC * Data Sharing with external organization 
 # MAGIC
@@ -138,9 +138,9 @@
 # MAGIC <img style="float: left; margin-right: 20px" width="400px" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/hls/patient-readmission/hls-patient-readmision-lakehouse-3.png" />
 # MAGIC  
 # MAGIC <br><br>
-# MAGIC Our datasets are now properly ingested, secured, with a high quality and easily discoverable within our organization.
+# MAGIC Our datasets are now properly ingested, secured, with high quality and easily discoverable within our organization.
 # MAGIC
-# MAGIC Data Analysts are now ready to run adhoc analysis, building custom cohort on top of the existing data. In addition, Databricks provides BI interactive queries, with low latencies & high througput, including Serverless Datawarehouses providing instant stop & start.
+# MAGIC Data Analysts are now ready to run adhoc analysis, building custom cohort on top of the existing data. In addition, Databricks provides BI interactive queries, with low latencies & high throughput, including Serverless Data Warehouses providing instant stop & start.
 
 # COMMAND ----------
 
@@ -156,7 +156,7 @@
 # MAGIC <img style="float: left; margin-right: 20px" width="400px" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/hls/patient-readmission/hls-patient-readmision-lakehouse-4.png" />
 # MAGIC
 # MAGIC <br><br>
-# MAGIC Being able to run analysis on our past data already gave us a lot of insight to drive understand over-all patient risk factors.
+# MAGIC Being able to run analysis on our past data already gave us a lot of insight to drive understanding of overall patient risk factors.
 # MAGIC
 # MAGIC However, knowing re-admission risk in the past isn't enough. We now need to take it to the next level and build a predictive model to forecast risk. 
 # MAGIC
@@ -185,11 +185,11 @@
 # MAGIC
 # MAGIC Now that all our lakehouse pipeline is working, we need to orchestrate all the different steps to deploy a production-grade pipeline. Typical steps involve:
 # MAGIC
-# MAGIC - Incrementally consume all new data every X hours (or in realtime)
+# MAGIC - Incrementally consume all new data every X hours (or in real-time)
 # MAGIC - Refresh our dashboards
 # MAGIC - Retrain and re-deploy our models
 # MAGIC
-# MAGIC Databricks lakehouse provides Workflow, a complete orchestrator to build your pipeline, supporting taks with any kind of transformation.
+# MAGIC Databricks lakehouse provides Workflow, a complete orchestrator to build your pipeline, supporting tasks with any kind of transformation.
 
 # COMMAND ----------
 
@@ -201,8 +201,8 @@
 # MAGIC %md 
 # MAGIC ## Conclusion
 # MAGIC
-# MAGIC In this demo, we reviewed how to build a complete data pipeline, from ingestion up to advanced Clinical Data Analyzis.
+# MAGIC In this demo, we reviewed how to build a complete data pipeline, from ingestion up to advanced Clinical Data Analysis.
 # MAGIC
-# MAGIC Databricks Lakehouse is uniquely position to cover all your data use-case as a single, unify platform.
+# MAGIC Databricks Lakehouse is uniquely position to cover all your data use-case as a single, unified platform.
 # MAGIC
-# MAGIC This simplify your Data Processes and let you accelerate and focus on your core Health Care business, increasing health care quality, reducing patient readmission risk and unlocking all sort of use-cases: cohort analyzis, clinical trial analysis and modeling, RWE and more.
+# MAGIC This simplify your Data Processes and let you accelerate and focus on your core Health Care business, increasing health care quality, reducing patient readmission risk and unlocking all sort of use-cases: cohort analysis, clinical trial analysis and modeling, RWE and more.

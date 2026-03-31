@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
-# MAGIC # Explaining inferences to highlight PCB default
+# MAGIC # Explaining inferences to highlight PCB defects
 # MAGIC
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/product/computer-vision/deeplearning-cv-pcb-explainer.png?raw=true" width="500px" style="float: right"/>
 # MAGIC
@@ -133,7 +133,7 @@ def explain_image(image_to_explain, explainer, class_names):
 # COMMAND ----------
 
 # DBTITLE 1,PCB number 010 has been flagged as damaged.
-# We can clearly see in red the part where the anomaly is, and in blue its oposite (not contributing to 'normal').
+# We can clearly see in red the part where the anomaly is, and in blue its opposite (not contributing to 'normal').
 test = spark.read.table("training_dataset_augmented").where("filename = '010.JPG'").toPandas()
 image_bytes = test.iloc[0]['content']
 predictions =  pipeline(Image.open(io.BytesIO(image_bytes)))

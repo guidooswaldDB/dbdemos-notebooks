@@ -11,7 +11,7 @@
 # MAGIC Databricks provide Feature Store capabilities, simplifying operational work and increasing discoverability among your Data Scientist team, accelerating Analysis.
 # MAGIC
 # MAGIC Under the hood, feature store are backed by a Delta Lake table. This will allow discoverability and reusability of our feature across our organization, increasing team efficiency. <br/>
-# MAGIC These tables can be backed with Online tables (such as DynamoDB or CosmoDB), provinding instant feature lookup and transformations (ms) for realtime inferences.
+# MAGIC These tables can be backed with Online tables (such as DynamoDB or CosmoDB), providing instant feature lookup and transformations (ms) for real-time inferences.
 # MAGIC
 # MAGIC Databricks Feature Store brings advanced capabilities to accelerate and simplify your ML journey, such as point in time support and online-store, fetching your features within ms for real time Serving. 
 # MAGIC
@@ -198,9 +198,9 @@ fs.write_table(df=aae_features_df, name=f'{dbName}.age_at_enc_features', mode='o
 # MAGIC
 # MAGIC Now that our feature tables are created, we can query them to build training datasets.
 # MAGIC
-# MAGIC This is done by building Feature Lookups, specifying the key used to retrive the data. 
+# MAGIC This is done by building Feature Lookups, specifying the key used to retrieve the data. 
 # MAGIC
-# MAGIC This is conceptually close to a SQL JOIN on the key between between your label dataset and the feature store tables. For offline batch this is done with Spark as a backend, and for realtime feature lookup an Key/Value backend can be used to request the features for a given key.
+# MAGIC This is conceptually close to a SQL JOIN on the key between your label dataset and the feature store tables. For offline batch this is done with Spark as a backend, and for real-time feature lookup a Key/Value backend can be used to request the features for a given key.
 
 # COMMAND ----------
 
@@ -273,11 +273,11 @@ training_df = training_set.load_df()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Congrats! our training dataset is ready, retreiving features from our Feature Tables.
+# MAGIC ## Congrats! our training dataset is ready, retrieving features from our Feature Tables.
 # MAGIC
 # MAGIC We now continue our ML steps such as calling AutoML with the training Dataset.
 # MAGIC
-# MAGIC For more details on Databricks Feature Store and more advanced capabilities (Online Store for realtime lookup, streaming updates, timeseries processing...), install the feature store demo: `dbdemos.install('feature-store')` 
+# MAGIC For more details on Databricks Feature Store and more advanced capabilities (Online Store for real-time lookup, streaming updates, timeseries processing...), install the feature store demo: `dbdemos.install('feature-store')` 
 
 # COMMAND ----------
 

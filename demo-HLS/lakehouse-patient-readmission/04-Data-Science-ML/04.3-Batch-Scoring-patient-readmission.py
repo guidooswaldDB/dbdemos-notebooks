@@ -11,7 +11,7 @@
 # MAGIC
 # MAGIC All the code below has been automatically generated. As data scientists, we can tune it based on our business knowledge, or use the generated model as-is.
 # MAGIC
-# MAGIC This saves data scientists hours of developement and allows team to quickly bootstrap and validate new projects, especally when we may not know the predictors for alternative data such as the telco payment data.
+# MAGIC This saves data scientists hours of development and allows teams to quickly bootstrap and validate new projects, especially when we may not know the predictors for alternative data such as the telco payment data.
 # MAGIC
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection. View README for more details.  -->
@@ -35,7 +35,7 @@
 # MAGIC
 # MAGIC Our model was created and deployed in production within the MLFlow registry.
 # MAGIC
-# MAGIC We can now easily load it calling the `Production` stage, and use it in any Data Engineering pipeline (a job running every night, in streaming or even within a Delta Live Table pipeline).
+# MAGIC We can now easily load it calling the `Production` stage, and use it in any Data Engineering pipeline (a job running every night, in streaming or even within a Spark Declarative Pipelines pipeline).
 # MAGIC
 # MAGIC <br/>
 # MAGIC
@@ -67,7 +67,7 @@ display(patient_risk_df)
 # MAGIC %md
 # MAGIC In the scored dataframe above, we have essentially created an end-to-end process to predict readmission risk for any patient. 
 # MAGIC
-# MAGIC We have a binary prediction which captures this and incorporates all the intellience from Databricks AutoML and curated features, but this could also return a probability between 0 and 1 depending on how you want your results.
+# MAGIC We have a binary prediction which captures this and incorporates all the intelligence from Databricks AutoML and curated features, but this could also return a probability between 0 and 1 depending on how you want your results.
 
 # COMMAND ----------
 
@@ -81,7 +81,7 @@ patient_risk_df.write.mode("overwrite").saveAsTable(f"patient_readmission_predic
 # MAGIC ### Next steps
 # MAGIC
 # MAGIC at risk and providing cusom care to reduce readmission risk,
-# MAGIC - Deploy Real time inference with [04.4-Model-Serving-patient-readmission]($./04.4-Model-Serving-patient-readmission) to enable realtime capabilities and instantly get insight for a specific patient (Databricks Serverless Model Serving).
+# MAGIC - Deploy Real time inference with [04.4-Model-Serving-patient-readmission]($./04.4-Model-Serving-patient-readmission) to enable real-time capabilities and instantly get insight for a specific patient (Databricks Serverless Model Serving).
 # MAGIC
 # MAGIC Or
 # MAGIC

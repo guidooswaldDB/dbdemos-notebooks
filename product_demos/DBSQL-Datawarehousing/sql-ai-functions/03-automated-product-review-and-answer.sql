@@ -7,7 +7,7 @@
 -- MAGIC
 -- MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/product/sql-ai-functions/sql-ai-query-function-flow.png" width="1000">
 -- MAGIC
--- MAGIC **Don't forget about built-in SQL AI functions!** *In this notebook, we show you how to create your own custom functions. However, many text-related tasks (translation, classification etc.) are available as [builtin SQL functions]($./01-Builtin-SQL-AI-Functions). If you can, prefere these as they're easy to use and performant!*
+-- MAGIC **Don't forget about built-in SQL AI functions!** *In this notebook, we show you how to create your own custom functions. However, many text-related tasks (translation, classification etc.) are available as [builtin SQL functions]($./01-Builtin-SQL-AI-Functions). If you can, prefer these as they're easy to use and performant!*
 -- MAGIC
 -- MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
 -- MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=dbsql&notebook=03-automated-product-review-and-answer&demo_name=sql-ai-functions&event=VIEW">
@@ -163,7 +163,7 @@ SELECT * FROM reviews_answer
 -- MAGIC
 -- MAGIC Our pipeline is ready. Keep in mind that this is a fairly basic pipeline for our demo.
 -- MAGIC
--- MAGIC For more advanced pipeline, we recommend using Delta Live Table. DLT simplify data ingetsion and transformation tasks with incremental load, materialized view and more advanced features. For more details, run `dbdemos.install_demo('dlt-loans')`
+-- MAGIC For more advanced pipeline, we recommend using Spark Declarative Pipelines. SDP simplifies data ingestion and transformation tasks with incremental load, materialized view and more advanced features. For more details, run `dbdemos.install_demo('pipeline-bike')`
 
 -- COMMAND ----------
 
@@ -186,9 +186,9 @@ SELECT review_id,
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC ### Extra: Create an Production Ready Pipeline using Delta Live Table
+-- MAGIC ### Extra: Create an Production Ready Pipeline using Spark Declarative Pipelines
 -- MAGIC
--- MAGIC We can turn the steps in this notebook into a production ready Delta Live Table pipeline with AI SQL Functions
+-- MAGIC We can turn the steps in this notebook into a production ready Spark Declarative Pipelines pipeline with AI SQL Functions
 -- MAGIC
 -- MAGIC Open [04-create-end-to-end-DLT-workflow]($./04-create-end-to-end-DLT-workflow) for more details.
 

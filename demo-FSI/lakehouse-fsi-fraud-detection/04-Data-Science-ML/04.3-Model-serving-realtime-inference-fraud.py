@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
-# MAGIC # Deploying AutoML model for realtime serving
+# MAGIC # Deploying AutoML model for real-time serving
 # MAGIC
 # MAGIC <img style="float: right;" src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/fraud-detection/fsi-fraud-real-time-serving.png" width="700px" />
 # MAGIC
@@ -94,7 +94,7 @@ except:
 
 # COMMAND ----------
 
-# DBTITLE 1,Running HTTP REST inferences in realtime !
+# DBTITLE 1,Running HTTP REST inferences in real-time!
 from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
 from mlflow.models.model import Model
 

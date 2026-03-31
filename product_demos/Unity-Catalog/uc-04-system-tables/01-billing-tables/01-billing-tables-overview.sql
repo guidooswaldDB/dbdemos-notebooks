@@ -41,7 +41,7 @@
 -- MAGIC %md
 -- MAGIC # Model Serving Endpoint Tracking Dashboard demo example
 -- MAGIC
--- MAGIC Dbdemos also installed for you a Model Serving endpoint dashboard. Use it to track your Model Serving cost and analyse which endpoint is running.
+-- MAGIC Dbdemos also installed for you a Model Serving endpoint dashboard. Use it to track your Model Serving cost and analyze which endpoint is running.
 -- MAGIC
 -- MAGIC You can access it here: <a dbdemos-dashboard-id="model-serving-cost" href='/sql/dashboardsv3/02ef00cc36721f9e1f2028ee75723cc3' target="_blank">Model Serving Endpoint Cost tracking dashboard</a>
 
@@ -50,7 +50,7 @@
 -- MAGIC %md
 -- MAGIC # DBSQL warehouse Tracking Dashboard demo example
 -- MAGIC
--- MAGIC Dbdemos also installed for you a Warehouse / Serverless dashboard. Use it to track your cost and analyse which warehouse is running, from which Dashboard, which workspace is consuming what.
+-- MAGIC Dbdemos also installed for you a Warehouse / Serverless dashboard. Use it to track your cost and analyze which warehouse is running, from which Dashboard, which workspace is consuming what.
 -- MAGIC
 -- MAGIC You can access it here: <a dbdemos-dashboard-id="warehouse-serverless-cost" href='/sql/dashboardsv3/02ef00cc36721f9e1f2028aa75723cc4' target="_blank">SQL Warehouse Endpoint Cost tracking dashboard</a>
 

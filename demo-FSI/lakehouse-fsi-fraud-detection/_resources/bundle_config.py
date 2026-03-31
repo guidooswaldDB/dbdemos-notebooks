@@ -13,19 +13,9 @@
   "custom_schema_supported": True,
   "default_catalog": "main",
   "default_schema": "dbdemos_fsi_fraud_detection",
-  "description": "Build your Banking platform and detect Fraud in real-time. End 2 End demo, with Model Serving & realtime fraud inference A/B testing.",
-  "fullDescription": "The Databricks Lakehouse Platform is an open architecture that combines the best elements of data lakes and data warehouses. In this demo, we'll show you how to build a Real-time Fraud detection system for banking transactionn, delivering data and insights that would typically take months of effort on legacy platforms. <br/><br/>This demo covers the end to end lakehouse platform: <ul><li>Ingest data from external systems (EPR/Salesforce...) and then transform it using Delta Live Tables (DLT), a declarative ETL framework for building reliable, maintainable, and testable data processing pipelines. </li><li>Secure your ingested data to ensure governance and security on top of PII data</li><li>Leverage Databricks DBSQL and the warehouse endpoints to build dashboards to analyze the ingested data and understand the existing Fraud</li><li>Build a Machine Learning model with Databricks AutoML to flag transactions at risk</li><li>Leverage Databricks Model Serving to deploy a REST API serving real-time inferences in milliseconds with model A/B testing.</li><li>Orchestrate all these steps with Databricks Workflow</li></ul>",
-  "usecase": "Lakehouse Platform",
-  "products": ["Delta Live Tables", "Databricks SQL", "MLFLow", "Auto ML", "Unity Catalog"],
-  "related_links": [
-      {"title": "View all Product demos", "url": "<TBD: LINK TO A FILTER WITH ALL DBDEMOS CONTENT>"}, 
-      {"title": "Databricks for Financial Services", "url": "https://www.databricks.com/solutions/industries/financial-services"}],
-  "recommended_items": ["lakehouse-iot-platform", "lakehouse-fsi-credit", "lakehouse-retail-c360"],
-  "demo_assets": [
-      {"title": "Delta Live Table pipeline", "url": "https://www.dbdemos.ai/assets/img/dbdemos/lakehouse-fsi-fraud-dlt-0.png"},
-      {"title": "Databricks SQL Dashboard: Credit Decisioning", "url": "https://www.dbdemos.ai/assets/img/dbdemos/lakehouse-fsi-fraud-dashboard-0.png"}],     
+  "description": "Build your Banking platform and detect Fraud in real-time. End 2 End demo, with Model Serving & real-time fraud inference A/B testing.",
+  "fullDescription": "The Databricks Lakehouse Platform is an open architecture that combines the best elements of data lakes and data warehouses. In this demo, we'll show you how to build a Real-time Fraud detection system for banking transactionn, delivering data and insights that would typically take months of effort on legacy platforms. <br/><br/>This demo covers the end to end lakehouse platform: <ul><li>Ingest data from external systems (EPR/Salesforce...) and then transform it using Spark Declarative Pipelines (SDP), a declarative ETL framework for building reliable, maintainable, and testable data processing pipelines. </li><li>Secure your ingested data to ensure governance and security on top of PII data</li><li>Leverage Databricks DBSQL and the warehouse endpoints to build dashboards to analyze the ingested data and understand the existing Fraud</li><li>Build a Machine Learning model with Databricks AutoML to flag transactions at risk</li><li>Leverage Databricks Model Serving to deploy a REST API serving real-time inferences in milliseconds with model A/B testing.</li><li>Orchestrate all these steps with Databricks Workflow</li></ul>",
   "bundle": True,
-  "tags": [{"dlt": "Delta Live Table"},  {"ds": "Data Science"}, {"uc": "Unity Catalog"}, {"dbsql": "BI/DW/DBSQL"}],
   "notebooks": [
     {
       "path": "_resources/00-setup", 
@@ -52,12 +42,68 @@
       "description": "Start here to explore the Lakehouse."
     },
     {
-      "path": "01-Data-ingestion/01.1-DLT-fraud-detection-SQL", 
-      "pre_run": True, 
-      "publish_on_website": True, 
+      "path": "01-Data-ingestion/01.1-sdp-sql/01-SDP-fraud-detection-SQL",
+      "pre_run": True,
+      "publish_on_website": True,
       "add_cluster_setup_cell": False,
-      "title":  "Ingest data with Delta Live Table", 
-      "description": "SQL DLT pipeline to ingest data & build clean tables."
+      "title":  "SDP SQL - Main notebook",
+      "description": "SQL SDP pipeline to ingest data & build clean tables."
+    },
+    {
+      "path": "01-Data-ingestion/01.1-sdp-sql/explorations/sample_exploration",
+      "pre_run": True,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP SQL - Sample exploration",
+      "description": "Sample exploration notebook for pipeline."
+    },
+    {
+      "path": "01-Data-ingestion/01.1-sdp-sql/transformations/01-bronze.sql",
+      "pre_run": False,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP SQL - Bronze transformations",
+      "description": "Bronze layer transformations."
+    },
+    {
+      "path": "01-Data-ingestion/01.1-sdp-sql/transformations/02-silver.sql",
+      "pre_run": False,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP SQL - Silver transformations",
+      "description": "Silver layer transformations."
+    },
+    {
+      "path": "01-Data-ingestion/01.1-sdp-sql/transformations/03-gold.sql",
+      "pre_run": False,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP SQL - Gold transformations",
+      "description": "Gold layer transformations."
+    },
+    {
+      "path": "01-Data-ingestion/01.2-sdp-python/transformations/01-bronze.py",
+      "pre_run": False,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP python - Bronze transformations",
+      "description": "Bronze layer transformations."
+    },
+    {
+      "path": "01-Data-ingestion/01.2-sdp-python/transformations/02-silver.py",
+      "pre_run": False,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP python - Silver transformations",
+      "description": "Silver layer transformations."
+    },
+    {
+      "path": "01-Data-ingestion/01.2-sdp-python/transformations/03-gold.py",
+      "pre_run": False,
+      "publish_on_website": True,
+      "add_cluster_setup_cell": False,
+      "title":  "SDP python - Gold transformations",
+      "description": "Gold layer transformations."
     },
     {
       "path": "02-Data-governance/02-UC-data-governance-ACL-fsi-fraud", 
@@ -97,7 +143,7 @@
       "pre_run": True, 
       "publish_on_website": True, 
       "add_cluster_setup_cell": True,
-      "title":  "Infer Fraud in realtime - serverless API", 
+      "title":  "Infer Fraud in real-time - serverless API", 
       "description": "Once your model is deployed, run low latency inferences."
     },
     {
@@ -117,7 +163,23 @@
       "description": "Deploy the new model comparing its performance with the previous one."
     },
     {
-      "path": "05-Workflow-orchestration/05-Workflow-orchestration-fsi-fraud", 
+      "path": "05-Generative-AI/05.1-AI-Functions-Creation", 
+      "pre_run": True, 
+      "publish_on_website": True, 
+      "add_cluster_setup_cell": False,
+      "title":  "GenAI Functions", 
+      "description": "Utilize Databricks AI functions to generate automated fraud report generation."
+    },
+    {
+      "path": "05-Generative-AI/05.2-Agent-Creation-Guide", 
+      "pre_run": False, 
+      "publish_on_website": True, 
+      "add_cluster_setup_cell": False,
+      "title":  "Create an agent", 
+      "description": "Define an AI agent with the functions you defined in notebook 04.1"
+    },     
+    {
+      "path": "06-Workflow-orchestration/06-Workflow-orchestration-fsi-fraud", 
       "pre_run": False, 
       "publish_on_website": True, 
       "add_cluster_setup_cell": False,
@@ -145,9 +207,9 @@
                 "email_notifications": {}
             },
             {
-                "task_key": "start_dlt_pipeline",
+                "task_key": "start_sdp_pipeline",
                 "pipeline_task": {
-                    "pipeline_id": "{{DYNAMIC_DLT_ID_dlt-fsi-fraud}}",
+                    "pipeline_id": "{{DYNAMIC_SDP_ID_sdp-fsi-fraud}}",
                     "full_refresh": false
                 },
                 "timeout_seconds": 0,
@@ -169,7 +231,7 @@
                 "email_notifications": {},
                 "depends_on": [
                       {
-                          "task_key": "start_dlt_pipeline"
+                          "task_key": "start_sdp_pipeline"
                       }
                   ]
             },
@@ -204,13 +266,29 @@
                           "task_key": "register_model"
                       }
                   ]
-            }
+            },
+            {
+                "task_key": "create_ai_functions",
+                "notebook_task": {
+                    "notebook_path": "{{DEMO_FOLDER}}/05-Generative-AI/05.1-AI-Functions-Creation",
+                    "source": "WORKSPACE"
+                },
+                "base_parameters": {"shap_enabled": "false"},
+                "job_cluster_key": "Shared_job_cluster",
+                "timeout_seconds": 0,
+                "email_notifications": {},
+                "depends_on": [
+                      {
+                          "task_key": "create_model_serving_endpoint"
+                      }
+                  ]
+            }            
         ],
         "job_clusters": [
             {
                 "job_cluster_key": "Shared_job_cluster",
                 "new_cluster": {
-                    "spark_version": "15.3.x-cpu-ml-scala2.12",
+                    "spark_version": "16.4.x-cpu-ml-scala2.12",
                     "spark_conf": {
                         "spark.master": "local[*, 4]",
                         "spark.databricks.cluster.profile": "singleNode"
@@ -239,14 +317,14 @@
     "custom_tags": {
         "ResourceClass": "SingleNode"
     },
-    "spark_version": "15.3.x-cpu-ml-scala2.12",
+    "spark_version": "16.4.x-cpu-ml-scala2.12",
     "single_user_name": "{{CURRENT_USER}}",
     "data_security_mode": "SINGLE_USER",
     "num_workers": 0
   }, 
   "pipelines": [
     {
-      "id": "dlt-fsi-fraud",
+      "id": "sdp-fsi-fraud",
       "run_after_creation": False,
       "definition": {
         "clusters": [
@@ -263,17 +341,23 @@
         "continuous": False,
         "channel": "PREVIEW",
         "edition": "ADVANCED",
-        "photon": True,
+        "photon": False,
         "libraries": [
             {
-                "notebook": {
-                    "path": "{{DEMO_FOLDER}}/01-Data-ingestion/01.1-DLT-fraud-detection-SQL"
+                "glob": {
+                    "include": "{{DEMO_FOLDER}}/01-Data-ingestion/01.1-sdp-sql/transformations/**"
                 }
             }
         ],
-        "name": "dbdemos_fraud_{{CATALOG}}_{{SCHEMA}}",
+        "name": "dbdemos_sdp_lakehouse_fraud_{{CATALOG}}_{{SCHEMA}}",
         "catalog": "{{CATALOG}}",
-        "target": "{{SCHEMA}}"
+        "schema": "{{SCHEMA}}",
+        "event_log": {
+              "catalog": "{{CATALOG}}",
+              "schema": "{{SCHEMA}}",
+              "name": "dbdemos_fraud_event_logs"
+        },
+        "root_path": "{{DEMO_FOLDER}}/01-Data-ingestion/01.1-sdp-sql"
       }
     }
   ],

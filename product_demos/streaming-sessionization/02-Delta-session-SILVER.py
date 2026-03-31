@@ -11,7 +11,7 @@
 # MAGIC
 # MAGIC Should our message content change, we'll be able to adapt the transformation of this job to always allow SQL queries over this SILVER table.
 # MAGIC
-# MAGIC If we realized our logic was flawed from the begining, it'll also be easy to start a new cluster to re-process the entire table with a better transformation!
+# MAGIC If we realized our logic was flawed from the beginning, it'll also be easy to start a new cluster to re-process the entire table with a better transformation!
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
 # MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-engineering&notebook=01-Delta-session-SILVER&demo_name=streaming-sessionization&event=VIEW">

@@ -158,11 +158,11 @@ select * from user_delta where id in (1 ,2, 99999)
 -- MAGIC
 -- MAGIC Delta Lake support constraints. You can add any expression to force your table having a given field respecting this constraint. As example, let's make sure that the ID is never null.
 -- MAGIC
--- MAGIC *Note: This is enforcing quality at the table level. Delta Live Tables offer much more advance quality rules and expectations in data Pipelines.*
+-- MAGIC *Note: This is enforcing quality at the table level. Spark Declarative Pipelines offer much more advance quality rules and expectations in data Pipelines.*
 
 -- COMMAND ----------
 
-ALTER TABLE user_delta ADD CONSTRAINT id_not_null CHECK (id is not null);
+ALTER TABLE user_delta DROP CONSTRAINT IF EXISTS id_not_null; ALTER TABLE user_delta ADD CONSTRAINT id_not_null CHECK (id is not null);
 
 -- COMMAND ----------
 

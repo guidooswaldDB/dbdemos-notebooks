@@ -29,7 +29,7 @@
 -- MAGIC %md-sandbox
 -- MAGIC ## Wind Turbine Prescriptive Maintenance with the Databricks Intelligence Data Platform: Bringing Generative AI to Predictive Maintenance
 -- MAGIC
--- MAGIC Being able to collect and centralize industrial equipment information in real time is critical in the energy space. When a wind turbine is down, it is not generating power which leads to poor customer service and lost revenue. Data is the key to unlock critical capabilities such as energy optimization, anomaly detection, and/or predictive maintenance. The rapid rise of Generative AI provides the opportunity to revolutionize maintenance by not only predicting when equipment is likely to fail, but also generating prescriptive maintenance actions to prevent failurs before they arise and optimize equipment performance. This enables a shift from predictive to prescriptive maintenance. <br/> 
+-- MAGIC Being able to collect and centralize industrial equipment information in real time is critical in the energy space. When a wind turbine is down, it is not generating power which leads to poor customer service and lost revenue. Data is the key to unlock critical capabilities such as energy optimization, anomaly detection, and/or predictive maintenance. The rapid rise of Generative AI provides the opportunity to revolutionize maintenance by not only predicting when equipment is likely to fail, but also generating prescriptive maintenance actions to prevent failures before they arise and optimize equipment performance. This enables a shift from predictive to prescriptive maintenance. <br/> 
 -- MAGIC
 -- MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/refs/heads/main/images/manufacturing/lakehouse-iot-turbine/prescriptive_maintenance.png" width="700px" style="float:right; margin-left: 20px"/>
 -- MAGIC
@@ -55,7 +55,7 @@
 -- MAGIC     <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/refs/heads/main/images/manufacturing/lakehouse-iot-turbine/team_flow_overview.png" width="1000px">
 -- MAGIC </div>
 -- MAGIC
--- MAGIC 1. Ingest and create our IoT database and tables which are easily queriable via SQL.
+-- MAGIC 1. Ingest and create our IoT database and tables which are easily queryable via SQL.
 -- MAGIC 2. Secure data and grant read access to the Data Analyst and Data Science teams.
 -- MAGIC 3. Run BI queries to analyze existing failures.
 -- MAGIC 4. Build ML model to monitor our wind turbine farm & trigger predictive maintenance operations.
@@ -85,7 +85,7 @@
 -- MAGIC
 -- MAGIC <br/>
 -- MAGIC <div style="padding-left: 420px">
--- MAGIC Our first step is to ingest and clean the raw data we received so that our Data Analyst team can start running analysis on top of it.
+-- MAGIC Our first step is to ingest and clean the raw data we received so that our data analyst team can start running analysis on top of it.
 -- MAGIC
 -- MAGIC
 -- MAGIC <img src="https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-logo.png" style="float: right; margin-top: 20px" width="200px">
@@ -96,16 +96,16 @@
 -- MAGIC It provides many functionalities such as *(ACID Transaction, DELETE/UPDATE/MERGE, Clone zero copy, Change data Capture...)* <br />
 -- MAGIC For more details on Delta Lake, run `dbdemos.install('delta-lake')`
 -- MAGIC
--- MAGIC ### Simplify ingestion with Delta Live Tables (DLT)
+-- MAGIC ### Simplify ingestion with Spark Declarative Pipelines
 -- MAGIC
--- MAGIC Databricks simplifies data ingestion and transformation with Delta Live Tables by allowing SQL users to create advanced pipelines via batch or streaming. Databricks also simplifies pipeline deployment, testing, and tracking data quality which reduces operational complexity, so that you can focus on the needs of the business.<br/>
+-- MAGIC Databricks simplifies data ingestion and transformation with Spark Declarative Pipelines by allowing SQL users to create advanced pipelines via batch or streaming. Databricks also simplifies pipeline deployment, testing, and tracking data quality which reduces operational complexity, so that you can focus on the needs of the business.<br/>
 
 -- COMMAND ----------
 
--- MAGIC %md 
--- MAGIC Open the Wind Turbine 
--- MAGIC   <a dbdemos-pipeline-id="dlt-iot-wind-turbine" href="#joblist/pipelines/c8083360-9492-446d-9293-e648527c85eb" target="_blank">Delta Live Table pipeline</a> or the [SQL notebook]($./01-Data-ingestion/01.1-DLT-Wind-Turbine-SQL) *(Alternatives: DLT Python version Soon available - [plain Delta+Spark version]($./01-Data-ingestion/plain-spark-delta-pipeline/01.5-Delta-pipeline-spark-iot-turbine))*. <br>
--- MAGIC   For more details on DLT: `dbdemos.install('dlt-load')` or `dbdemos.install('dlt-cdc')`
+-- MAGIC %md
+-- MAGIC Open the Wind Turbine
+-- MAGIC   <a dbdemos-pipeline-id="sdp-sql" href="#joblist/pipelines/c8083360-9492-446d-9293-e648527c85eb" target="_blank">Spark Declarative Pipelines pipeline</a> or the [SQL notebook]($./01-Data-ingestion/01.1-SDP-SQL/01.1-SDP-Wind-Turbine-SQL) *(Alternatives:  [Spark Declarative Pipelines Python]($./01-Data-ingestion/01.2-SDP-python/01.1-SDP-Wind-Turbine-Python) - [plain Delta+Spark version]($./01-Data-ingestion/plain-spark-delta-pipeline/01.5-Delta-pipeline-spark-iot-turbine))*. <br>
+-- MAGIC   For more details on Spark Declarative Pipelines: `dbdemos.install('pipeline-bike')` or `dbdemos.install('declarative-pipeline-cdc')`
 
 -- COMMAND ----------
 
@@ -141,9 +141,9 @@
 -- MAGIC <br><br><br>
 -- MAGIC Our datasets are now properly ingested, secured, are of high quality and easily discoverable within our organization.
 -- MAGIC
--- MAGIC Data Analysts are now ready to run BI interactive queries which are low latency & high throughput. They can choose to either create a new compute cluster, use a shared cluster, or for even faster response times, use Databricks Serverless Datawarehouses which provide instant stop & start.
+-- MAGIC Data Analysts are now ready to run BI interactive queries which are low latency & high throughput. They can choose to either create a new compute cluster, use a shared cluster, or for even faster response times, use Databricks Serverless Data Warehouses which provide instant stop & start.
 -- MAGIC
--- MAGIC Let's see how Data Warehousing is done using Databricks! We will look at our built-in dashboards as Databricks provides a complete data platform from ingest to analysis but also provides to integrations with many popular BI tools such as PowerBI, Tableau and others!
+-- MAGIC Let's see how Data Warehousing is done using Databricks! We will look at our built-in dashboards as Databricks provides a complete data platform from ingest to analysis but also provides integrations with many popular BI tools such as PowerBI, Tableau and others!
 
 -- COMMAND ----------
 
@@ -180,7 +180,7 @@
 -- MAGIC
 -- MAGIC The rise of Generative AI enables a shift from Predictive to Prescriptive Maintenance ML Models. By going from ML models to agent systems, we can now leverage the predictive model as one of the many components of the AI system. This opens up a whole lot of new opportunities for automation and efficiency gains, which will further increase uptime and minimize costs.
 -- MAGIC
--- MAGIC Databricks offers a a set of tools to help developers build, deploy and evaluate production-quality AI agents like Retrievel Augmented Generation (RAG) applications, including a vector database, model serving endpoints, governance, monitoring and evaluation capabilties. 
+-- MAGIC Databricks offers a a set of tools to help developers build, deploy and evaluate production-quality AI agents like Retrievel Augmented Generation (RAG) applications, including a vector database, model serving endpoints, governance, monitoring, and evaluation capabilities. 
 -- MAGIC
 -- MAGIC _Disclaimer: if your organization doesn't allow (yet) the use of Databricks Vector Search and/or Model Serving, you can skip this section._
 
@@ -227,7 +227,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC Open the [workflow and orchestration notebook]($./06-Workflow-orchestration/06-Workflow-orchestration-iot-turbine) to schedule our pipeline (data ingetion, model re-training etc)
+-- MAGIC Open the [workflow and orchestration notebook]($./06-Workflow-orchestration/06-Workflow-orchestration-iot-turbine) to schedule our pipeline (data ingestion, model re-training etc)
 
 -- COMMAND ----------
 

@@ -30,13 +30,13 @@ databricks_token = dbutils.secrets.get('dbdemos', 'llm-agent-tools')
 # MAGIC
 # MAGIC
 # MAGIC
-# MAGIC ### One hosted function per room and let the llm route to the appropraite tool or multiple tools
+# MAGIC ### One hosted function per room and let the llm route to the appropriate tool or multiple tools
 # MAGIC
 # MAGIC Take a look at the following example code
 # MAGIC
 # MAGIC ```sql
 # MAGIC CREATE OR REPLACE FUNCTION chat_with_sales(question STRING COMMENT "the question to ask about sales data",
-# MAGIC                   contextual_history STRING COMMENT "provide relavant history to be able to answer this question, assume genie doesnt keep track of history. Use 'no relevant history' if there is nothing relevant to answer the question.")
+# MAGIC                   contextual_history STRING COMMENT "provide relevant history to be able to answer this question, assume genie doesn't keep track of history. Use 'no relevant history' if there is nothing relevant to answer the question.")
 # MAGIC RETURNS STRING
 # MAGIC LANGUAGE SQL
 # MAGIC COMMENT 'This is a agent that you can converse with to get answers to questions about sales. Try to provide simple questions and provide history if you had prior conversations.' 
@@ -304,7 +304,7 @@ databricks_token = dbutils.secrets.get('dbdemos', 'llm-agent-tools')
 
 # MAGIC %sql
 # MAGIC CREATE OR REPLACE FUNCTION chat_with_sales_forecast(question STRING COMMENT "the question to ask about billing forecast data",
-# MAGIC                   contextual_history STRING COMMENT "provide relavant history to be able to answer this question, assume genie doesnt keep track of history. Use 'no relevant history' if there is nothing relevant to answer the question.")
+# MAGIC                   contextual_history STRING COMMENT "provide relevant history to be able to answer this question, assume genie doesn't keep track of history. Use 'no relevant history' if there is nothing relevant to answer the question.")
 # MAGIC RETURNS STRING
 # MAGIC LANGUAGE SQL
 # MAGIC COMMENT 'This is a agent that you can converse with to get answers to questions about billing and forecasting data about billing. Try to provide simple questions and provide history if you had prior conversations.' 

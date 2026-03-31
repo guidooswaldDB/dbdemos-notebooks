@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %pip install git+https://github.com/QuentinAmbard/mandrova faker databricks-sdk==0.40.0 mlflow==2.20.2 cloudpickle==2.2.1 
+# MAGIC %pip install git+https://github.com/QuentinAmbard/mandrova faker databricks-sdk==0.40.0 mlflow==2.22.0 numpy==1.26.4 pandas==2.2.3
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -27,6 +27,7 @@ try:
   dbutils.fs.ls(folder+"/parts")
   dbutils.fs.ls(folder+"/turbine")
   dbutils.fs.ls(folder+"/incoming_data")
+  dbutils.fs.ls(folder+"/maintenance_guide")
   data_exists = True
   print("data already exists")
 except Exception as e:
@@ -48,6 +49,7 @@ if not data_exists:
         DBDemos.download_file_from_git(folder+'/parts', "databricks-demos", "dbdemos-dataset", "/manufacturing/lakehouse-iot-turbine/parts")
         DBDemos.download_file_from_git(folder+'/turbine', "databricks-demos", "dbdemos-dataset", "/manufacturing/lakehouse-iot-turbine/turbine")
         DBDemos.download_file_from_git(folder+'/incoming_data', "databricks-demos", "dbdemos-dataset", "/manufacturing/lakehouse-iot-turbine/incoming_data")
+        DBDemos.download_file_from_git(folder+'/maintenance_guide', "databricks-demos", "dbdemos-dataset", "/manufacturing/lakehouse-iot-turbine/maintenance_guide")
         spark.sql("CREATE TABLE IF NOT EXISTS turbine_power_prediction ( hour INT, min FLOAT, max FLOAT, prediction FLOAT);")
         spark.sql("DELETE FROM turbine_power_prediction")
         spark.sql("insert into turbine_power_prediction values (0, 377, 397, 391), (1, 393, 423, 412), (2, 399, 455, 426), (3, 391, 445, 404), (4, 345, 394, 365), (5, 235, 340, 276), (6, 144, 275, 195), (7, 93, 175, 133), (8, 45, 105, 76), (9, 55, 125, 95), (10, 35, 99, 77), (11, 14, 79, 44)")
@@ -58,17 +60,21 @@ if not data_exists:
 
 # COMMAND ----------
 
-#As we need a model in the DLT pipeline and the model depends of the DLT pipeline too, let's build an empty one.
+#As we need a model in the SDP pipeline and the model depends of the SDP pipeline too, let's build an empty one.
 #This wouldn't make sense in a real-world system where we'd have 2 jobs / pipeline (1 for ingestion, and 1 to build the model / run inferences)
 import random
 import mlflow
 from  mlflow.models.signature import ModelSignature
+import pandas as pd
+import numpy as np
+import cloudpickle
+from unittest import mock
 
 # define a custom model randomly flagging 10% of sensor for the demo init (it'll be replace with proper model on the training part.)
 class MaintenanceEmptyModel(mlflow.pyfunc.PythonModel):
-    def predict(self, context, model_input):
+    def predict(self, context, model_input: pd.DataFrame) -> pd.Series:
         import random
-        sensors = ['sensor_F', 'sensor_D', 'sensor_B']  # List of sensors
+        sensors = ['sensor_F', 'sensor_D', 'sensor_B']
         return model_input['avg_energy'].apply(lambda x: 'ok' if random.random() < 0.9 else random.choice(sensors))
  
 #Enable Unity Catalog with mlflow registry
@@ -89,14 +95,15 @@ except Exception as e:
 
         signature = ModelSignature.from_dict({'inputs': '[{"name": "hourly_timestamp", "type": "datetime"}, {"name": "avg_energy", "type": "double"}, {"name": "std_sensor_A", "type": "double"}, {"name": "std_sensor_B", "type": "double"}, {"name": "std_sensor_C", "type": "double"}, {"name": "std_sensor_D", "type": "double"}, {"name": "std_sensor_E", "type": "double"}, {"name": "std_sensor_F", "type": "double"}, {"name": "location", "type": "string"}, {"name": "model", "type": "string"}, {"name": "state", "type": "string"}]',
 'outputs': '[{"type": "tensor", "tensor-spec": {"dtype": "object", "shape": [-1]}}]'})
-        with mlflow.start_run() as run:
-            model_info = mlflow.pyfunc.log_model(artifact_path="model", python_model=churn_model, signature=signature, pip_requirements=['scikit-learn==1.3.0', 'mlflow=='+mlflow.__version__])
+        #Temporary pin python to 3.11.10
+        with mlflow.start_run(run_name="mockup_model") as run, mock.patch("mlflow.utils.environment.PYTHON_VERSION", DBDemos.get_python_version_mlflow()):
+            model_info = mlflow.pyfunc.log_model(artifact_path="model", python_model=churn_model, signature=signature, pip_requirements=['mlflow=='+mlflow.__version__, 'pandas=='+pd.__version__, 'numpy=='+np.__version__, 'cloudpickle=='+cloudpickle.__version__])
 
         #Register & move the model in production
         model_registered = mlflow.register_model(f'runs:/{run.info.run_id}/model', f"{catalog}.{db}.{model_name}")
         client.set_registered_model_alias(name=f"{catalog}.{db}.{model_name}", alias="prod", version=model_registered.version)
     else:
-        print(f"ERROR: couldn't access model for unknown reason - DLT pipeline will likely fail as model isn't available: {e}")
+        print(f"ERROR: couldn't access model for unknown reason - SDP pipeline will likely fail as model isn't available: {e}")
 
 # COMMAND ----------
 

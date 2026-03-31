@@ -20,7 +20,7 @@
   "related_links": [
       {"title": "View all Product demos", "url": "<TBD: LINK TO A FILTER WITH ALL DBDEMOS CONTENT>"},
       {"title": "Databricks Streaming Project Lightspeed", "url": "https://www.databricks.com/blog/2022/06/28/project-lightspeed-faster-and-simpler-stream-processing-with-apache-spark.html"}],
-  "recommended_items": ["dlt-loans", "dlt-cdc", "delta-lake"],
+  "recommended_items": ["sdp-loans", "sdp-cdc", "delta-lake"],
   "demo_assets": [],
   "bundle": True,
   "tags": [{"delta": "Delta Lake"}],
@@ -113,7 +113,7 @@
     }
   ],
   "cluster": {
-      "spark_version": "15.4.x-scala2.12",
+      "spark_version": "16.4.x-scala2.12",
       "spark_conf": {
         "spark.master": "local[*]",
         "spark.databricks.cluster.profile": "singleNode"
@@ -123,6 +123,6 @@
     },
     "num_workers": 0,
     "single_user_name": "{{CURRENT_USER}}",
-    "data_security_mode": "SINGLE_USER"
+    "data_security_mode": "SINGLE_USER"   
   }
 }

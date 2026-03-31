@@ -53,7 +53,7 @@ display(df.limit(10))
 # MAGIC
 # MAGIC Hugging face makes this step very easy. All it takes is calling the `Dataset.from_spark` function. 
 # MAGIC
-# MAGIC Read the <a href="https://www.databricks.com/blog/contributing-spark-loader-for-hugging-face-datasets">blogbost</a> for more detail on the new Delta Loader.
+# MAGIC Read the <a href="https://www.databricks.com/blog/contributing-spark-loader-for-hugging-face-datasets">blogpost</a> for more detail on the new Delta Loader.
 
 # COMMAND ----------
 
@@ -73,7 +73,7 @@ val_ds = splits['test']
 # MAGIC %md 
 # MAGIC ## Transfer learning with Hugging Face
 # MAGIC
-# MAGIC Transfer learning is the process of taking an existing model trained for another task on thousands of images, and transfering its knowledge to our domain. Hugging Face provides a helper class to make transfer learning very easy to implement.
+# MAGIC Transfer learning is the process of taking an existing model trained for another task on thousands of images, and transferring its knowledge to our domain. Hugging Face provides a helper class to make transfer learning very easy to implement.
 # MAGIC
 # MAGIC
 # MAGIC The classic process is to re-train the model or part of the model (typically the last layer) using our custom dataset.
@@ -304,7 +304,7 @@ test_image(damaged_samples, 0)
 # MAGIC ## Model deployment
 # MAGIC
 # MAGIC Our model is now trained. All we have to do is save it in our Model Registry and move it as Production ready. <br/>
-# MAGIC For this demo we'll use our lastes run, but we could also search the best run with ` mlflow.search_runs` (based on the metric we defined during training).
+# MAGIC For this demo we'll use our latest run, but we could also search the best run with ` mlflow.search_runs` (based on the metric we defined during training).
 
 # COMMAND ----------
 
@@ -359,7 +359,7 @@ client.set_registered_model_alias(
 # MAGIC %md
 # MAGIC ## Next: Inference in batch and real-time 
 # MAGIC
-# MAGIC Our model is now trained and registered in MLflow Model Registry. Databricks mitigates the need for a lot of the anciliary code to train a model, so that you can focus on improving your model performance.
+# MAGIC Our model is now trained and registered in MLflow Model Registry. Databricks mitigates the need for a lot of the ancillary code to train a model, so that you can focus on improving your model performance.
 # MAGIC
 # MAGIC The next step is now to use this model for inference - in batch or real-time behind a REST endpoint.
 # MAGIC

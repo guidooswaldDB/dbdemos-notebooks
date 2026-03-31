@@ -6,7 +6,7 @@
 # MAGIC
 # MAGIC We will cover the same steps as what we did with Hugging Face transformers library, but implementing the training steps ourselves.
 # MAGIC
-# MAGIC This notebook is more advanced as the Hugging Face one, but gives you more control over the training.
+# MAGIC This notebook is more advanced than the Hugging Face one, but gives you more control over the training.
 # MAGIC
 # MAGIC %md-sandbox
 # MAGIC <div style="background-color: #d9f0ff; border-radius: 10px; padding: 15px; margin: 10px 0; font-family: Arial, sans-serif;">
@@ -41,7 +41,7 @@ display(df.limit(10))
 # MAGIC
 # MAGIC In this example, we will be using Deltatorch to load our dataset. Deltatorch reads directly from Delta Lake tables using a native reader. 
 # MAGIC
-# MAGIC Deltatorch splits the dataframe in multiple chuncks to spread it across multiple nodes in an efficient way. This makes distributed training on multi-node clusters easy. 
+# MAGIC Deltatorch splits the dataframe into multiple chunks to spread it across multiple nodes in an efficient way. This makes distributed training on multi-node clusters easy. 
 # MAGIC
 # MAGIC To be able to do this split in the most efficient way, deltatorch needs a unique, incremental ID without gaps. We can add it to our existing dataset with a rank and directly split our test/training datasets:
 
@@ -401,7 +401,7 @@ client.set_registered_model_alias(
 # MAGIC ## Model scoring
 # MAGIC
 # MAGIC After training, registering and finally flagging our model as production-ready, we can use it to infer labels on new data. We will show how to do it for:
-# MAGIC * Batch inference, leveraging Pandas UDF (same approach would work for streaming, also using DLT)
+# MAGIC * Batch inference, leveraging Pandas UDF (same approach would work for streaming, also using SDP)
 # MAGIC * Real-time, leveraging Model Serving (ms latency)
 
 # COMMAND ----------
@@ -501,7 +501,10 @@ def detect_damaged_pcb(images_iter: Iterator[pd.Series]) -> Iterator[pd.DataFram
 # COMMAND ----------
 
 # Reduce the number of images we send at once to avoid memory issue
-spark.conf.set("spark.sql.execution.arrow.maxRecordsPerBatch", 1000)
+try:
+  spark.conf.set("spark.sql.execution.arrow.maxRecordsPerBatch", 1000)
+except Exception as e:
+  pass # conf not available in serverless
 
 display(df.select('filename', 'content').withColumn("prediction", detect_damaged_pcb("content")).limit(50))
 
@@ -563,4 +566,4 @@ display(predictions)
 # MAGIC - Load and distribute Delta Lake tables using deltatorch
 # MAGIC - Run distributed training with `TorchDistributor`
 # MAGIC - Save our model to MLFlow
-# MAGIC - Deploy our model in production for batch and realtime inferences
+# MAGIC - Deploy our model in production for batch and real-time inferences

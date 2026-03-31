@@ -15,7 +15,7 @@
 -- MAGIC SELECT ai_query(endpointName, request, returnType) for custom model serving endpoint. 
 -- MAGIC ```
 -- MAGIC
--- MAGIC `AI_QUERY` will send the prompt to the remote model configured and retrive the result as SQL. 
+-- MAGIC `AI_QUERY` will send the prompt to the remote model configured and retrieve the result as SQL. 
 -- MAGIC
 -- MAGIC In addition, we use the optional `responseFormat` argument with `AI_QUERY` to specify the response format you want the model to follow.
 -- MAGIC

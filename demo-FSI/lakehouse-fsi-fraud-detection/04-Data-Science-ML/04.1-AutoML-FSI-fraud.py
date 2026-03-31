@@ -7,7 +7,7 @@
 # MAGIC
 # MAGIC Being able to ingest and query our banking database is a first step, but this isn't enough to thrive in a very competitive market.
 # MAGIC
-# MAGIC Banking customers now expect real time personalization and protection. Modern data company achieve this with AI.
+# MAGIC Banking customers now expect real-time personalization and protection. Modern data companies achieve this with AI.
 # MAGIC
 # MAGIC <style>
 # MAGIC .right_box{
@@ -54,11 +54,11 @@
 # MAGIC <h3 style="padding: 10px 0px 0px 5px">Marc, as a Data Scientist, needs a data + ML platform accelerating all the ML & DS steps:</h3>
 # MAGIC
 # MAGIC <div style="font-size: 19px; margin-left: 73px; clear: left">
-# MAGIC <div class="badge_b"><div class="badge">1</div> Build Data Pipeline supporting real time (with DLT)</div>
+# MAGIC <div class="badge_b"><div class="badge">1</div> Build Data Pipeline supporting real time (with SDP)</div>
 # MAGIC <div class="badge_b"><div class="badge">2</div> Data Exploration</div>
 # MAGIC <div class="badge_b"><div class="badge">3</div> Feature creation</div>
 # MAGIC <div class="badge_b"><div class="badge">4</div> Build & train model</div>
-# MAGIC <div class="badge_b"><div class="badge">5</div> Deploy Model (Batch or serverless realtime)</div>
+# MAGIC <div class="badge_b"><div class="badge">5</div> Deploy Model (Batch or serverless real-time)</div>
 # MAGIC <div class="badge_b"><div class="badge">6</div> Monitoring</div>
 # MAGIC </div>
 # MAGIC
@@ -74,7 +74,7 @@
 # MAGIC
 # MAGIC Our first step as Data Scientist is to analyze and build the features we'll use to train our model.
 # MAGIC
-# MAGIC The transaction table enriched with customer data has been saved within our Delta Live Table pipeline. All we have to do is read this information, analyze it and start an Auto-ML run.
+# MAGIC The transaction table enriched with customer data has been saved within our Spark Declarative Pipelines pipeline. All we have to do is read this information, analyze it and start an Auto-ML run.
 # MAGIC
 # MAGIC <img src="https://raw.githubusercontent.com/databricks-demos/dbdemos-resources/main/images/fsi/fraud-detection/fsi-fraud-ds.png" width="1000px">
 # MAGIC
@@ -97,7 +97,7 @@
 # MAGIC %md
 # MAGIC ## Data exploration and analysis
 # MAGIC
-# MAGIC Let's review our dataset and start analyze the data we have to detect fraud
+# MAGIC Let's review our dataset and start analyzing the data we have to detect fraud
 
 # COMMAND ----------
 
@@ -121,7 +121,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC As expected, financial fraud is by nature very imbalanced between fraudulant and normal transactions
+# MAGIC As expected, financial fraud is by nature very imbalanced between fraudulent and normal transactions
 
 # COMMAND ----------
 
@@ -145,11 +145,11 @@ fig.add_trace(go.Pie(labels=df[~df['is_fraud']]['type'], values=df[~df['is_fraud
 # MAGIC
 # MAGIC <img src="https://github.com/QuentinAmbard/databricks-demo/raw/main/product_demos/mlops-end2end-flow-feature-store.png" style="float:right" width="500" />
 # MAGIC
-# MAGIC Once our features are ready, we'll save them in Databricks Feature Store. Under the hood, features store are backed by a Delta Lake table.
+# MAGIC Once our features are ready, we'll save them in Databricks Feature Store. Under the hood, feature stores are backed by a Delta Lake table.
 # MAGIC
-# MAGIC This will allow discoverability and reusability of our feature accross our organization, increasing team efficiency.
+# MAGIC This will allow discoverability and reusability of our feature across our organization, increasing team efficiency.
 # MAGIC
-# MAGIC Feature store will bring traceability and governance in our deployment, knowing which model is dependent of which set of features. It also simplify realtime serving.
+# MAGIC Feature store will bring traceability and governance in our deployment, knowing which model is dependent on which set of features. It also simplifies real-time serving.
 # MAGIC
 # MAGIC Make sure you're using the "Machine Learning" menu to have access to your feature store using the UI.
 
@@ -195,11 +195,11 @@ display(features)
 # MAGIC
 # MAGIC ## Accelerating Fraud detection model creation using MLFlow and Databricks Auto-ML
 # MAGIC
-# MAGIC MLflow is an open source project allowing model tracking, packaging and deployment. Everytime your datascientist team work on a model, Databricks will track all the parameter and data used and will save it. This ensure ML traceability and reproductibility, making it easy to know which model was build using which parameters/data.
+# MAGIC MLflow is an open source project allowing model tracking, packaging, and deployment. Every time your data scientist team works on a model, Databricks will track all the parameters and data used and will save it. This ensures ML traceability and reproducibility, making it easy to know which model was built using which parameters/data.
 # MAGIC
 # MAGIC ### AutoML: A glass-box solution that empowers data teams without taking away control
 # MAGIC
-# MAGIC While Databricks simplify model deployment and governance (MLOps) with MLFlow, bootstraping new ML projects can still be long and inefficient. 
+# MAGIC While Databricks simplifies model deployment and governance (MLOps) with MLflow, bootstrapping new ML projects can still be long and inefficient. 
 # MAGIC
 # MAGIC Instead of creating the same boilerplate for each new project, Databricks Auto-ML can automatically generate state of the art models for Classifications, regression, and forecast.
 # MAGIC
@@ -207,7 +207,7 @@ display(features)
 # MAGIC <img width="1000" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/auto-ml-full.png"/>
 # MAGIC
 # MAGIC
-# MAGIC Models can be directly deployed, or instead leverage generated notebooks to boostrap projects with best-practices, saving you weeks of efforts.
+# MAGIC Models can be directly deployed, or instead leverage generated notebooks to bootstrap projects with best practices, saving you weeks of effort.
 # MAGIC
 # MAGIC <br style="clear: both">
 # MAGIC
@@ -240,7 +240,7 @@ try:
     #Make sure all users can access dbdemos shared experiment
     DBDemos.set_experiment_permission(f"{xp_path}/{xp_name}")
 except Exception as e:
-    if "cannot import name 'automl'" in str(e):
+    if "cannot import name 'automl'" in str(e) or 'method_whitelist' in str(e):
         # Note: cannot import name 'automl' from 'databricks' likely means you're using serverless. Dbdemos doesn't support autoML serverless API - this will be improved soon.
         # Adding a temporary workaround to make sure it works well for now - ignore this for classic run
         DBDemos.create_mockup_automl_run(f"{xp_path}/{xp_name}", features.sample(0.02).toPandas())

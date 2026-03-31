@@ -7,7 +7,7 @@
 # MAGIC
 # MAGIC We now have our data cleaned and secured. We saw how to create and analyze our first patient cohorts.
 # MAGIC
-# MAGIC Let's now take it to the next level and start building a Machine Learning model to predict wich patients are at risk. 
+# MAGIC Let's now take it to the next level and start building a Machine Learning model to predict which patients are at risk. 
 # MAGIC
 # MAGIC We'll then be able to explain the model at a statistical level, understanding which features increase the readmission risk. This information will be critical in how we can specialize care for a specific patient population.
 # MAGIC
@@ -61,7 +61,7 @@ display(labels)
 # MAGIC %md
 # MAGIC ### Optional: leverage Databricks Feature Store
 # MAGIC
-# MAGIC Being able to save our features in dedicated feature store simplify data management cross teamn, allowing features to be shared but also used in real-time leveraging realtime feature serving (automatically backed by ELTP databases).
+# MAGIC Being able to save our features in dedicated feature store simplifies data management across teams, allowing features to be shared but also used in real-time leveraging real-time feature serving (automatically backed by OLTP databases).
 # MAGIC
 # MAGIC To keep this notebook simple, we won't be using the Feature store. If you are interested, open the [03.6-Feature-Store-ML-patient-readmission](/advanced-feature-store/03.6-Feature-Store-ML-patient-readmission) for a complete example.
 
@@ -131,7 +131,7 @@ display(spark.table("training_dataset"))
 # MAGIC %md
 # MAGIC #### EXTRA: Going further in feature engineering with Databricks Feature store
 # MAGIC
-# MAGIC In this demo, we simply created a table to save our Features. Databricks offers more advanced capabilities through the use of Feature Store including collaboration, discoverabilities and realtime backend.
+# MAGIC In this demo, we simply created a table to save our Features. Databricks offers more advanced capabilities through the use of Feature Store including collaboration, discoverability and real-time backend.
 # MAGIC
 # MAGIC For more details, open [04.6-EXTRA-Feature-Store-ML-patient-readmission]($./04.6-EXTRA-Feature-Store-ML-patient-readmission).
 # MAGIC

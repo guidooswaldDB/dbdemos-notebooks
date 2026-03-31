@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md
--- MAGIC # Process and analyse text with Built In Databricks SQL AI functions
+-- MAGIC # Process and analyze text with Built-In Databricks SQL AI functions
 -- MAGIC
 -- MAGIC Databricks SQL provides [built-in GenAI capabilities](https://docs.databricks.com/en/large-language-models/ai-functions.html), letting you perform adhoc operation, leveraging state of the art LLM, optimized for these tasks.
 -- MAGIC

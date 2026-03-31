@@ -1,5 +1,27 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
+# MAGIC <div style="
+# MAGIC   background-color: #ffe6e6;
+# MAGIC   border: 2px solid #ff4d4d;
+# MAGIC   border-radius: 8px;
+# MAGIC   padding: 16px;
+# MAGIC   font-family: Arial, sans-serif;
+# MAGIC   color: #660000;
+# MAGIC ">
+# MAGIC   <h3 style="margin-top: 0; color: #b30000;">⚠ This Demo is getting old!</h3>
+# MAGIC   <p>
+# MAGIC     Databricks is moving fast — it’s now easier than ever to deploy <strong>multi-agent systems</strong> 
+# MAGIC     and run evals with <strong>MLflow 3.0</strong>.
+# MAGIC   </p>
+# MAGIC   <p>
+# MAGIC     Install <code>dbdemos</code> <strong>ai-agent</strong> demos to explore the latest features.<br>
+# MAGIC     <em>This content will be deprecated soon.</em>
+# MAGIC   </p>
+# MAGIC </div>
+
+# COMMAND ----------
+
+# MAGIC %md-sandbox
 # MAGIC
 # MAGIC # 1/ Deploying our first RAG application with Mosaic AI Agent Framework & Agent Evaluation
 # MAGIC
@@ -15,14 +37,14 @@
 # MAGIC
 # MAGIC ## 1.1/ Data preparation for RAG: building and indexing our knowledge base into Databricks Vector Search
 # MAGIC
-# MAGIC Let's start by prepraing our knowledge database. In this simple first demo, we'll be using data from Databricks Documentation already prepared and chuncked.
+# MAGIC Let's start by preparing our knowledge database. In this simple first demo, we'll be using data from Databricks Documentation already prepared and chunked.
 # MAGIC
 # MAGIC <!-- Collect usage data (view). Remove it to disable collection or disable tracker during installation. View README for more details.  -->
 # MAGIC <img width="1px" src="https://ppxrzfxige.execute-api.us-west-2.amazonaws.com/v1/analytics?category=data-science&org_id=1444828305810485&notebook=01-First-Step-RAG-On-Databricks&demo_name=chatbot-rag-llm&event=VIEW">
 
 # COMMAND ----------
 
-# MAGIC %pip install -U --quiet databricks-sdk==0.40.0 databricks-langchain databricks-agents mlflow[databricks] databricks-vectorsearch==0.49 langchain==0.3.19 langchain_core==0.3.37 bs4==0.0.2 markdownify==0.14.1
+# MAGIC %pip install -U --quiet databricks-sdk==0.49.0 "databricks-langchain>=0.4.0" databricks-agents mlflow[databricks] databricks-vectorsearch==0.55 langchain==0.3.25 langchain_core==0.3.59 bs4==0.0.2 markdownify==0.14.1 pydantic==2.10.1
 # MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
@@ -139,14 +161,14 @@ docs
 # MAGIC
 # MAGIC We've seen how Databricks makes it easy to ingest and prepare your documents, and deploy a Vector Search index on top of it with just clicks.
 # MAGIC
-# MAGIC Now that our Vector Searc index is ready, let's deploy a langchain application.
+# MAGIC Now that our Vector Search index is ready, let's deploy a langchain application.
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## 2.1/ Configuring our Chain parameters
 # MAGIC
-# MAGIC As any appliaction, a RAG chain needs some configuration for each environement (ex: different catalog for test/prod environement). 
+# MAGIC As any application, a RAG chain needs some configuration for each environment (ex: different catalog for test/prod environment). 
 # MAGIC
 # MAGIC Databricks makes this easy with Chain Configurations. You can use this object to configure any value within your app, including the different system prompts and make it easy to test and deploy newer version with better prompt.
 
@@ -154,7 +176,7 @@ docs
 
 # For this first basic demo, we'll keep the configuration as a minimum. In real app, you can make all your RAG as a param (such as your prompt template to easily test different prompts!)
 chain_config = {
-    "llm_model_serving_endpoint_name": "databricks-meta-llama-3-1-70b-instruct",  # the foundation model we want to use
+    "llm_model_serving_endpoint_name": "databricks-meta-llama-3-3-70b-instruct",  # the foundation model we want to use
     "vector_search_endpoint_name": VECTOR_SEARCH_ENDPOINT_NAME,  # the endoint we want to use for vector search
     "vector_search_index": f"{catalog}.{db}.databricks_documentation_vs_index",
     "llm_prompt_template": """You are an assistant that answers questions. Use the following pieces of retrieved context to answer the question. Some pieces of context may be irrelevant, in which case you should not use them to form the answer.\n\nContext: {context}""",
@@ -403,7 +425,7 @@ print(f"\n\nReview App URL to share with your stakeholders: {deployment_info.rev
 # MAGIC
 # MAGIC Mosaic AI Agent Evaluation evaluates:
 # MAGIC 1. Answer correctness - requires ground truth
-# MAGIC 2. Hallucination / groundness - no ground truth required
+# MAGIC 2. Hallucination / groundedness - no ground truth required
 # MAGIC 3. Answer relevance - no ground truth required
 # MAGIC 4. Retrieval precision - no ground truth required
 # MAGIC 5. (Lack of) Toxicity - no ground truth required

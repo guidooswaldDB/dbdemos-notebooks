@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
-# MAGIC # Composable AI systems: Building and AI Stylist Specialist selling our products
+# MAGIC # Composable AI systems: Building an AI Stylist Specialist selling our products
 # MAGIC
 # MAGIC ## What's a composable AI system
 # MAGIC
@@ -98,7 +98,7 @@
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC ### Executing a Python function to fetch external dataset in realtime: getting the weather
+# MAGIC ### Executing a Python function to fetch external dataset in real-time: getting the weather
 # MAGIC
 # MAGIC We want our stylist assistant to give us recommendations based on the weather. Let's add a tool to fetch the weather based on longitude/latitude, using Python to call an external Weather API.
 # MAGIC
@@ -135,7 +135,7 @@
 # MAGIC
 # MAGIC You can also register tools containing custom prompts that your LLM can use to to execute actions based on the customer context.
 # MAGIC
-# MAGIC Let's create a tool that recommend the style for our user, based on the current weather.
+# MAGIC Let's create a tool that recommends the style for our user, based on the current weather.
 
 # COMMAND ----------
 
@@ -144,7 +144,7 @@
 # MAGIC RETURNS STRING
 # MAGIC LANGUAGE SQL
 # MAGIC COMMENT 'This function generate a stylist outfit description based on initial request and the current weather.'
-# MAGIC RETURN SELECT ai_query('databricks-meta-llama-3-70b-instruct',
+# MAGIC RETURN SELECT ai_query('databricks-meta-llama-3-3-70b-instruct',
 # MAGIC     CONCAT("You are a stylist assistant. Your goal is to give recommendation on what would be the best outfit for today. The current temperature is ",temperature_in_celsius ," celsius and rain is:", rain_in_mm, "mm. Give size in inches if any. Don't assume customer size if they don't share it. Give ideas of colors and other items to match. The user added this instruction based on what they like: ", requested_style)
 # MAGIC   ) AS recommended_outfit;
 # MAGIC
@@ -156,9 +156,9 @@
 # MAGIC %md-sandbox
 # MAGIC ### Using Vector search to find similar content as a tool
 # MAGIC
-# MAGIC Let's now add a tool to recomment similar items, based on an article description.
+# MAGIC Let's now add a tool to recommend similar items, based on an article description.
 # MAGIC
-# MAGIC We'll be using Databricks Vector Search to perform a realtime similarity search and return articles that we could suggest from our database.
+# MAGIC We'll be using Databricks Vector Search to perform a real-time similarity search and return articles that we could suggest from our database.
 # MAGIC
 # MAGIC To do so, you can leverage the new `vector_search` SQL function. See [Documentation](https://docs.databricks.com/en/sql/language-manual/functions/vector_search.html) for more details.
 # MAGIC
@@ -187,7 +187,7 @@
 # MAGIC SELECT clothes.* FROM (
 # MAGIC   SELECT explode(from_json(
 # MAGIC     ai_query(
-# MAGIC       'databricks-meta-llama-3-70b-instruct', 
+# MAGIC       'databricks-meta-llama-3-3-70b-instruct', 
 # MAGIC       CONCAT(
 # MAGIC         'returns a json list of 3 json object clothes: <"id": bigint, "name": string, "color": string, "category": string, "price": double, "description": string>. These clothes should match the following user description: ', description, '. Return only the answer as a javascript json object ready to be parsed, no comment or text or javascript or ``` at the beginning.' ) ), 'ARRAY<STRUCT<id: BIGINT, name: STRING, color: STRING, category: STRING, price: DOUBLE, description: STRING>>' )) AS clothes );
 # MAGIC
@@ -277,11 +277,11 @@ display_tools(get_tools()) #display in a table the tools - see _resource/00-init
 from langchain_openai import ChatOpenAI
 from databricks.sdk import WorkspaceClient
 
-# Note: langchain_community.chat_models.ChatDatabricks doesn't support create_tool_calling_agent yet - it'll soon be availableK. Let's use ChatOpenAI for now
+# Note: langchain_community.chat_models.ChatDatabricks doesn't support create_tool_calling_agent yet - it'll soon be available. Let's use ChatOpenAI for now
 llm = ChatOpenAI(
   base_url=f"{WorkspaceClient().config.host}/serving-endpoints/",
   api_key=dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().get(),
-  model="databricks-meta-llama-3-70b-instruct"
+  model="databricks-meta-llama-3-3-70b-instruct"
 )
 
 
@@ -293,8 +293,8 @@ from langchain_community.chat_models import ChatDatabricks
 
 def get_prompt(history = [], prompt = None):
     if not prompt:
-            prompt = """You are a helpful fashion assistant. Your task is to recommend cothes to the users. You can use the following tools:
-    - Use the convert_inch_to_cm to covert inch to cm if the customer ask for it
+            prompt = """You are a helpful fashion assistant. Your task is to recommend clothes to the users. You can use the following tools:
+    - Use the convert_inch_to_cm to convert inch to cm if the customer asks for it
     - Use get_customer_orders to get the list of orders and their status, total amount and number of article. 
     - Use find_clothes_matching_description to find existing clothes from our internal catalog and suggest article to the customer
     - Use recommend_outfit if a customer ask you for a style. This function take the weather as parameter. Use the get_weather function first before calling this function to get the current temperature and rain. The current user location is 52.52, 13.41.
@@ -344,7 +344,7 @@ answer = agent_executor.invoke({"input": "I need a dress for an interview I have
 
 # COMMAND ----------
 
-#Note: in a real app, we would include the preview discussion as history to keep the reference.
+#Note: in a real app, we would include the previous discussion as history to keep the reference.
 answer = agent_executor.invoke({"input": "Can you give me a list of red dresses I can buy?"})
 
 # COMMAND ----------

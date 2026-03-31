@@ -1,18 +1,18 @@
 # Databricks notebook source
 # MAGIC %md-sandbox
-# MAGIC # Running inference at scale and in realtime
+# MAGIC # Running inference at scale and in real-time
 # MAGIC
 # MAGIC
 # MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/product/computer-vision/deeplearning-cv-pcb-flow-5.png?raw=true" width="700px" style="float: right"/>
 # MAGIC
 # MAGIC We have now deployed our model to our Registry. The registry provides governance and ACL, simplifying and accelerating all downstream pipeline developments.
 # MAGIC
-# MAGIC Other teams don't have to worry about the model itself, they can focus on Ops task & model serving, while Data Scientists can release new models when then feel ready. 
+# MAGIC Other teams don't have to worry about the model itself, they can focus on Ops tasks & model serving, while Data Scientists can release new models when they feel ready. 
 # MAGIC
 # MAGIC Models are typically used in 2 ways:
 # MAGIC
-# MAGIC - At scale, a cluster (in batch or streaming, including within Delta Live Tables)
-# MAGIC - For realtime, low-latencies use-cases, served behind a REST API.
+# MAGIC - At scale, a cluster (in batch or streaming, including within Spark Declarative Pipelines)
+# MAGIC - For real-time, low-latencies use-cases, served behind a REST API.
 # MAGIC
 # MAGIC Databricks provides and simplify both options.
 # MAGIC
@@ -28,7 +28,7 @@
 # MAGIC
 # MAGIC To do so, we need to load our model from the MLFlow registry, and build a Pandas UDF to distribute the inference on multiple instances (typically on GPUs).
 # MAGIC
-# MAGIC The first step consist on installing the model dependencies to make sure we're loading the model using the same librairies versions.
+# MAGIC The first step consists of installing the model dependencies to make sure we're loading the model using the same library versions.
 
 # COMMAND ----------
 
@@ -137,7 +137,7 @@ display(df.limit(3).select('filename', 'content').withColumn("prediction", detec
 # MAGIC %md 
 # MAGIC ## Realtime inferences with REST API
 # MAGIC
-# MAGIC Many use-case requires real-time capabilities. Think about realtime analysis in our PCB manufacturing system. A picture is taken and we need to instantly check for potential defects. 
+# MAGIC Many use-cases require real-time capabilities. Think about real-time analysis in our PCB manufacturing system. A picture is taken and we need to instantly check for potential defects. 
 # MAGIC
 # MAGIC To be able to do that, we'll need to serve our inference behind a REST API. The system can then send our images, and the endpoint answer with the prediction.
 # MAGIC
@@ -180,7 +180,7 @@ def to_base64(b):
 # Build our final hugging face pipeline by loading the model from the registry
 pipeline_cpu = mlflow.transformers.load_model(MODEL_URI, return_type="pipeline", device=torch.device("cpu"))
 
-# Wrap our model as a PyFuncModel so that it can be used as a realtime serving endpoint
+# Wrap our model as a PyFuncModel so that it can be used as a real-time serving endpoint
 rt_model = RealtimeCVModelWrapper(pipeline_cpu)
 
 # Let's try locally before deploying our endpoint to make sure it works as expected:
@@ -196,7 +196,7 @@ display(predictions)
 # MAGIC %md
 # MAGIC Now that our wrapper is ready, let's deploy it as a new model in the registry.
 # MAGIC
-# MAGIC If realtime serving is your main usage, you would typically do that in the training step while registring your model. For this demo, we'll make 2 separate models: 1 for batch and 1 with the base64 wrapper for realtime inferences.
+# MAGIC If real-time serving is your main usage, you would typically do that in the training step while registering your model. For this demo, we'll make 2 separate models: 1 for batch and 1 with the base64 wrapper for real-time inferences.
 
 # COMMAND ----------
 
@@ -226,7 +226,7 @@ model_registered = mlflow.register_model(
 # MAGIC %md 
 # MAGIC ### Deploying a Model Endpoint Serving
 # MAGIC
-# MAGIC Our new model wrapper is available in the registry. We can deploy this new version as a model endpoint to start out realtime model serving.
+# MAGIC Our new model wrapper is available in the registry. We can deploy this new version as a model endpoint to start our real-time model serving.
 # MAGIC
 
 # COMMAND ----------
@@ -284,7 +284,7 @@ else:
 # MAGIC %md 
 # MAGIC ### Our endpoint is ready
 # MAGIC
-# MAGIC You can access and configure your endpoint using the [Model Serving UI](/#mlflow/endpoints/dbdemos_pcb_classification_endpoint) or the API. The Model Endpoint is serverless, stopping and starting almost instantly. In our case, we chose to scale it down to zero when not used (ideal for test/dev environements). 
+# MAGIC You can access and configure your endpoint using the [Model Serving UI](/#mlflow/endpoints/dbdemos_pcb_classification_endpoint) or the API. The Model Endpoint is serverless, stopping and starting almost instantly. In our case, we chose to scale it down to zero when not used (ideal for test/dev environments). 
 # MAGIC
 # MAGIC
 # MAGIC *Note that Databricks Model Serving lets you host multiple model versions, simplifying A/B testing and new model deployment.*
@@ -305,7 +305,7 @@ for i in range(3):
         inputs={
             "dataframe_records": input_slice.to_dict(orient='records')
         })
-    print(f"Inference time, end 2 end :{round((timeit.default_timer() - starting_time)*1000)}ms")
+    print(f"Inference time, end-to-end: {round((timeit.default_timer() - starting_time)*1000)}ms")
     print("  "+str(inferences))
 
 # COMMAND ----------
